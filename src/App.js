@@ -1,6 +1,6 @@
 import React from 'react';
 import { Client } from 'boardgame.io/react';
-import { KlaverJassen } from 'Game';
+import { KlaverJassen } from 'GameLogic/Game';
 import { useForm } from 'react-hook-form';
 // import { PlaceBid, Pass } from 'Phases/PlaceBids';
 // import { PlayCard } from 'Phases/PlayTricks';
@@ -16,7 +16,7 @@ import {
   Sans
 } from 'Suits';
 import PlaceBid from 'PlaceBid';
-import { SUITES, SANS } from 'Card';
+import { SUITES, SANS } from 'GameLogic/Card';
 const { SPADES, HEARTS, CLUBS, DIAMONDS } = SUITES;
 
 const isSans = event => event.value === 'sans';

@@ -5,7 +5,7 @@ import {
   PointsOfTrick,
   WinnerOfTrick,
   trumpCardToValues
-} from 'Card';
+} from 'GameLogic/Card';
 import _ from 'lodash';
 
 const isDefined = x => x !== undefined;

@@ -8,7 +8,7 @@ import {
   SANS,
   SUITES,
   FACES
-} from 'Card';
+} from 'GameLogic/Card';
 import _ from 'lodash';
 
 const { SPADES, HEARTS, CLUBS, DIAMONDS } = SUITES;

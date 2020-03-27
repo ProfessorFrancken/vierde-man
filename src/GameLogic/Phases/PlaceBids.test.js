@@ -1,6 +1,6 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
-import { SUITES, PASS, SANS } from 'Card';
-import { PlaceBid, Pass } from 'Phases/PlaceBids';
+import { SUITES, PASS, SANS } from 'GameLogic/Card';
+import { PlaceBid, Pass } from 'GameLogic/Phases/PlaceBids';
 import _ from 'lodash';
 const { HEARTS, DIAMONDS } = SUITES;
 

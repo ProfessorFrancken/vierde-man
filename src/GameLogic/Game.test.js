@@ -1,10 +1,15 @@
 import { Client } from 'boardgame.io/client';
-import { KlaverJassen } from 'Game';
-import { PASS } from 'Phases/PlaceBids';
-import { handContains, Card, InitialDeck, SANS, SUITES, FACES } from 'Card';
+import { KlaverJassen } from 'GameLogic/Game';
+import { PASS } from 'GameLogic/Phases/PlaceBids';
+import {
+  handContains,
+  Card,
+  InitialDeck,
+  SANS,
+  SUITES,
+  FACES
+} from 'GameLogic/Card';
 import _ from 'lodash';
-import logger from 'redux-logger';
-import { applyMiddleware } from 'redux';
 
 describe('dealing hands', () => {
   it('allows to place a bid', () => {

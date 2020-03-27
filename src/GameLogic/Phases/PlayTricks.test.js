@@ -1,6 +1,9 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
-import { SUITES, Card } from 'Card';
-import { PlayCard, PlayerToStartCurrentTrick } from 'Phases/PlayTricks';
+import { SUITES, Card } from 'GameLogic/Card';
+import {
+  PlayCard,
+  PlayerToStartCurrentTrick
+} from 'GameLogic/Phases/PlayTricks';
 import _ from 'lodash';
 const { CLUBS, SPADES, HEARTS, DIAMONDS } = SUITES;
 

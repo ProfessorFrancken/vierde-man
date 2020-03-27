@@ -1,7 +1,7 @@
-import { InitialDeck } from 'Card';
-import { PlaceBids } from 'Phases/PlaceBids';
-import { PlayTricks } from 'Phases/PlayTricks';
-import Randomness from 'Phases/Random';
+import { InitialDeck } from 'GameLogic/Card';
+import { PlaceBids } from 'GameLogic/Phases/PlaceBids';
+import { PlayTricks } from 'GameLogic/Phases/PlayTricks';
+import Randomness from 'GameLogic/Phases/Random';
 
 const SixTeenRoundsHaveBeenPlayed = (G, ctx) => {
   return G.rounds.length === 4 * 4
