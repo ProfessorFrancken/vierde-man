@@ -14,7 +14,7 @@ import {
   Diamonds,
   Clubs,
   Sans
-} from 'Suits';
+} from 'Components/Suits';
 import PlaceBid from 'PlaceBid';
 import { SUITES, SANS } from 'GameLogic/Card';
 const { SPADES, HEARTS, CLUBS, DIAMONDS } = SUITES;

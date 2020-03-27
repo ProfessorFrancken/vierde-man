@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Spades, Hearts, Diamonds, Clubs, Sans } from 'Suits';
+import { Spades, Hearts, Diamonds, Clubs, Sans } from 'Components/Suits';
 
 const isSans = event => event.value === 'sans';
 
