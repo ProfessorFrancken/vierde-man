@@ -79,10 +79,16 @@ export const playerIsAllowedToPlayerCard = (
   const canFollowSuit = _.some(handOfPlayer, sameSuitAs(suitOfFirstCard));
   const canTrump = _.some(handOfPlayer, sameSuitAs(trump));
 
+  // prettier-ignore
+  const valueOfTrumpCards = ({ face }) => {
+    const orderOfTrumpCards = ['7', '8', 'Q', 'K', '10', 'A', '9', 'J'];
+    return orderOfTrumpCards.findIndex(x => x === face);
+  };
+
   const highestPlayedTrumpCard = _(playedCards)
     .filter(isDefined)
     .filter(sameSuitAs(trump))
-    .map(({ face }) => trumpCardToValues[face])
+    .map(card => valueOfTrumpCards(card))
     .max();
 
   const playerCanOvertrump =
@@ -90,10 +96,10 @@ export const playerIsAllowedToPlayerCard = (
     _(handOfPlayer)
       .reject(({ suit, face }) => suit === card.suit && face == card.face)
       .filter(sameSuitAs(trump))
-      .map(({ face }) => trumpCardToValues[face])
+      .map(card => valueOfTrumpCards(card))
       .some(value => value > highestPlayedTrumpCard);
 
-  const trumpValueOfCard = trumpCardToValues[card.face];
+  const trumpValueOfCard = valueOfTrumpCards(card);
   const playerTriedToUnderTrump = trumpValueOfCard < highestPlayedTrumpCard;
 
   // TODO: refactor to separate methods
@@ -121,7 +127,10 @@ export const playerIsAllowedToPlayerCard = (
     return true;
   }
 
-  if (playerCanOvertrump && card.suit !== trump) {
+  if (
+    playerCanOvertrump &&
+    (card.suit !== trump || card.face < highestPlayedTrumpCard)
+  ) {
     return false;
   }
 
