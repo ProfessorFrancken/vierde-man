@@ -142,8 +142,7 @@ export const WinnerOfTrick = (trick, firstCard, trump) => {
 export const PASS = null;
 export const Card = (suit, face) => ({ suit, face });
 export const handContains = (hand, card) =>
-  hand.filter(({ suit, face }) => suit === card.suit && face === card.face)
-    .length === 1;
+  _.some(hand, ({ suit, face }) => suit === card.suit && face === card.face);
 
 export const pointsFromHands = ({ playedTricks, bid }) => {
   const [tricksByWij, tricksByZij] = _.partition(playedTricks, ({ winner }) =>
