@@ -112,16 +112,16 @@ export const WinnerOfTrick = (trick, firstCard, trump) => {
   const orderOfTrumpCards = ['7', '8', 'Q', 'K', '10', 'A', '9', 'J'];
 
   const rankTrickByCardValue = _.mapValues(trick, ({ face, suit }) => {
+    if (suit === trump) {
+      return 10 + orderOfTrumpCards.findIndex(x => x === face);
+    }
+
     if (suit === firstCard.suit) {
       return orderOfNonTrumpCards.findIndex(x => x === face);
     }
 
     // HACK: we know there are only 8 cards so adding 10 to trump cards
     // makes sure that trump cards always win over other cards
-    if (suit === trump) {
-      return 10 + orderOfTrumpCards.findIndex(x => x === face);
-    }
-
     // HACK: players not following suit or trumping can't win
     return -1;
   });
