@@ -4,7 +4,7 @@ import {
   handContains,
   PointsOfTrick,
   WinnerOfTrick,
-  trumpCardToValues
+  rankOfTrumpCard
 } from 'GameLogic/Card';
 import _ from 'lodash';
 
@@ -79,16 +79,10 @@ export const playerIsAllowedToPlayerCard = (
   const canFollowSuit = _.some(handOfPlayer, sameSuitAs(suitOfFirstCard));
   const canTrump = _.some(handOfPlayer, sameSuitAs(trump));
 
-  // prettier-ignore
-  const valueOfTrumpCards = ({ face }) => {
-    const orderOfTrumpCards = ['7', '8', 'Q', 'K', '10', 'A', '9', 'J'];
-    return orderOfTrumpCards.findIndex(x => x === face);
-  };
-
   const highestPlayedTrumpCard = _(playedCards)
     .filter(isDefined)
     .filter(sameSuitAs(trump))
-    .map(card => valueOfTrumpCards(card))
+    .map(rankOfTrumpCard)
     .max();
 
   const playerCanOvertrump =
@@ -96,10 +90,10 @@ export const playerIsAllowedToPlayerCard = (
     _(handOfPlayer)
       .reject(({ suit, face }) => suit === card.suit && face == card.face)
       .filter(sameSuitAs(trump))
-      .map(card => valueOfTrumpCards(card))
+      .map(rankOfTrumpCard)
       .some(value => value > highestPlayedTrumpCard);
 
-  const trumpValueOfCard = valueOfTrumpCards(card);
+  const trumpValueOfCard = rankOfTrumpCard(card);
   const playerTriedToUnderTrump = trumpValueOfCard < highestPlayedTrumpCard;
 
   // TODO: refactor to separate methods

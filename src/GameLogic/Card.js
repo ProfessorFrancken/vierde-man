@@ -19,6 +19,13 @@ const nonTrumpCardToValues = {
     'A': 11, '10': 10, 'K': 4, 'Q': 3, 'J': 2, '9': 0, '8': 0, '7': 0
 }
 
+export const rankOfTrumpCard = ({ face }) => {
+  const rankOfCards = ['7', '8', 'Q', 'K', '10', 'A', '9', 'J'];
+  return rankOfCards.findIndex(x => x === face);
+};
+
+export const rankOfCard = ({ face }) => FACES.findIndex(x => x === face);
+
 export const InitialDeck = () =>
   _.product(SUITES, FACES).map(([suit, face]) => Card(suit, face));
 
@@ -108,20 +115,17 @@ export const PointsOfTrick = (trick, trump) => {
 };
 
 export const WinnerOfTrick = (trick, firstCard, trump) => {
-  const orderOfNonTrumpCards = ['7', '8', '9', 'J', 'Q', 'K', '10', 'A'];
-  const orderOfTrumpCards = ['7', '8', 'Q', 'K', '10', 'A', '9', 'J'];
-
-  const rankTrickByCardValue = _.mapValues(trick, ({ face, suit }) => {
-    if (suit === trump) {
-      return 10 + orderOfTrumpCards.findIndex(x => x === face);
+  const rankTrickByCardValue = _.mapValues(trick, card => {
+    if (card.suit === trump) {
+      // HACK: we know there are only 8 cards so adding 10 to trump cards
+      // makes sure that trump cards always win over other cards
+      return 10 + rankOfTrumpCard(card);
     }
 
-    if (suit === firstCard.suit) {
-      return orderOfNonTrumpCards.findIndex(x => x === face);
+    if (card.suit === firstCard.suit) {
+      return rankOfCard(card);
     }
 
-    // HACK: we know there are only 8 cards so adding 10 to trump cards
-    // makes sure that trump cards always win over other cards
     // HACK: players not following suit or trumping can't win
     return -1;
   });
