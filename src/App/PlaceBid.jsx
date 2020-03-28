@@ -45,8 +45,6 @@ const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer }) => {
   const [trump, setTrump] = useState(CLUBS);
   const [bid, setBid] = useState(80);
 
-  console.log(currentBids);
-
   const isSans = trump === SANS;
   const trumpOptions = [SANS, SPADES, HEARTS, CLUBS, DIAMONDS];
   const trumpLabel = {

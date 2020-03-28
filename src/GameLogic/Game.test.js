@@ -1,6 +1,5 @@
 import { Client } from 'boardgame.io/client';
 import { KlaverJassen } from 'GameLogic/Game';
-import { PASS } from 'GameLogic/Phases/PlaceBids';
 import {
   handContains,
   Card,
@@ -33,10 +32,10 @@ describe('dealing hands', () => {
     const { G, ctx } = client.store.getState();
 
     expect(G.bids).toEqual({
-      '0': null,
-      '1': null,
-      '2': null,
-      '3': { suit: SUITES.CLUBS, bid: 100 }
+      '0': { suit: null, bid: null, bidBy: 0 },
+      '1': { suit: null, bid: null, bidBy: 1 },
+      '2': { suit: null, bid: null, bidBy: 2 },
+      '3': { suit: SUITES.CLUBS, bid: 100, bidBy: 3 }
     });
 
     expect(ctx.phase).toEqual('PlayTricks');
@@ -71,10 +70,10 @@ describe('dealing hands', () => {
     const { G, ctx } = client.store.getState();
     expect(ctx.phase).toEqual('PlaceBids');
     expect(G.bids).toEqual({
-      0: PASS,
-      1: { suit: CLUBS, bid: 80 },
-      2: PASS,
-      3: PASS
+      0: { suit: null, bid: null, bidBy: 0 },
+      1: { suit: CLUBS, bid: 80, bidBy: 1 },
+      2: { suit: null, bid: null, bidBy: 2 },
+      3: { suit: null, bid: null, bidBy: 3 }
     });
   });
 
@@ -95,9 +94,9 @@ describe('dealing hands', () => {
           },
           bids: {
             0: { suit: SUITES.SPADES, bid: 100 },
-            1: PASS,
-            2: PASS,
-            3: PASS
+            1: { suit: null, bid: null, bidBy: 1 },
+            2: { suit: null, bid: null, bidBy: 2 },
+            3: { suit: null, bid: null, bidBy: 3 }
           },
           trump: SUITES.SPADES,
           bid: {

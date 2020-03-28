@@ -38,10 +38,10 @@ describe('bidding phase', () => {
       Pass(G, { currentPlayer: 3 });
 
       expect(G.bids).toEqual({
-        0: { suit: SANS, bid: 70 },
-        1: PASS,
-        2: PASS,
-        3: PASS
+        0: { suit: SANS, bid: 70, bidBy: 0 },
+        1: { suit: null, bid: null, bidBy: 1 },
+        2: { suit: null, bid: null, bidBy: 2 },
+        3: { suit: null, bid: null, bidBy: 3 }
       });
     });
 
@@ -53,10 +53,10 @@ describe('bidding phase', () => {
       Pass(G, { currentPlayer: 0 });
 
       expect(G.bids).toEqual({
-        0: PASS,
-        1: { suit: SANS, bid: 70 },
-        2: PASS,
-        3: PASS
+        0: { suit: null, bid: null, bidBy: 0 },
+        1: { suit: SANS, bid: 70, bidBy: 1 },
+        2: { suit: null, bid: null, bidBy: 2 },
+        3: { suit: null, bid: null, bidBy: 3 }
       });
     });
 
@@ -68,10 +68,10 @@ describe('bidding phase', () => {
       Pass(G, { currentPlayer: 1 });
 
       expect(G.bids).toEqual({
-        0: PASS,
-        1: PASS,
-        2: { suit: SANS, bid: 70 },
-        3: PASS
+        0: { suit: null, bid: null, bidBy: 0 },
+        1: { suit: null, bid: null, bidBy: 1 },
+        2: { suit: SANS, bid: 70, bidBy: 2 },
+        3: { suit: null, bid: null, bidBy: 3 }
       });
     });
 
@@ -83,10 +83,10 @@ describe('bidding phase', () => {
       Pass(G, { currentPlayer: 2 });
 
       expect(G.bids).toEqual({
-        0: PASS,
-        1: PASS,
-        2: PASS,
-        3: { suit: SANS, bid: 70 }
+        0: { suit: null, bid: null, bidBy: 0 },
+        1: { suit: null, bid: null, bidBy: 1 },
+        2: { suit: null, bid: null, bidBy: 2 },
+        3: { suit: SANS, bid: 70, bidBy: 3 }
       });
     });
   });
@@ -97,7 +97,7 @@ describe('bidding phase', () => {
 
     expect(result).toEqual(undefined);
     expect(G.bids).toEqual({
-      0: { suit: SANS, bid: 70 },
+      0: { suit: SANS, bid: 70, bidBy: 0 },
       1: undefined,
       2: undefined,
       3: undefined
@@ -131,7 +131,7 @@ describe('bidding phase', () => {
 
     expect(result).toEqual(undefined);
     expect(G.bids).toEqual({
-      0: { suit: DIAMONDS, bid: 80 },
+      0: { suit: DIAMONDS, bid: 80, bidBy: 0 },
       1: undefined,
       2: undefined,
       3: undefined
@@ -155,10 +155,10 @@ describe('bidding phase', () => {
 
     expect(result).toEqual(undefined);
     expect(G.bids).toEqual({
-      0: { suit: DIAMONDS, bid: 160 },
-      1: PASS,
-      2: PASS,
-      3: PASS
+      0: { suit: DIAMONDS, bid: 160, bidBy: 0 },
+      1: { suit: null, bid: null, bidBy: 1 },
+      2: { suit: null, bid: null, bidBy: 2 },
+      3: { suit: null, bid: null, bidBy: 3 }
     });
   });
 
@@ -172,7 +172,7 @@ describe('bidding phase', () => {
         0: undefined,
         1: undefined,
         2: undefined,
-        3: { suit: HEARTS, bid: 100 }
+        3: { suit: HEARTS, bid: 100, bidBy: 3 }
       }
     };
     const result = PlaceBid(
@@ -186,7 +186,7 @@ describe('bidding phase', () => {
       0: undefined,
       1: undefined,
       2: undefined,
-      3: { suit: HEARTS, bid: 100 }
+      3: { suit: HEARTS, bid: 100, bidBy: 3 }
     });
   });
 
@@ -199,12 +199,12 @@ describe('bidding phase', () => {
           0: undefined,
           1: undefined,
           2: undefined,
-          3: { suit: HEARTS, bid: 80 }
+          3: { suit: HEARTS, bid: 80, bidBy: 3 }
         }
       };
       const result = PlaceBid(G, { currentPlayer: 0 }, { suit: SANS, bid: 80 });
       expect(result).toEqual(undefined);
-      expect(G.bids[0]).toEqual({ suit: SANS, bid: 80 });
+      expect(G.bids[0]).toEqual({ suit: SANS, bid: 80, bidBy: 0 });
     });
 
     it('does not allow bidding on a non SANS suit with the same value as the current bid', () => {
@@ -215,7 +215,7 @@ describe('bidding phase', () => {
           0: undefined,
           1: undefined,
           2: undefined,
-          3: { suit: HEARTS, bid: 80 }
+          3: { suit: HEARTS, bid: 80, bidBy: 3 }
         }
       };
       const result = PlaceBid(
@@ -235,12 +235,12 @@ describe('bidding phase', () => {
           0: undefined,
           1: undefined,
           2: undefined,
-          3: { suit: DIAMONDS, bid: 80 }
+          3: { suit: DIAMONDS, bid: 80, bidBy: 3 }
         }
       };
       const result = PlaceBid(G, { currentPlayer: 0 }, { suit: SANS, bid: 80 });
       expect(result).toEqual(undefined);
-      expect(G.bids[0]).toEqual({ suit: SANS, bid: 80 });
+      expect(G.bids[0]).toEqual({ suit: SANS, bid: 80, bidBy: 0 });
     });
 
     it('does not allow bidding 80 SANS on 90 DIAMONDS', () => {
@@ -251,13 +251,13 @@ describe('bidding phase', () => {
           0: undefined,
           1: undefined,
           2: undefined,
-          3: { suit: DIAMONDS, bid: 90 }
+          3: { suit: DIAMONDS, bid: 90, bidBy: 3 }
         }
       };
       const result = PlaceBid(G, { currentPlayer: 0 }, { suit: SANS, bid: 80 });
       expect(result).toEqual(INVALID_MOVE);
       expect(G.bids[0]).toEqual(undefined);
-      expect(G.bids[3]).toEqual({ suit: DIAMONDS, bid: 90 });
+      expect(G.bids[3]).toEqual({ suit: DIAMONDS, bid: 90, bidBy: 3 });
     });
 
     it('does not allow bidding 80 SANS on 80 SANS', () => {
@@ -268,7 +268,7 @@ describe('bidding phase', () => {
           0: undefined,
           1: undefined,
           2: undefined,
-          3: { suit: SANS, bid: 80 }
+          3: { suit: SANS, bid: 80, bidBy: 3 }
         }
       };
       const result = PlaceBid(G, { currentPlayer: 0 }, { suit: SANS, bid: 80 });

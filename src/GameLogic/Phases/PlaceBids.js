@@ -9,6 +9,7 @@ import {
   FACES
 } from 'GameLogic/Card';
 
+const bidIsPass = ({ bid, suit }) => bid === null && suit === null;
 export const PASS = null;
 
 export const ShuffleDeck = (G, ctx) => {
@@ -39,7 +40,7 @@ export const canPlaceBid = (placedBids, bid) => {
   }
 
   const highestBid = _.maxBy(Object.values(placedBids), bid =>
-    bid ? bid.bid : 0
+    bid !== undefined && !bidIsPass(bid) ? bid.bid : 0
   );
   if (highestBid === undefined || highestBid === null) {
     return true;
@@ -60,11 +61,15 @@ export const PlaceBid = (G, { currentPlayer }, bid) => {
     return INVALID_MOVE;
   }
 
-  G.bids[currentPlayer] = bid;
+  G.bids[currentPlayer] = { ...bid, bidBy: parseInt(currentPlayer, 10) };
 };
 
 export const Pass = (G, { currentPlayer }) => {
-  G.bids[currentPlayer] = PASS;
+  G.bids[currentPlayer] = {
+    bid: null,
+    suit: null,
+    bidBy: parseInt(currentPlayer, 10)
+  };
 };
 
 const StartPlacingBids = (G, ctx) => {
@@ -94,22 +99,20 @@ const StartPlacingBids = (G, ctx) => {
 const ThreePlayersHavePassed = ({ bids }, ctx) => {
   return (
     _.every(bids, bid => bid !== undefined) &&
-    _.filter(bids, bid => bid !== PASS).length === 1 &&
-    _.filter(bids, bid => bid === PASS).length === 3
+    _.filter(bids, bid => !bidIsPass(bid)).length === 1 &&
+    _.filter(bids, bid => bidIsPass(bid)).length === 3
   );
 };
 
 const determineBid = ({ bids }) => {
-  const { suit, bid } = _.find(bids, bid => bid !== null);
-  const highestBidBy = parseInt(
-    _.maxBy(Object.keys(bids), id => bids[id]),
-    10
+  const highestBid = _.maxBy(Object.values(bids), bid =>
+    bid !== undefined && !bidIsPass(bid) ? bid.bid : 0
   );
 
   return {
-    highestBidBy,
-    bid,
-    trump: suit
+    highestBidBy: highestBid.bidBy,
+    trump: highestBid.suit,
+    bid: highestBid.bid
   };
 };
 
