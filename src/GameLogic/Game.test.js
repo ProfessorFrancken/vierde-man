@@ -53,6 +53,31 @@ describe('dealing hands', () => {
     expect(G.hands[3].length).toEqual(8);
   });
 
+  it('Allows a player to bid after they pased', () => {
+    const KlaverJasScenario = {
+      ...KlaverJassen
+    };
+    const client = Client({
+      game: KlaverJasScenario,
+      numPlayers: 4
+    });
+
+    // Place a winning bid by the third player
+    client.moves.Pass();
+    client.moves.PlaceBid({ suit: SUITES.CLUBS, bid: 80 });
+    client.moves.Pass();
+    client.moves.Pass();
+
+    const { G, ctx } = client.store.getState();
+    expect(ctx.phase).toEqual('PlaceBids');
+    expect(G.bids).toEqual({
+      0: PASS,
+      1: { suit: CLUBS, bid: 80 },
+      2: PASS,
+      3: PASS
+    });
+  });
+
   it('allows to play a hand of Klaverjas', () => {
     const KlaverJasScenario = {
       ...KlaverJassen,
