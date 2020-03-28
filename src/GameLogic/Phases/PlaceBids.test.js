@@ -1,8 +1,8 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { SUITES, PASS, SANS } from 'GameLogic/Card';
-import { PlaceBid, Pass } from 'GameLogic/Phases/PlaceBids';
+import { PlaceBid, Pass, canPlaceBid } from 'GameLogic/Phases/PlaceBids';
 import _ from 'lodash';
-const { HEARTS, DIAMONDS } = SUITES;
+const { SPADES, HEARTS, CLUBS, DIAMONDS } = SUITES;
 
 describe('bidding phase', () => {
   xit('deals a piquet deck', () => {

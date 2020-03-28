@@ -41,8 +41,8 @@ export const KlaverJassen = {
         }
       },
       dealer: ctx.numPlayers - 1,
-      them: 0,
-      we: 0
+      wij: 0,
+      zij: 0
     };
   },
 

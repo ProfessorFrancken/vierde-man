@@ -2,8 +2,12 @@ import React from 'react';
 import { Client } from 'boardgame.io/react';
 import { KlaverJassen } from 'GameLogic/Game';
 import { useForm } from 'react-hook-form';
+import PlaceBid, { CurrentBids, Bid } from 'App/PlaceBid';
+import { CurrentPlayedCards } from 'App/PlayTrick';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
 // import { PlaceBid, Pass } from 'Phases/PlaceBids';
-// import { PlayCard } from 'Phases/PlayTricks';
+import { playerIsAllowedToPlayerCard } from 'GameLogic/Phases/PlayTricks';
 import logo from './logo.svg';
 import './App.css';
 import styled from 'styled-components';
@@ -15,11 +19,52 @@ import {
   Clubs,
   Sans
 } from 'Components/Suits';
-import PlaceBid from 'PlaceBid';
 import { SUITES, SANS } from 'GameLogic/Card';
 const { SPADES, HEARTS, CLUBS, DIAMONDS } = SUITES;
 
 const isSans = event => event.value === 'sans';
+
+const Header = ({ game, phase, currentBids, currentPlayer }) => {
+  return (
+    <div className="w-100 bg-primary">
+      <div className="d-flex justify-content-between align-items-center text-white p-3">
+        <div className="d-flex justify-content-between">
+          <ul className="list-unstyled mb-0 d-flex -justify-content-between ">
+            <li className="bg-dark text-white px-3 py-1 rounded">
+              <FontAwesomeIcon icon={faFileAlt} />
+            </li>
+            <li className="bg-dark text-white px-3 py-1 rounded mx-2">
+              <strong>Wij</strong>: {game.wij}
+            </li>
+            <li className="bg-dark text-white px-3 py-1 rounded mx-2">
+              <strong>Zij</strong>: {game.zij}
+            </li>
+          </ul>
+          {/* <div> */}
+          {/*   Wij: {game.wij} | Zij: {game.zij} */}
+          {/*   {/\* Wij: {G.rounds.filter(({ winner }) => [0, 2].includes(winner)).map(({ points })} | Zij: {G.zij} *\/} */}
+          {/* </div> */}
+        </div>
+        <div>
+          {game.bid.trump !== undefined ? (
+            <Bid bid={{ bid: game.bid.bid, suit: game.bid.trump }} />
+          ) : (
+            <span>Select a bid</span>
+          )}
+        </div>
+      </div>
+      {phase === 'PlaceBids' && (
+        <CurrentBids bids={currentBids} currentPlayer={currentPlayer} />
+      )}
+      {phase === 'PlayTricks' && (
+        <CurrentPlayedCards
+          currentTrick={game.currentTrick}
+          currentPlayer={currentPlayer}
+        />
+      )}
+    </div>
+  );
+};
 
 const bids = event =>
   isSans(event)
@@ -32,8 +77,8 @@ const PlayerGrid = styled.div`
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 1fr 1fr;
   grid-template-areas:
-    'player-1 player-2'
-    'player-4 player-3';
+    'player-0 player-1'
+    'player-3 player-2';
 `;
 
 const PlayerContainer = styled.div`
@@ -50,11 +95,11 @@ const PlayerContainer = styled.div`
 const PlayerHand = styled.ul`
   display: grid;
   width: 100%;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(1, 1fr);
   li {
     background: white;
-    margin: 1rem;
+    margin: 1rem 0.25rem;
   }
 `;
 
@@ -69,122 +114,90 @@ const Player = ({
   phase,
   currentPlayer
 }) => {
-  const { selectBid, handleSubmit, watch, errors } = useForm();
-
   const playerHand = game.hands[id];
 
-  const possibleBids = bids({ value: selectedSuit });
+  // if (currentPlayer !== id) {
+  //   return (
+  //     <PlayerContainer id={id + 1} className="p-5">
+  //       <h1>
+  //         {name}
 
-  if (currentPlayer !== id) {
-    return (
-      <PlayerContainer id={id + 1} className="p-5">
-        <h1>{name}</h1>
-        <small>{phase}</small>
-        HOI
-      </PlayerContainer>
-    );
-  }
+  //         <small>{phase}</small>
+  //       </h1>
+  //       Waiting for turn...
+  //     </PlayerContainer>
+  //   );
+  // }
+
+  const playerIsActive = currentPlayer === id;
 
   return (
-    <PlayerContainer id={id + 1} className="p-5">
-      <h1>{name}</h1>
-      <small>{phase}</small>
-      <div className="row">
-        <div className="col">
-          <div className="form-group">
-            <label htmlFor="suit">Select suit</label>
-            <select className="form-control" id="suit">
-              <option>SANS</option>
-              <option>Spades</option>
-              <option>Diamonds</option>
-              <option>Hearts</option>
-              <option>Clubs</option>
-            </select>
-          </div>
-        </div>
-        <div className="col">
-          <div className="form-group">
-            <label htmlFor="bid">Select bid</label>
-            <select className="form-control" id="bid">
-              <option>70</option>
-              <option>80</option>
-              <option>90</option>
-              <option>100</option>
-              <option>110</option>
-              <option>120</option>
-              <option>130</option>
-              <option>140</option>
-              <option>150</option>
-              <option>160</option>
-            </select>
-          </div>
-        </div>
-        <div className="col">
-          <div className="d-flex justify-content-between">
-            <button
-              className="btn btn-primary"
-              type="submit"
-              onClick={() => {
-                const result = moves.PlaceBid({ suit: CLUBS, bid: '90' });
-                console.log({ result });
-                return;
-              }}
-            >
-              Submit bid
-            </button>
-            <button
-              className="btn btn-primary"
-              type="submit"
-              onClick={() => {
-                const result = moves.Pass();
-                console.log({ result });
-                return;
-              }}
-            >
-              Pass
-            </button>
-          </div>
+    <PlayerContainer id={id}>
+      <Header
+        game={game}
+        phase={phase}
+        currentBids={game.bids}
+        currentPlayer={currentPlayer}
+      />
+      <div className="p-3 flex-grow-1 d-flex flex-column justify-content-between">
+        <header className="d-flex justify-content-between w-100">
+          <h1 className="h5">{name}</h1>
+          <small>
+            {playerIsActive
+              ? phase
+              : `Waiting for ${currentPlayer} to make its turn...`}
+          </small>
+        </header>
+
+        {playerIsActive && phase === 'PlaceBids' && (
+          <PlaceBid
+            placeBid={moves.PlaceBid}
+            pass={moves.Pass}
+            currentBids={game.bids}
+            currentPlayer={currentPlayer}
+          />
+        )}
+
+        <div>
+          <PlayerHand className="list-unstyled">
+            {playerHand.map(({ suit, face }, idx) => {
+              let className =
+                'p-4 px-3 shadow-sm rounded font-weight-bold d-flex align-items-center justify-content-between flex-column text-center';
+              if (
+                !playerIsAllowedToPlayerCard(game, id, { suit, face }, true)
+              ) {
+                className += ' bg-light text-muted font-weight-light';
+              } else {
+                className += ' border border-primary';
+              }
+
+              return (
+                <li
+                  className={className}
+                  onClick={() => {
+                    if (
+                      !playerIsAllowedToPlayerCard(
+                        game,
+                        id,
+                        { suit, face },
+                        true
+                      )
+                    ) {
+                      alert('hoi');
+                    }
+
+                    moves.PlayCard({ suit, face });
+                  }}
+                  key={idx}
+                >
+                  <SuitStringToComponent suit={suit} />
+                  <span className="mt-5 ">{face}</span>
+                </li>
+              );
+            })}
+          </PlayerHand>
         </div>
       </div>
-
-      {1 === 2 && id === 0 && cards.length === 0 && <PlaceBid id={id + 1} />}
-      {1 === 3 && id === 0 && cards.legnth !== 0 && <div>HOI</div>}
-      {id === 1 && (
-        <>
-          <h3 className="text-muted text-center mx-auto">
-            Waiting for first bid
-          </h3>
-          <h3>Waiting</h3>{' '}
-        </>
-      )}
-      {id === 2 && (
-        <>
-          <h3 className="text-muted text-center mx-auto">
-            100 <Spades />
-          </h3>
-          <h3>Waiting</h3>
-        </>
-      )}
-      {id === 3 && (
-        <>
-          <h3 className="text-muted text-center mx-auto">Pass</h3>
-          <h3>Waiting</h3>
-        </>
-      )}
-      <PlayerHand className="list-unstyled">
-        {playerHand.map(({ suit, face }, idx) => (
-          <li
-            className="p-3 py-5 font-weight-bold d-flex align-items-center justify-content-center"
-            onClick={() => {
-              moves.PlayCard({ suit, face });
-            }}
-            key={idx}
-          >
-            <SuitStringToComponent suit={suit} />
-            <span className="mx-3">{face}</span>
-          </li>
-        ))}
-      </PlayerHand>
     </PlayerContainer>
   );
 };
@@ -297,20 +310,6 @@ const App = props => {
     <div className="App">
       <div className="d-flex justify-content-between">
         <div className="d-flex flex-column">
-          <div className="d-flex justify-content-between">
-            <div className="d-flex flex-column">
-              <div>
-                Wij: {G.wij} | Zij: {G.zij}
-              </div>
-              <div>
-                Wij: {G.wij} | Zij: {G.zij}
-                {/* Wij: {G.rounds.filter(({ winner }) => [0, 2].includes(winner)).map(({ points })} | Zij: {G.zij} */}
-              </div>
-            </div>
-            <div>
-              {G.trump} ({G.bid.bid})
-            </div>
-          </div>
           <PlayerGrid>
             <Player
               id={0}
@@ -348,20 +347,6 @@ const App = props => {
         </div>
         <Notes {...G} />
       </div>
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
     </div>
   );
 };
@@ -369,8 +354,7 @@ const App = props => {
 const KlaverJasApp = Client({
   game: KlaverJassen,
   numPlayers: 4,
-  debug: true,
-  // debug: true,
+  debug: false,
   board: App,
   loading: props => {
     return 'Loading component';

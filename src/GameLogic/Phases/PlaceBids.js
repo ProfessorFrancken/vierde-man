@@ -33,7 +33,7 @@ export const DealCards = (G, ctx, deck) => {
 const isSans = ({ suit }) => suit === SANS;
 const isAValidBid = bid =>
   bid !== undefined && (bid.bid >= 80 || (isSans(bid) && bid.bid >= 70));
-const canPlaceBid = (placedBids, bid) => {
+export const canPlaceBid = (placedBids, bid) => {
   if (!isAValidBid(bid)) {
     return false;
   }

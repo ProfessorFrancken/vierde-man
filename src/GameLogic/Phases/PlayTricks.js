@@ -43,7 +43,7 @@ function PlayCardException(message, metadata) {
   this.toString = () => this.message;
 }
 
-const playerIsAllowedToPlayerCard = (
+export const playerIsAllowedToPlayerCard = (
   { currentTrick: { playedCards, startingPlayer }, bid: { trump }, hands },
   player,
   card
@@ -58,6 +58,7 @@ const playerIsAllowedToPlayerCard = (
   // The current player is the starting player, so they can decide the suit
   if (cardByStartingPlayer === undefined) {
     if (startingPlayer !== player) {
+      return false;
       throw new PlayCardException(
         'Someone else than the starting player tried to play the first card',
         {
