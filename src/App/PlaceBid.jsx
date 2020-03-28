@@ -11,7 +11,7 @@ export const CurrentBids = ({ bids, currentPlayer }) => {
       style={{ fontSize: '0.75rem' }}
     >
       {[0, 1, 2, 3].map(id => (
-        <li className="bg-white shadow-sm p-3 w-25">
+        <li className="bg-white shadow-sm p-3 w-25" key={id}>
           <strong>Player {id}</strong>:<br />
           {id === currentPlayer ? (
             <span>Placing bid</span>
@@ -34,7 +34,7 @@ export const Bid = ({ bid }) => {
   }
 
   return (
-    <div class="d-flex justify-content-center align-items-center mt-1">
+    <div className="d-flex justify-content-center align-items-center mt-1">
       <strong className="mr-2">{bid.bid}</strong>
       <SuitStringToComponent suit={bid.suit} />
     </div>
@@ -79,7 +79,7 @@ const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer }) => {
   return (
     <div className="d-flex flex-column w-100 text-left">
       <h4>Place a bid</h4>
-      <div class="d-flex justify-content-between">
+      <div className="d-flex justify-content-between">
         <div className="form-group">
           <select
             className="form-control form-control-sm"

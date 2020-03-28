@@ -239,9 +239,9 @@ const Notes = G => {
           </li>
           <li>
             <h4>Played cards</h4>
-            <ul class="list-unstyled d-flex justify-content-between">
+            <ul className="list-unstyled d-flex justify-content-between">
               {[0, 1, 2, 3].map(id => (
-                <li className="bg-light p-4 m-3">
+                <li className="bg-light p-4 m-3" key={id}>
                   Player {id}:
                   {currentTrick.playedCards[id] === undefined ? (
                     'Waiting'
@@ -277,7 +277,7 @@ const Notes = G => {
               <p>
                 {' '}
                 cards:
-                <ul class="list-unstyled d-flex justify-content-between">
+                <ul className="list-unstyled d-flex justify-content-between">
                   {[0, 1, 2, 3].map(id => (
                     <li className="bg-light p-4 m-3">
                       {trick.cards[id].face}
