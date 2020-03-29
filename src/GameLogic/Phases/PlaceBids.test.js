@@ -282,25 +282,7 @@ describe('bidding phase', () => {
       const G = { ..._.cloneDeep(initialGame), dealer: 3 };
       const result = Pass(G, { currentPlayer: 0 });
       expect(result).toEqual(undefined);
-      expect(G.bids[0]).toEqual(null);
-    });
-
-    it('Deals new cards when 4 players have passed', () => {
-      const G = { ..._.cloneDeep(initialGame), dealer: 3 };
-      Pass(G, { currentPlayer: 0 });
-      Pass(G, { currentPlayer: 1 });
-      Pass(G, { currentPlayer: 2 });
-
-      expect(G.bids[0]).toEqual(null);
-      expect(G.bids[1]).toEqual(null);
-      expect(G.bids[2]).toEqual(null);
-      expect(G.bids[3]).toEqual(undefined);
-
-      const result = Pass(G, { currentPlayer: 3 });
-      expect(result).toEqual(undefined);
-      expect(G.bids[3]).toEqual(null);
-      // TODO: check that new cards have been dealt
-      expect(true).toEqual(false);
+      expect(G.bids[0]).toEqual({ suit: null, bid: null, bidBy: 0 });
     });
   });
 

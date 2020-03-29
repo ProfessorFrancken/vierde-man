@@ -35,6 +35,10 @@ const isSans = ({ suit }) => suit === SANS;
 const isAValidBid = bid =>
   bid !== undefined && (bid.bid >= 80 || (isSans(bid) && bid.bid >= 70));
 export const canPlaceBid = (placedBids, bid) => {
+  if (bidIsPass(bid)) {
+    return true;
+  }
+
   if (!isAValidBid(bid)) {
     return false;
   }
@@ -56,21 +60,30 @@ export const canPlaceBid = (placedBids, bid) => {
 
   return false;
 };
-export const PlaceBid = (G, { currentPlayer }, bid) => {
+
+const reshuffleIfAllPassed = (G, ctx) => {
+  const isDefined = x => x !== undefined;
+
+  if (
+    _.filter(G.bids, isDefined).length === 4 &&
+    _.every(_.filter(G.bids, isDefined), bidIsPass)
+  ) {
+    ShuffleDeck(G, ctx);
+    DealCards(G, ctx, G.deck);
+  }
+};
+
+export const PlaceBid = (G, ctx, bid) => {
+  const { currentPlayer } = ctx;
   if (!canPlaceBid(G.bids, bid)) {
     return INVALID_MOVE;
   }
 
   G.bids[currentPlayer] = { ...bid, bidBy: parseInt(currentPlayer, 10) };
+  reshuffleIfAllPassed(G, ctx);
 };
 
-export const Pass = (G, { currentPlayer }) => {
-  G.bids[currentPlayer] = {
-    bid: null,
-    suit: null,
-    bidBy: parseInt(currentPlayer, 10)
-  };
-};
+export const Pass = (G, ctx) => PlaceBid(G, ctx, { bid: null, suit: null });
 
 const StartPlacingBids = (G, ctx) => {
   ShuffleDeck(G, ctx);

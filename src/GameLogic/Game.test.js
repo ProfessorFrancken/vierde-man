@@ -9,6 +9,7 @@ import {
   FACES
 } from 'GameLogic/Card';
 import _ from 'lodash';
+const { CLUBS } = SUITES;
 
 describe('dealing hands', () => {
   it('allows to place a bid', () => {
@@ -75,6 +76,37 @@ describe('dealing hands', () => {
       2: { suit: null, bid: null, bidBy: 2 },
       3: { suit: null, bid: null, bidBy: 3 }
     });
+  });
+
+  it('Deals new cards when 4 players have passed', () => {
+    const KlaverJasScenario = {
+      ...KlaverJassen
+    };
+    const client = Client({
+      game: KlaverJasScenario,
+      numPlayers: 4
+    });
+
+    const {
+      G: { hands: oldHands }
+    } = client.store.getState();
+
+    client.moves.Pass();
+    client.moves.Pass();
+    client.moves.Pass();
+    client.moves.Pass();
+
+    const { G } = client.store.getState();
+    expect(G.bids[0]).toEqual({ suit: null, bid: null, bidBy: 0 });
+    expect(G.bids[1]).toEqual({ suit: null, bid: null, bidBy: 1 });
+    expect(G.bids[2]).toEqual({ suit: null, bid: null, bidBy: 2 });
+    expect(G.bids[3]).toEqual({ suit: null, bid: null, bidBy: 3 });
+
+    const {
+      G: { hands }
+    } = client.store.getState();
+
+    expect(oldHands === hands).toEqual(false);
   });
 
   it('allows to play a hand of Klaverjas', () => {
