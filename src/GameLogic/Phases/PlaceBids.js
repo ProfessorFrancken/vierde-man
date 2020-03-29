@@ -109,7 +109,12 @@ const StartPlacingBids = (G, ctx) => {
   };
 };
 
-const ThreePlayersHavePassed = ({ bids }, ctx) => {
+const ThreePlayersHavePassed = ({ bids }, { currentPlayer }) => {
+  // A bid round is finished if we're back to the player that has placed a bid
+  if (bids[currentPlayer] !== undefined && bidIsPass(bids[currentPlayer])) {
+    return false;
+  }
+
   return (
     _.every(bids, bid => bid !== undefined) &&
     _.filter(bids, bid => !bidIsPass(bid)).length === 1 &&
