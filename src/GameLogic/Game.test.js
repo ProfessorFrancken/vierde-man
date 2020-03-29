@@ -282,17 +282,16 @@ describe('dealing hands', () => {
         const { G, ctx } = client.store.getState();
         if (round < 7) {
           expect(ctx.phase).toEqual('PlayTricks');
-          expect(G.playedTricks[round]).toEqual({
-            winner: playTheseHands[round].winner,
-            points: playTheseHands[round].points,
-            honor: 100,
-            cards: [
-              playTheseHands[round].cards[0],
-              playTheseHands[round].cards[1],
-              playTheseHands[round].cards[2],
-              playTheseHands[round].cards[3]
-            ]
+          const { winner, points, honor, cards } = G.playedTricks[round];
+          expect(winner).toEqual(playTheseHands[round].winner);
+          expect(points).toEqual(playTheseHands[round].points);
+          expect(honor).toEqual(100);
+          [0, 1, 2, 3].forEach(playerId => {
+            const expectedCard = playTheseHands[round].cards[playerId];
+            expect(cards[playerId].face).toEqual(expectedCard.face);
+            expect(cards[playerId].suit).toEqual(expectedCard.suit);
           });
+
           expect(
             handContains(G.hands['0'], Card(SUITES.SPADES, FACES[round]))
           ).toEqual(false);
