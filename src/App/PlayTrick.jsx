@@ -1,8 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { SuitStringToComponent } from 'Components/Suits';
-import { SUITES, SANS } from 'GameLogic/Card';
-import { canPlaceBid } from 'GameLogic/Phases/PlaceBids';
-const { SPADES, HEARTS, CLUBS, DIAMONDS } = SUITES;
 
 export const CurrentPlayedCards = ({ currentTrick, currentPlayer }) => {
   return (

@@ -1,4 +1,3 @@
-import React from 'react';
 import 'lodash.product';
 import _ from 'lodash';
 

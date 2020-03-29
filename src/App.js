@@ -5,17 +5,9 @@ import PlaceBid from 'App/PlaceBid';
 import { playerIsAllowedToPlayCard } from 'GameLogic/Phases/PlayTricks';
 import './App.css';
 import styled from 'styled-components';
-import { SuitStringToComponent } from 'Components/Suits';
 import Header from 'App/Header';
 import Notes from 'App/ScoreBoard';
 import Card from 'Components/Card';
-
-const isSans = event => event.value === 'sans';
-
-const bids = event =>
-  isSans(event)
-    ? [70, 80, 90, 100, 110, 120, 130, 'pit', 'pitje met roem']
-    : [80, 90, 100, 110, 120, 130, 140, 150, 160, 'pit', 'pitje met roem'];
 
 const PlayerGrid = styled.div`
   display: grid;
@@ -61,20 +53,6 @@ const Player = ({
   currentPlayer
 }) => {
   const playerHand = game.hands[id];
-
-  // if (currentPlayer !== id) {
-  //   return (
-  //     <PlayerContainer id={id + 1} className="p-5">
-  //       <h1>
-  //         {name}
-
-  //         <small>{phase}</small>
-  //       </h1>
-  //       Waiting for turn...
-  //     </PlayerContainer>
-  //   );
-  // }
-
   const playerIsActive = currentPlayer === id;
 
   return (

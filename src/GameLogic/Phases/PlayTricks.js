@@ -59,13 +59,6 @@ export const playerIsAllowedToPlayCard = (
   if (cardByStartingPlayer === undefined) {
     if (startingPlayer !== player) {
       return false;
-      throw new PlayCardException(
-        'Someone else than the starting player tried to play the first card',
-        {
-          startingPlayer,
-          player
-        }
-      );
     }
 
     return true;
@@ -88,7 +81,7 @@ export const playerIsAllowedToPlayCard = (
   const playerCanOvertrump =
     highestPlayedTrumpCard === undefined ||
     _(handOfPlayer)
-      .reject(({ suit, face }) => suit === card.suit && face == card.face)
+      .reject(({ suit, face }) => suit === card.suit && face === card.face)
       .filter(sameSuitAs(trump))
       .map(rankOfTrumpCard)
       .some(value => value > highestPlayedTrumpCard);
@@ -163,6 +156,20 @@ export const PlayCard = (G, { currentPlayer }, card) => {
   const player = parseInt(currentPlayer, 10);
 
   try {
+    const {
+      currentTrick: { playedCards = [], startingPlayer }
+    } = G;
+    const cardByStartingPlayer = playedCards[startingPlayer];
+    if (cardByStartingPlayer === undefined && startingPlayer !== player) {
+      throw new PlayCardException(
+        'Someone else than the starting player tried to play the first card',
+        {
+          startingPlayer,
+          player
+        }
+      );
+    }
+
     if (!playerIsAllowedToPlayCard(G, player, card)) {
       return INVALID_MOVE;
     }
