@@ -95,6 +95,20 @@ const Player = ({
           </small>
         </header>
 
+        <div>
+          <PlayerHand className="list-unstyled mb-0">
+            {playerHand.map((card, idx) => (
+              <Card
+                key={idx}
+                game={game}
+                card={card}
+                disabled={playerIsAllowedToPlayCard(game, id, card)}
+                onCLick={() => moves.PlayCard(card)}
+              />
+            ))}
+          </PlayerHand>
+        </div>
+
         {playerIsActive && phase === 'PlaceBids' && (
           <PlaceBid
             placeBid={moves.PlaceBid}
