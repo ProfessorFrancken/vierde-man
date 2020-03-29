@@ -171,7 +171,7 @@ export const PlayCard = (G, { currentPlayer }, card) => {
   }
 
   // Keep track of the card played by player
-  G.currentTrick.playedCards[player] = card;
+  G.currentTrick.playedCards[player] = { ...card, playedBy: player };
 
   removeCardFromPlayer(G, player, card);
 };
