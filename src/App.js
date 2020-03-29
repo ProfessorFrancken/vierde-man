@@ -2,12 +2,13 @@ import React from 'react';
 import { Client } from 'boardgame.io/react';
 import { KlaverJassen } from 'GameLogic/Game';
 import PlaceBid from 'App/PlaceBid';
-import { playerIsAllowedToPlayerCard } from 'GameLogic/Phases/PlayTricks';
+import { playerIsAllowedToPlayCard } from 'GameLogic/Phases/PlayTricks';
 import './App.css';
 import styled from 'styled-components';
 import { SuitStringToComponent } from 'Components/Suits';
 import Header from 'App/Header';
 import Notes from 'App/ScoreBoard';
+import Card from 'Components/Card';
 
 const isSans = event => event.value === 'sans';
 
@@ -44,7 +45,7 @@ const PlayerHand = styled.ul`
   grid-template-rows: repeat(1, 1fr);
   li {
     background: white;
-    margin: 1rem 0.25rem;
+    margin: 0rem 0.25rem;
   }
 `;
 
@@ -102,46 +103,6 @@ const Player = ({
             currentPlayer={currentPlayer}
           />
         )}
-
-        <div>
-          <PlayerHand className="list-unstyled">
-            {playerHand.map(({ suit, face }, idx) => {
-              let className =
-                'p-4 px-3 shadow-sm rounded font-weight-bold d-flex align-items-center justify-content-between flex-column text-center';
-              if (
-                !playerIsAllowedToPlayerCard(game, id, { suit, face }, true)
-              ) {
-                className += ' bg-light text-muted font-weight-light';
-              } else {
-                className += ' border border-primary';
-              }
-
-              return (
-                <li
-                  className={className}
-                  onClick={() => {
-                    if (
-                      !playerIsAllowedToPlayerCard(
-                        game,
-                        id,
-                        { suit, face },
-                        true
-                      )
-                    ) {
-                      alert('hoi');
-                    }
-
-                    moves.PlayCard({ suit, face });
-                  }}
-                  key={idx}
-                >
-                  <SuitStringToComponent suit={suit} />
-                  <span className="mt-5 ">{face}</span>
-                </li>
-              );
-            })}
-          </PlayerHand>
-        </div>
       </div>
     </PlayerContainer>
   );

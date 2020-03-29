@@ -43,7 +43,7 @@ function PlayCardException(message, metadata) {
   this.toString = () => this.message;
 }
 
-export const playerIsAllowedToPlayerCard = (
+export const playerIsAllowedToPlayCard = (
   { currentTrick: { playedCards, startingPlayer }, bid: { trump }, hands },
   player,
   card
@@ -163,7 +163,7 @@ export const PlayCard = (G, { currentPlayer }, card) => {
   const player = parseInt(currentPlayer, 10);
 
   try {
-    if (!playerIsAllowedToPlayerCard(G, player, card)) {
+    if (!playerIsAllowedToPlayCard(G, player, card)) {
       return INVALID_MOVE;
     }
   } catch (e) {
