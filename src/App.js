@@ -3,7 +3,7 @@ import { Client } from 'boardgame.io/react';
 import { KlaverJassen } from 'GameLogic/Game';
 import './App.css';
 import styled from 'styled-components';
-import Notes from 'App/ScoreBoard';
+import { default as DebugPanel } from 'App/ScoreBoard';
 import Player from 'App/Player';
 
 const PlayerGrid = styled.div`
@@ -16,7 +16,7 @@ const PlayerGrid = styled.div`
     'player-3 player-2';
 `;
 
-const App = props => {
+const DebugApp = props => {
   const { G, moves, ctx } = props;
   const { phase } = ctx;
 
@@ -59,7 +59,7 @@ const App = props => {
             />
           </PlayerGrid>
         </div>
-        <Notes {...G} />
+        <DebugPanel {...G} />
       </div>
     </div>
   );
@@ -69,7 +69,7 @@ const KlaverJasApp = Client({
   game: KlaverJassen,
   numPlayers: 4,
   debug: false,
-  board: App,
+  board: DebugApp,
   loading: props => {
     return 'Loading component';
   }
