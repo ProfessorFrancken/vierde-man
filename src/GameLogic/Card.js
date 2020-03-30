@@ -23,7 +23,10 @@ export const rankOfTrumpCard = ({ face }) => {
   return rankOfCards.findIndex(x => x === face);
 };
 
-export const rankOfCard = ({ face }) => FACES.findIndex(x => x === face);
+export const rankOfCard = ({ face }) => {
+  const rankOfCards = ['7', '8', '9', 'J', 'Q', 'K', '10', 'A'];
+  return rankOfCards.findIndex(x => x === face);
+};
 
 export const InitialDeck = () =>
   _.product(SUITES, FACES).map(([suit, face]) => Card(suit, face));
