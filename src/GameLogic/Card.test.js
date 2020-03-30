@@ -107,6 +107,38 @@ describe('Determines the winner of a trick', () => {
 
     expect(winner).toEqual(3);
   });
+
+  it('rank of normal cards when playing sans', () => {
+    const trump = SANS;
+    const winner = WinnerOfTrick(
+      {
+        '0': Card(DIAMONDS, 'J'),
+        '1': Card(DIAMONDS, 'Q'),
+        '2': Card(DIAMONDS, 'K'),
+        '3': Card(DIAMONDS, '10')
+      },
+      Card(DIAMONDS, 'K'),
+      trump
+    );
+
+    expect(winner).toEqual(3);
+  });
+
+  it('rank of normal cards when playing sans 2', () => {
+    const trump = SANS;
+    const winner = WinnerOfTrick(
+      {
+        '0': Card(CLUBS, '10'),
+        '1': Card(SPADES, 'J'),
+        '2': Card(SPADES, '10'),
+        '3': Card(SPADES, 'K')
+      },
+      Card(SPADES, '10'),
+      trump
+    );
+
+    expect(winner).toEqual(2);
+  });
 });
 
 describe('Points of a trick', () => {
