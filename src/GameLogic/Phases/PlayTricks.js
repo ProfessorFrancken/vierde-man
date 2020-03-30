@@ -233,12 +233,7 @@ const keepScoreOfPlayedRound = (G, ctx) => {
 // Reset bids so that we can start bidding again
 const startANewRound = (G, ctx) => {
   G.playedTricks = [];
-  G.bids = {
-    0: undefined,
-    1: undefined,
-    2: undefined,
-    3: undefined
-  };
+  G.bids = [];
   G.bid = undefined;
   G.dealer = (G.dealer + 1) % ctx.numPlayers;
 

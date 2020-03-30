@@ -32,12 +32,15 @@ describe('dealing hands', () => {
 
     const { G, ctx } = client.store.getState();
 
-    expect(G.bids).toEqual({
-      '0': { suit: null, bid: null, bidBy: 0 },
-      '1': { suit: null, bid: null, bidBy: 1 },
-      '2': { suit: null, bid: null, bidBy: 2 },
-      '3': { suit: SUITES.CLUBS, bid: 100, bidBy: 3 }
-    });
+    expect(G.bids).toEqual([
+      { suit: SANS, bid: 70, bidBy: 0 },
+      { suit: SUITES.CLUBS, bid: 80, bidBy: 1 },
+      { suit: SUITES.DIAMONDS, bid: 90, bidBy: 2 },
+      { suit: SUITES.CLUBS, bid: 100, bidBy: 3 },
+      { suit: null, bid: null, bidBy: 0 },
+      { suit: null, bid: null, bidBy: 1 },
+      { suit: null, bid: null, bidBy: 2 }
+    ]);
 
     expect(ctx.phase).toEqual('PlayTricks');
     expect(G.rounds).toEqual([]);
@@ -70,12 +73,37 @@ describe('dealing hands', () => {
 
     const { G, ctx } = client.store.getState();
     expect(ctx.phase).toEqual('PlaceBids');
-    expect(G.bids).toEqual({
-      0: { suit: null, bid: null, bidBy: 0 },
-      1: { suit: CLUBS, bid: 80, bidBy: 1 },
-      2: { suit: null, bid: null, bidBy: 2 },
-      3: { suit: null, bid: null, bidBy: 3 }
+    expect(G.bids).toEqual([
+      { suit: null, bid: null, bidBy: 0 },
+      { suit: CLUBS, bid: 80, bidBy: 1 },
+      { suit: null, bid: null, bidBy: 2 },
+      { suit: null, bid: null, bidBy: 3 }
+    ]);
+  });
+
+  it('Waits for all other players to have passed', () => {
+    const KlaverJasScenario = {
+      ...KlaverJassen
+    };
+    const client = Client({
+      game: KlaverJasScenario,
+      numPlayers: 4
     });
+
+    // Place a winning bid by the third player
+    client.moves.Pass();
+    client.moves.Pass();
+    client.moves.Pass();
+    client.moves.PlaceBid({ suit: SUITES.CLUBS, bid: 80 });
+
+    const { G, ctx } = client.store.getState();
+    expect(ctx.phase).toEqual('PlaceBids');
+    expect(G.bids).toEqual([
+      { suit: null, bid: null, bidBy: 0 },
+      { suit: null, bid: null, bidBy: 1 },
+      { suit: null, bid: null, bidBy: 2 },
+      { suit: CLUBS, bid: 80, bidBy: 3 }
+    ]);
   });
 
   it('Deals new cards when 4 players have passed', () => {
@@ -124,12 +152,12 @@ describe('dealing hands', () => {
             2: stacks[2],
             3: stacks[3]
           },
-          bids: {
-            0: { suit: SUITES.SPADES, bid: 100 },
-            1: { suit: null, bid: null, bidBy: 1 },
-            2: { suit: null, bid: null, bidBy: 2 },
-            3: { suit: null, bid: null, bidBy: 3 }
-          },
+          bids: [
+            { suit: SUITES.SPADES, bid: 100, bidBy: 0 },
+            { suit: null, bid: null, bidBy: 1 },
+            { suit: null, bid: null, bidBy: 2 },
+            { suit: null, bid: null, bidBy: 3 }
+          ],
           trump: SUITES.SPADES,
           bid: {
             bid: 100,

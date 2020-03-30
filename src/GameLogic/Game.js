@@ -25,12 +25,7 @@ export const KlaverJassen = {
         highestBidBy: undefined,
         trump: undefined
       },
-      bids: {
-        0: undefined,
-        1: undefined,
-        2: undefined,
-        3: undefined
-      },
+      bids: [],
       currentTrick: {
         startingPlayer: undefined,
         playedCards: {

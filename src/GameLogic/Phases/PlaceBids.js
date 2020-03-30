@@ -36,7 +36,7 @@ export const canPlaceBid = (placedBids, bid) => {
     return false;
   }
 
-  const highestBid = _.maxBy(Object.values(placedBids), bid =>
+  const highestBid = _.maxBy(placedBids, bid =>
     bid !== undefined && !bidIsPass(bid) ? bid.bid : 0
   );
   if (highestBid === undefined || highestBid === null) {
@@ -72,7 +72,7 @@ export const PlaceBid = (G, ctx, bid) => {
     return INVALID_MOVE;
   }
 
-  G.bids[currentPlayer] = { ...bid, bidBy: parseInt(currentPlayer, 10) };
+  G.bids.push({ ...bid, bidBy: parseInt(currentPlayer, 10) });
   reshuffleIfAllPassed(G, ctx);
 };
 
@@ -83,40 +83,30 @@ const StartPlacingBids = (G, ctx) => {
   DealCards(G, ctx, G.deck);
 
   G.bid = {
-    bids: {
-      0: undefined,
-      1: undefined,
-      2: undefined,
-      3: undefined
-    },
+    bids: [],
     highestBidBy: undefined,
     bid: undefined,
     trump: undefined
   };
 
-  G.bids = {
-    0: undefined,
-    1: undefined,
-    2: undefined,
-    3: undefined
-  };
+  G.bids = [];
 };
 
 const ThreePlayersHavePassed = ({ bids }, { currentPlayer }) => {
-  // A bid round is finished if we're back to the player that has placed a bid
-  if (bids[currentPlayer] !== undefined && bidIsPass(bids[currentPlayer])) {
+  if (bids.length < 4) {
     return false;
   }
 
   return (
-    _.every(bids, bid => bid !== undefined) &&
-    _.filter(bids, bid => !bidIsPass(bid)).length === 1 &&
-    _.filter(bids, bid => bidIsPass(bid)).length === 3
+    !bidIsPass(bids[bids.length - 4]) &&
+    bidIsPass(bids[bids.length - 3]) &&
+    bidIsPass(bids[bids.length - 2]) &&
+    bidIsPass(bids[bids.length - 1])
   );
 };
 
 const determineBid = ({ bids }) => {
-  const highestBid = _.maxBy(Object.values(bids), bid =>
+  const highestBid = _.maxBy(bids, bid =>
     bid !== undefined && !bidIsPass(bid) ? bid.bid : 0
   );
 
@@ -131,7 +121,6 @@ const WriteDownBidAndTrump = (G, ctx) => {
   const { highestBidBy, bid, trump } = determineBid(G);
 
   G.bid = { highestBidBy, bid, trump };
-  G.trump = trump;
 };
 
 export const PlaceBids = {
