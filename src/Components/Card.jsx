@@ -13,7 +13,7 @@ const CardLi = styled.li`
   height: ${() => 88 * cardRatio}px;
 
   :hover {
-    transform: scale(1.3) rotate(${props => props.rotate}deg);
+    transform: scale(1) rotate(${props => props.rotate}deg);
     cursor: pointer;
     background: white !important;
   }
