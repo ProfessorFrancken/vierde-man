@@ -4,15 +4,13 @@ import styled from 'styled-components';
 
 // TODO: if player name is Sven or sbte, then shake cards
 
+const cardRatio = 1.5;
 const CardLi = styled.li`
-  width: 80px;
-  transform: rotate(0deg);
-  overflow: hidden;
   transition: all 0.3s ease-out;
   transform: rotate(${props => props.rotate}deg);
 
-  margin-right: -${props => props.rotate}px;
-  margin-left: ${props => props.rotate}px;
+  width: ${() => 58 * cardRatio}px;
+  height: ${() => 88 * cardRatio}px;
 
   :hover {
     transform: scale(1.3) rotate(${props => props.rotate}deg);
@@ -22,7 +20,7 @@ const CardLi = styled.li`
 `;
 
 const Card = props => {
-  const { disabled, card, onClick } = props;
+  const { disabled = false, card, onClick } = props;
   const { face, suit } = card;
 
   // Rotate each card a little bit to make the cards feel less static
@@ -40,7 +38,7 @@ const Card = props => {
   return (
     <CardLi className={className} onClick={onClick} rotate={rotate}>
       <SuitStringToComponent suit={suit} />
-      <span className="mt-5 ">{face}</span>
+      <span>{face}</span>
     </CardLi>
   );
 };

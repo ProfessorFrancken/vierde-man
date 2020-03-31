@@ -106,13 +106,7 @@ const Player = ({
                 }
 
                 return (
-                  <Card
-                    key={idx}
-                    game={game}
-                    card={card}
-                    disabled={true}
-                    onClick={() => {}}
-                  />
+                  <Card key={idx} game={game} card={card} onClick={() => {}} />
                 );
               })}
             </ul>
