@@ -7,8 +7,8 @@ import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
 
 const Header = ({ game, phase, currentBids, currentPlayer }) => {
   return (
-    <div className="w-100 bg-primary">
-      <div className="d-flex justify-content-between align-items-center text-white p-2">
+    <div className="w-100 bg-light shadow-sm">
+      <div className="d-flex justify-content-between align-items-center p-2">
         <div>
           {game.bid.trump !== undefined ? (
             <Bid bid={{ bid: game.bid.bid, suit: game.bid.trump }} />
@@ -18,13 +18,13 @@ const Header = ({ game, phase, currentBids, currentPlayer }) => {
         </div>
         <div className="d-flex justify-content-between">
           <ul className="list-unstyled mb-0 d-flex -justify-content-between ">
-            <li className="bg-dark text-white px-3 py-1 rounded mx-2">
+            <li className="bg-white text-muted px-3 py-1 rounded mx-2">
               <strong>Wij</strong>: {game.wij}
             </li>
-            <li className="bg-dark text-white px-3 py-1 rounded mx-2">
+            <li className="bg-white text-muted px-3 py-1 rounded mx-2">
               <strong>Zij</strong>: {game.zij}
             </li>
-            <li className="bg-dark text-white px-3 py-1 rounded">
+            <li className="bg-white text-muted px-3 py-1 rounded">
               <FontAwesomeIcon icon={faFileAlt} />
             </li>
           </ul>

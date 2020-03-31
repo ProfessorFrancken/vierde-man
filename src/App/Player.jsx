@@ -17,23 +17,44 @@ const PlayerContainer = styled.div`
     props.id === 1 || props.id === 3 ? '#fafafa' : '#fafefa'};
 `;
 
-const KlaverjasTable = styled.div`
+const KlaverJasTable = styled.div`
   display: grid;
   width: 100%;
-  height: 100;
-  grid-template-rows: 1fr 1fr;
-  grid-template-columns: 1fr 1fr;
+  height: 100%;
+  grid-template-rows: 1fr 5fr 1fr;
+  grid-template-columns: 1fr 5fr 1fr;
+  // grid-template-areas:
+  //   'corner    pplayer-2 corner'
+  //   'pplayer-1 action    pplayer-3'
+  //   'corner    pplayer-0 corner';
+
   grid-template-areas:
-    'corner player-2 corner'
-    'player-1 action player-3'
-    'corner player-0 corner';
+    '.  p2 .'
+    'p1 a  p3'
+    '.  p0 .';
 `;
 
 const Action = styled.div`
-  grid-area: action;
+  display: flex;
+justify-content-center;
+align-items: center;
+  grid-area: a;
 `;
 const PlayerHandArea = styled.div`
-  grid-area: ${props => 'player-' + props.id};
+  grid-area: ${props => 'p' + props.id};
+  background: ${({ id }) =>
+    id === 0 ? 'black' : id === 1 ? 'yellow' : id === 2 ? 'blue' : 'red'};
+
+  ul {
+    transform: ${({ id }) =>
+      id === 0
+        ? ''
+        : id === 1
+        ? 'rotate(90deg)'
+        : id === 2
+        ? 'rotate(180deg)'
+        : 'rotate(-90deg)'};
+  }
 `;
 
 const Player = ({
@@ -49,6 +70,7 @@ const Player = ({
 }) => {
   const playerHand = game.hands[id];
   const playerIsActive = currentPlayer === id;
+  const playerId = id;
 
   return (
     <PlayerContainer id={id}>
@@ -58,44 +80,50 @@ const Player = ({
         currentBids={game.bids}
         currentPlayer={currentPlayer}
       />
-      <div className="p-3 flex-grow-1 d-flex flex-column justify-content-between w-100">
-        <header className="d-none justify-content-between w-100">
-          <h1 className="h5">{name}</h1>
-          <small>
-            {playerIsActive
-              ? phase
-              : `Waiting for ${currentPlayer} to make its turn...`}
-          </small>
-        </header>
+      <KlaverJasTable className="p-5 overflow-hidden" flex-grow-1>
+        <Action>
+          {/* <header className="d-none justify-content-between w-100"> */}
+          {/*   <h1 className="h5">{name}</h1> */}
+          {/*   <small> */}
+          {/*     {playerIsActive */}
+          {/*       ? phase */}
+          {/*       : `Waiting for ${currentPlayer} to make its turn...`} */}
+          {/*   </small> */}
+          {/* </header> */}
+          {!playerIsActive && (
+            <div className="d-flex justify-content-center align-items-center flex-grow-1">
+              <h3 className="text-center text-muted">Waiting for turn</h3>
+            </div>
+          )}
+          {/* {playerIsActive && ( */}
+          {/*   <div className="d-flex justify-content-center align-items-center flex-grow-1"> */}
+          {/*     <h3 className="text-center text-muted"></h3> */}
+          {/*   </div> */}
+          {/* )} */}
+          {playerIsActive && phase === 'PlaceBids' && (
+            <PlaceBid
+              placeBid={moves.PlaceBid}
+              pass={moves.Pass}
+              currentBids={game.bids}
+              currentPlayer={currentPlayer}
+            />
+          )}
+        </Action>
 
-        {!playerIsActive && (
-          <div className="d-flex justify-content-center align-items-center flex-grow-1">
-            <h3 className="text-center text-muted">Waiting for turn</h3>
-          </div>
-        )}
-        {playerIsActive && (
-          <div className="d-flex justify-content-center align-items-center flex-grow-1">
-            <h3 className="text-center text-muted"></h3>
-          </div>
-        )}
-        {playerIsActive && phase === 'PlaceBids' && (
-          <PlaceBid
-            placeBid={moves.PlaceBid}
-            pass={moves.Pass}
-            currentBids={game.bids}
-            currentPlayer={currentPlayer}
-          />
-        )}
-
-        <div>
-          <PlayerHand
-            game={game}
-            hand={playerHand}
-            playerId={id}
-            moves={moves}
-          />
-        </div>
-      </div>
+        {[0, 1, 2, 3].map(positionId => {
+          const id = (playerId + positionId) % 4;
+          return (
+            <PlayerHandArea id={positionId}>
+              <PlayerHand
+                game={game}
+                hand={game.hands[id]}
+                playerId={id}
+                moves={moves}
+              />
+            </PlayerHandArea>
+          );
+        })}
+      </KlaverJasTable>
     </PlayerContainer>
   );
 };
