@@ -85,7 +85,7 @@ const Player = ({
               </h3>
             </div>
           )}
-          {playerIsActive && phase === 'PlaceBids' && (
+          {phase === 'PlaceBids' && (
             <PlaceBid
               placeBid={moves.PlaceBid}
               pass={moves.Pass}
