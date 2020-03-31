@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Header from 'App/Header';
 import Card from 'Components/Card';
 import PlayerHand from 'Components/PlayerHand';
+import _ from 'lodash';
 
 const PlayerContainer = styled.div`
   display: flex;
@@ -31,9 +32,10 @@ const KlaverJasTable = styled.div`
 
 const Action = styled.div`
   display: flex;
-justify-content-center;
-align-items: center;
+  justify-content: center;
+  align-items: center;
   grid-area: a;
+  flex-direction: column;
 `;
 const PlayerHandArea = styled.div`
   grid-area: ${props => 'p' + props.id};
@@ -91,6 +93,29 @@ const Player = ({
               currentBids={game.bids}
               currentPlayer={currentPlayer}
             />
+          )}
+          {phase === 'PlayTricks' && (
+            <ul className="list-unstyled d-flex justify-content-between">
+              {_.map(game.currentTrick.playedCards, (card, idx) => {
+                if (card === undefined) {
+                  return (
+                    <li key={idx}>
+                      <span>Not yet played</span>
+                    </li>
+                  );
+                }
+
+                return (
+                  <Card
+                    key={idx}
+                    game={game}
+                    card={card}
+                    disabled={true}
+                    onClick={() => {}}
+                  />
+                );
+              })}
+            </ul>
           )}
         </Action>
 
