@@ -76,7 +76,7 @@ const Player = ({
         currentBids={game.bids}
         currentPlayer={currentPlayer}
       />
-      <KlaverJasTable className="p-5 overflow-hidden" flex-grow-1>
+      <KlaverJasTable className="p-2 overflow-hidden" flex-grow-1>
         <Action>
           {!playerIsActive && phase === 'PlaceBids' && (
             <div className="d-flex justify-content-center align-items-center flex-grow-1">
