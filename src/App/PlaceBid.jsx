@@ -48,10 +48,10 @@ const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer }) => {
   const trumpOptions = [SANS, SPADES, HEARTS, CLUBS, DIAMONDS];
   const trumpLabel = {
     [SANS]: 'Sans',
-    [SPADES]: 'Spades',
-    [HEARTS]: 'Hearts',
-    [CLUBS]: 'Clubs',
-    [DIAMONDS]: 'Diamonds'
+    [SPADES]: '♠ Spades',
+    [HEARTS]: '♥ Hearts',
+    [CLUBS]: '♣ Clubs',
+    [DIAMONDS]: '♦ Diamonds'
   };
 
   const allowedBids = (isSans
@@ -79,10 +79,13 @@ const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer }) => {
   const trumpOptionss = [
     { trump: SPADES, component: <Spades /> },
     { trump: HEARTS, component: <Hearts /> },
-    { trump: DIAMONDS, component: <Diamonds /> },
     { trump: CLUBS, component: <Clubs /> },
+    { trump: DIAMONDS, component: <Diamonds /> },
     { trump: SANS, component: <Sans /> }
   ];
+  const redColor = '#e44145';
+  const blackColor = '#252525';
+  const isRed = suit => [HEARTS, DIAMONDS].includes(suit);
 
   const bidsToShow = _.take([...currentBids].reverse(), 3);
   console.log(bidsToShow);
@@ -123,12 +126,17 @@ const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer }) => {
             <label for="">Trump</label>
             <select
               className="form-control form-control-sm"
+              style={{ color: isRed(trump) ? redColor : blackColor }}
               id="trump"
               onChange={changeTrump}
               value={trump}
             >
               {trumpOptions.map(trump => (
-                <option key={trump} value={trump}>
+                <option
+                  key={trump}
+                  value={trump}
+                  style={{ color: isRed(trump) ? redColor : blackColor }}
+                >
                   {trumpLabel[trump]}
                 </option>
               ))}
