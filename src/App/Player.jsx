@@ -23,11 +23,6 @@ const KlaverJasTable = styled.div`
   height: 100%;
   grid-template-rows: 1fr 5fr 1fr;
   grid-template-columns: 1fr 5fr 1fr;
-  // grid-template-areas:
-  //   'corner    pplayer-2 corner'
-  //   'pplayer-1 action    pplayer-3'
-  //   'corner    pplayer-0 corner';
-
   grid-template-areas:
     '.  p2 .'
     'p1 a  p3'
@@ -82,24 +77,13 @@ const Player = ({
       />
       <KlaverJasTable className="p-5 overflow-hidden" flex-grow-1>
         <Action>
-          {/* <header className="d-none justify-content-between w-100"> */}
-          {/*   <h1 className="h5">{name}</h1> */}
-          {/*   <small> */}
-          {/*     {playerIsActive */}
-          {/*       ? phase */}
-          {/*       : `Waiting for ${currentPlayer} to make its turn...`} */}
-          {/*   </small> */}
-          {/* </header> */}
           {!playerIsActive && (
             <div className="d-flex justify-content-center align-items-center flex-grow-1">
-              <h3 className="text-center text-muted">Waiting for turn</h3>
+              <h3 className="text-center text-muted">
+                Waiting for player {currentPlayer} to make their turn
+              </h3>
             </div>
           )}
-          {/* {playerIsActive && ( */}
-          {/*   <div className="d-flex justify-content-center align-items-center flex-grow-1"> */}
-          {/*     <h3 className="text-center text-muted"></h3> */}
-          {/*   </div> */}
-          {/* )} */}
           {playerIsActive && phase === 'PlaceBids' && (
             <PlaceBid
               placeBid={moves.PlaceBid}
