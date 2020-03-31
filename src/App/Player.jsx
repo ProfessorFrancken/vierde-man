@@ -40,8 +40,6 @@ const Action = styled.div`
 `;
 const PlayerHandArea = styled.div`
   grid-area: ${props => 'p' + props.id};
-  background: ${({ id }) =>
-    id === 0 ? 'black' : id === 1 ? 'yellow' : id === 2 ? 'blue' : 'red'};
 
   ul {
     transform: ${({ id }) =>
