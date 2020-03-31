@@ -1,10 +1,11 @@
 import React from 'react';
 import PlaceBid from 'App/PlaceBid';
-import { playerIsAllowedToPlayCard } from 'GameLogic/Phases/PlayTricks';
+import { PlayerToStartCurrentTrick } from 'GameLogic/Phases/PlayTricks';
 import styled from 'styled-components';
 import Header from 'App/Header';
 import Card from 'Components/Card';
 import PlayerHand from 'Components/PlayerHand';
+import PlayedCards from 'App/PlayedCards';
 import _ from 'lodash';
 
 const PlayerContainer = styled.div`
@@ -79,7 +80,7 @@ const Player = ({
       />
       <KlaverJasTable className="p-5 overflow-hidden" flex-grow-1>
         <Action>
-          {!playerIsActive && (
+          {!playerIsActive && phase === 'PlaceBids' && (
             <div className="d-flex justify-content-center align-items-center flex-grow-1">
               <h3 className="text-center text-muted">
                 Waiting for player {currentPlayer} to make their turn
@@ -95,21 +96,13 @@ const Player = ({
             />
           )}
           {phase === 'PlayTricks' && (
-            <ul className="list-unstyled d-flex justify-content-between">
-              {_.map(game.currentTrick.playedCards, (card, idx) => {
-                if (card === undefined) {
-                  return (
-                    <li key={idx}>
-                      <span>Not yet played</span>
-                    </li>
-                  );
-                }
-
-                return (
-                  <Card key={idx} game={game} card={card} onClick={() => {}} />
-                );
+            <PlayedCards
+              cards={game.currentTrick.playedCards}
+              startingPlayer={PlayerToStartCurrentTrick(game, {
+                numPlayers: 4
               })}
-            </ul>
+              playerId={playerId}
+            />
           )}
         </Action>
 
