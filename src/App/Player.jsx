@@ -4,6 +4,7 @@ import { playerIsAllowedToPlayCard } from 'GameLogic/Phases/PlayTricks';
 import styled from 'styled-components';
 import Header from 'App/Header';
 import Card from 'Components/Card';
+import PlayerHand from 'Components/PlayerHand';
 
 const PlayerContainer = styled.div`
   display: flex;
@@ -16,15 +17,23 @@ const PlayerContainer = styled.div`
     props.id === 1 || props.id === 3 ? '#fafafa' : '#fafefa'};
 `;
 
-const PlayerHand = styled.ul`
+const KlaverjasTable = styled.div`
   display: grid;
   width: 100%;
-  grid-template-columns: repeat(8, 1fr);
-  grid-template-rows: repeat(1, 1fr);
-  li {
-    background: white;
-    margin: 0rem 0.25rem;
-  }
+  height: 100;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    'corner player-2 corner'
+    'player-1 action player-3'
+    'corner player-0 corner';
+`;
+
+const Action = styled.div`
+  grid-area: action;
+`;
+const PlayerHandArea = styled.div`
+  grid-area: ${props => 'player-' + props.id};
 `;
 
 const Player = ({
@@ -49,8 +58,8 @@ const Player = ({
         currentBids={game.bids}
         currentPlayer={currentPlayer}
       />
-      <div className="p-3 flex-grow-1 d-flex flex-column justify-content-between">
-        <header className="d-flex justify-content-between w-100">
+      <div className="p-3 flex-grow-1 d-flex flex-column justify-content-between w-100">
+        <header className="d-none justify-content-between w-100">
           <h1 className="h5">{name}</h1>
           <small>
             {playerIsActive
@@ -59,20 +68,16 @@ const Player = ({
           </small>
         </header>
 
-        <div>
-          <PlayerHand className="list-unstyled mb-0">
-            {playerHand.map((card, idx) => (
-              <Card
-                key={idx}
-                game={game}
-                card={card}
-                disabled={playerIsAllowedToPlayCard(game, id, card)}
-                onCLick={() => moves.PlayCard(card)}
-              />
-            ))}
-          </PlayerHand>
-        </div>
-
+        {!playerIsActive && (
+          <div className="d-flex justify-content-center align-items-center flex-grow-1">
+            <h3 className="text-center text-muted">Waiting for turn</h3>
+          </div>
+        )}
+        {playerIsActive && (
+          <div className="d-flex justify-content-center align-items-center flex-grow-1">
+            <h3 className="text-center text-muted"></h3>
+          </div>
+        )}
         {playerIsActive && phase === 'PlaceBids' && (
           <PlaceBid
             placeBid={moves.PlaceBid}
@@ -81,6 +86,15 @@ const Player = ({
             currentPlayer={currentPlayer}
           />
         )}
+
+        <div>
+          <PlayerHand
+            game={game}
+            hand={playerHand}
+            playerId={id}
+            moves={moves}
+          />
+        </div>
       </div>
     </PlayerContainer>
   );

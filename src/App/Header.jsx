@@ -8,7 +8,7 @@ import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
 const Header = ({ game, phase, currentBids, currentPlayer }) => {
   return (
     <div className="w-100 bg-primary">
-      <div className="d-flex justify-content-between align-items-center text-white p-3">
+      <div className="d-flex justify-content-between align-items-center text-white p-2">
         <div>
           {game.bid.trump !== undefined ? (
             <Bid bid={{ bid: game.bid.bid, suit: game.bid.trump }} />
@@ -34,15 +34,15 @@ const Header = ({ game, phase, currentBids, currentPlayer }) => {
           {/* </div> */}
         </div>
       </div>
-      {phase === 'PlaceBids' && (
-        <CurrentBids bids={currentBids} currentPlayer={currentPlayer} />
-      )}
-      {phase === 'PlayTricks' && (
-        <CurrentPlayedCards
-          currentTrick={game.currentTrick}
-          currentPlayer={currentPlayer}
-        />
-      )}
+      {/* {phase === 'PlaceBids' && ( */}
+      {/*   <CurrentBids bids={currentBids} currentPlayer={currentPlayer} /> */}
+      {/* )} */}
+      {/* {phase === 'PlayTricks' && ( */}
+      {/*   <CurrentPlayedCards */}
+      {/*     currentTrick={game.currentTrick} */}
+      {/*     currentPlayer={currentPlayer} */}
+      {/*   /> */}
+      {/* )} */}
     </div>
   );
 };

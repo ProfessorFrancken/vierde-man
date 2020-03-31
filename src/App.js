@@ -23,7 +23,7 @@ const DebugApp = props => {
   return (
     <div className="App">
       <div className="d-flex justify-content-between">
-        <div className="d-flex flex-column">
+        <div className="d-flex flex-column flex-grow-1">
           <PlayerGrid>
             <Player
               id={0}
@@ -59,7 +59,7 @@ const DebugApp = props => {
             />
           </PlayerGrid>
         </div>
-        <DebugPanel {...G} />
+        {false && <DebugPanel {...G} />}
       </div>
     </div>
   );
