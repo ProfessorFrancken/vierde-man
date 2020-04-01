@@ -2,7 +2,6 @@ import React from 'react';
 import PlaceBid from 'App/PlaceBid';
 import { PlayerToStartCurrentTrick } from 'GameLogic/Phases/PlayTricks';
 import styled from 'styled-components';
-import Header from 'App/Header';
 import Score from 'App/Score';
 import PlayerHand from 'Components/PlayerHand';
 import PlayedCards from 'App/PlayedCards';
@@ -69,12 +68,6 @@ const Player = ({
 
   return (
     <PlayerContainer id={id}>
-      <Header
-        game={game}
-        phase={phase}
-        currentBids={game.bids}
-        currentPlayer={currentPlayer}
-      />
       <KlaverJasTable className="p-2 overflow-hidden" flex-grow-1>
         <Action>
           {!playerIsActive && phase === 'PlaceBids' && (
