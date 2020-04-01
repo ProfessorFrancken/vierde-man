@@ -2,30 +2,9 @@ import React, { useState } from 'react';
 import { SuitStringToComponent } from 'Components/Suits';
 import { SUITES, SANS } from 'GameLogic/Card';
 import { canPlaceBid } from 'GameLogic/Phases/PlaceBids';
-import { Spades, Hearts, Diamonds, Clubs, Sans } from 'Components/SuitIcon';
 import _ from 'lodash';
 
 const { SPADES, HEARTS, CLUBS, DIAMONDS } = SUITES;
-
-export const CurrentBids = ({ bids, currentPlayer }) => {
-  return (
-    <ul
-      className="list-unstyled mb-0 d-flex justify-content-between"
-      style={{ fontSize: '0.75rem' }}
-    >
-      {[0, 1, 2, 3].map(id => (
-        <li className="bg-white shadow-sm p-3 w-25" key={id}>
-          <strong>Player {id}</strong>:<br />
-          {id === currentPlayer ? (
-            <span>Placing bid</span>
-          ) : (
-            <Bid bid={bids[id]} />
-          )}
-        </li>
-      ))}
-    </ul>
-  );
-};
 
 export const Bid = ({ bid }) => {
   if (bid.bid === null) {
@@ -44,7 +23,6 @@ const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer }) => {
   const [trump, setTrump] = useState(CLUBS);
   const [bid, setBid] = useState(80);
 
-  const isSans = trump === SANS;
   const trumpOptions = [SANS, SPADES, HEARTS, CLUBS, DIAMONDS];
   const trumpLabel = {
     [SANS]: 'Sans',
@@ -53,42 +31,35 @@ const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer }) => {
     [CLUBS]: '♣ Clubs',
     [DIAMONDS]: '♦ Diamonds'
   };
+  const suitColor = {
+    [SANS]: '#252525',
+    [SPADES]: '#252525',
+    [HEARTS]: '#e44145',
+    [CLUBS]: '#252525',
+    [DIAMONDS]: '#e44145',
+    APRIL: '#8f8500'
+  };
 
+  const isSans = trump === SANS;
   const allowedBids = (isSans
     ? [70, 80, 90, 100, 110, 120, 130, 'pit']
     : [80, 90, 100, 110, 120, 130, 140, 150, 160, 'pit']
   ).filter(bid => canPlaceBid(currentBids, { bid, suit: trump }));
-
-  const bidCanBePlaced = ({ bid, trump }) =>
-    canPlaceBid(currentBids, { bid, suit: trump });
 
   if (!allowedBids.includes(bid)) {
     setBid(allowedBids[0]);
   }
 
   const changeTrump = e => {
-    console.log('Changing trump', e);
     setTrump(e.target.value);
   };
 
   const changeBid = e => {
-    console.log('Changing bid', e);
     setBid(parseInt(e.target.value, 10));
   };
 
-  const trumpOptionss = [
-    { trump: SPADES, component: <Spades /> },
-    { trump: HEARTS, component: <Hearts /> },
-    { trump: CLUBS, component: <Clubs /> },
-    { trump: DIAMONDS, component: <Diamonds /> },
-    { trump: SANS, component: <Sans /> }
-  ];
-  const redColor = '#e44145';
-  const blackColor = '#252525';
-  const isRed = suit => [HEARTS, DIAMONDS].includes(suit);
-
   const bidsToShow = _.take([...currentBids].reverse(), 3);
-  console.log(bidsToShow);
+
   return (
     <div
       className="d-flex flex-column w-50 text-left bg-white mx-auto shadow border my-3"
@@ -126,7 +97,7 @@ const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer }) => {
             <label for="">Trump</label>
             <select
               className="form-control form-control-sm"
-              style={{ color: isRed(trump) ? redColor : blackColor }}
+              style={{ color: suitColor[trump] }}
               id="trump"
               onChange={changeTrump}
               value={trump}
@@ -135,7 +106,7 @@ const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer }) => {
                 <option
                   key={trump}
                   value={trump}
-                  style={{ color: isRed(trump) ? redColor : blackColor }}
+                  style={{ color: suitColor[trump] }}
                 >
                   {trumpLabel[trump]}
                 </option>
