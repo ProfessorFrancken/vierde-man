@@ -60,7 +60,6 @@ const Player = ({
   phase,
   currentPlayer
 }) => {
-  const playerHand = game.hands[id];
   const playerIsActive = currentPlayer === id;
   const playerId = id;
 
