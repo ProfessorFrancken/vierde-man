@@ -13,8 +13,6 @@ const PlayerContainer = styled.div`
   justify-content: space-between;
   border: thin solid #dddddd;
   grid-area: ${props => 'player-' + props.id};
-  background-color: ${props =>
-    props.id === 1 || props.id === 3 ? '#fafafa' : '#fafefa'};
 `;
 
 const KlaverJasTable = styled.div`
