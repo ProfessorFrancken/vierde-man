@@ -18,6 +18,12 @@ export const SuitStringToComponent = ({ suit }) => {
     case 'sans':
     case 'SANS':
       return <Sans />;
+    case 'APRIL':
+      return (
+        <span style={{ color: '#8f8500' }} role="img" aria-label="April Fools">
+          🐸
+        </span>
+      );
     default:
       return `${suit} is not a valid suit choice`;
     // default:

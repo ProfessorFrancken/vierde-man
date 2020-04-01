@@ -11,13 +11,15 @@ const suitIcon = {
   [SPADES]: '♠',
   [HEARTS]: '♥',
   [CLUBS]: '♣',
-  [DIAMONDS]: '♦'
+  [DIAMONDS]: '♦',
+  APRIL: '🐸'
 };
 const suitColor = {
   [SPADES]: '#252525',
   [HEARTS]: '#e44145',
   [CLUBS]: '#252525',
-  [DIAMONDS]: '#e44145'
+  [DIAMONDS]: '#e44145',
+  APRIL: '#8f8500'
 };
 const cardRatio = 2.5;
 const CardLi = styled.li`
