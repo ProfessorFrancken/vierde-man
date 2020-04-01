@@ -138,7 +138,7 @@ export const WinnerOfTrick = (trick, firstCard, trump) => {
     o => rankTrickByCardValue[o]
   );
 
-  return parseInt(winner, 10);
+  return trick[winner].playedBy;
 };
 
 export const PASS = null;

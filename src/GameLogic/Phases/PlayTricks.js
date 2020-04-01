@@ -140,19 +140,13 @@ const trickIsMates = (player, playedCards, cardByStartingPlayer, trump) => {
     return false;
   }
 
-  // TERRIBLE HACK: WinnerOfTrick expects 4 cards to be passed on, but
-  // we haven't played 4 cards yet
-  // AMSTERDAMS
-  const winner =
-    4 -
-    _.filter(playedCards, isDefined).length +
-    WinnerOfTrick(
-      _.filter(playedCards, isDefined),
-      cardByStartingPlayer,
-      trump
-    );
+  const winner = WinnerOfTrick(
+    _.filter(playedCards, isDefined),
+    cardByStartingPlayer,
+    trump
+  );
 
-  return winner === teamMate;
+  return teamMate === winner;
 };
 
 export const PlayCard = (G, { currentPlayer }, card) => {
