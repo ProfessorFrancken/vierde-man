@@ -7,8 +7,12 @@ const CardContainer = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) rotate(${props => props.rotate}deg);
-  transform-origin: bottom center;
+  transform: translate(
+      ${({ rotate }) => -(50 - (5 * rotate) / 1)}%,
+      ${({ rotate }) => -(30 - 1.0 * Math.abs(rotate))}%
+    )
+    rotate(${({ rotate }) => rotate}deg);
+  transform-origin: bottom right;
   z-index: 0;
 
   :hover {
@@ -23,10 +27,6 @@ const Hand = styled.ul`
   display: flex;
   justify-content: center;
   position: relative;
-
-  li {
-    background: white;
-  }
 `;
 
 const PlayerHand = ({ game, hand, playerId, moves }) => (
@@ -36,7 +36,8 @@ const PlayerHand = ({ game, hand, playerId, moves }) => (
       return (
         <CardContainer
           className="card-container"
-          rotate={(idx - (hand.length - 1) / 2) * fanRotation}
+          rotate={((idx - (hand.length - 1) / 2) * fanRotation) / 4}
+          up={(idx - (hand.length - 1) / 2) * fanRotation}
         >
           <Card
             key={idx}
