@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  background:  no-repeat center center url('./assets/francken.png'), url('./assets/table-background.jpg');
+  background-blend-mode: overlay;
 }
 
 .App-logo {
