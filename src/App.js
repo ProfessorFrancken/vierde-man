@@ -16,9 +16,37 @@ const PlayerGrid = styled.div`
     'player-3 player-2';
 `;
 
+const SinglePlayer = styled.div`
+  display: grid;
+  height: 100vh;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    'player-0 player-1'
+    'player-3 player-2';
+`;
+
 const DebugApp = props => {
   const { G, moves, ctx } = props;
   const { phase } = ctx;
+  return (
+    <div className="App">
+      <div className="d-flex justify-content-between table-decoration">
+        <div className="d-flex flex-column flex-grow-1">
+          <SinglePlayer>
+            <Player
+              id={0}
+              name="Mark"
+              game={G}
+              moves={moves}
+              phase={phase}
+              currentPlayer={parseInt(ctx.currentPlayer, 10)}
+            />
+          </SinglePlayer>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="App">
