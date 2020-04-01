@@ -19,8 +19,8 @@ const KlaverJasTable = styled.div`
   display: grid;
   width: 100%;
   height: 100%;
-  grid-template-rows: 1fr 5fr 1fr;
-  grid-template-columns: 1fr 5fr 1fr;
+  grid-template-rows: 1fr 3fr 1fr;
+  grid-template-columns: 1fr 3fr 1fr;
   grid-template-areas:
     '.  p2 .'
     'p1 a  p3'
