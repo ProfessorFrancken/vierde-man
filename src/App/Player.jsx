@@ -3,10 +3,9 @@ import PlaceBid from 'App/PlaceBid';
 import { PlayerToStartCurrentTrick } from 'GameLogic/Phases/PlayTricks';
 import styled from 'styled-components';
 import Header from 'App/Header';
-import Card from 'Components/Card';
+import Score from 'App/Score';
 import PlayerHand from 'Components/PlayerHand';
 import PlayedCards from 'App/PlayedCards';
-import _ from 'lodash';
 
 const PlayerContainer = styled.div`
   display: flex;
@@ -103,6 +102,8 @@ const Player = ({
             />
           )}
         </Action>
+
+        <Score game={game} />
 
         {[0, 1, 2, 3].map(positionId => {
           const id = (playerId + positionId) % 4;
