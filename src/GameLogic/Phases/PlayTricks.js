@@ -136,6 +136,9 @@ const removeCardFromPlayer = (G, player, card) => {
 
 const trickIsMates = (player, playedCards, cardByStartingPlayer, trump) => {
   const teamMate = (player + 2) % 4;
+  if (playedCards[teamMate] === undefined) {
+    return false;
+  }
 
   // TERRIBLE HACK: WinnerOfTrick expects 4 cards to be passed on, but
   // we haven't played 4 cards yet

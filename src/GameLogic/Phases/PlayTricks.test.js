@@ -653,6 +653,229 @@ describe('playing a hand', () => {
       expect(result).toEqual(undefined);
     });
 
+    it('regression 3', () => {
+      const G_reg = {
+        deck: [
+          { suit: 'H', face: 'A' },
+          { suit: 'H', face: '7' },
+          { suit: 'C', face: '8' },
+          { suit: 'D', face: 'K' },
+          { suit: 'C', face: 'A' },
+          { suit: 'D', face: 'J' },
+          { suit: 'H', face: 'K' },
+          { suit: 'D', face: '7' },
+          { suit: 'S', face: '7' },
+          { suit: 'C', face: '7' },
+          { suit: 'C', face: 'K' },
+          { suit: 'D', face: 'Q' },
+          { suit: 'H', face: '9' },
+          { suit: 'C', face: 'J' },
+          { suit: 'H', face: 'Q' },
+          { suit: 'S', face: '10' },
+          { suit: 'C', face: '10' },
+          { suit: 'H', face: '8' },
+          { suit: 'S', face: '8' },
+          { suit: 'D', face: '10' },
+          { suit: 'S', face: 'Q' },
+          { suit: 'H', face: 'J' },
+          { suit: 'D', face: 'A' },
+          { suit: 'C', face: '9' },
+          { suit: 'S', face: '9' },
+          { suit: 'S', face: 'J' },
+          { suit: 'H', face: '10' },
+          { suit: 'S', face: 'A' },
+          { suit: 'C', face: 'Q' },
+          { suit: 'S', face: 'K' },
+          { suit: 'D', face: '8' },
+          { suit: 'D', face: '9' }
+        ],
+        rounds: [],
+        playedTricks: [
+          {
+            winner: 2,
+            points: 18,
+            honor: 20,
+            cards: [
+              { suit: 'D', face: 'K', playedBy: 0 },
+              { suit: 'D', face: 'Q', playedBy: 1 },
+              { suit: 'D', face: 'A', playedBy: 2 },
+              { suit: 'D', face: '9', playedBy: 3 }
+            ]
+          },
+          {
+            winner: 1,
+            points: 12,
+            honor: 0,
+            cards: [
+              { suit: 'D', face: 'J', playedBy: 0 },
+              { suit: 'C', face: '7', playedBy: 1 },
+              { suit: 'D', face: '10', playedBy: 2 },
+              { suit: 'D', face: '8', playedBy: 3 }
+            ]
+          },
+          {
+            winner: 0,
+            points: 4,
+            honor: 0,
+            cards: [
+              { suit: 'C', face: '8', playedBy: 0 },
+              { suit: 'S', face: '7', playedBy: 1 },
+              { suit: 'S', face: '8', playedBy: 2 },
+              { suit: 'S', face: 'K', playedBy: 3 }
+            ]
+          }
+        ],
+        bid: { highestBidBy: 0, bid: 80, trump: 'C' },
+        bids: [
+          { suit: 'C', bid: 80, bidBy: 0 },
+          { bid: null, suit: null, bidBy: 1 },
+          { bid: null, suit: null, bidBy: 2 },
+          { bid: null, suit: null, bidBy: 3 }
+        ],
+        currentTrick: {
+          startingPlayer: 0,
+          playedCards: {
+            '0': { suit: 'D', face: '7', playedBy: 0 }
+          }
+        },
+        dealer: 3,
+        wij: 0,
+        zij: 0,
+        hands: {
+          '0': [
+            { suit: 'H', face: 'A' },
+            { suit: 'H', face: '7' },
+            { suit: 'C', face: 'A' },
+            { suit: 'H', face: 'K' }
+          ],
+          '1': [
+            { suit: 'C', face: 'K' },
+            { suit: 'H', face: '9' },
+            { suit: 'C', face: 'J' },
+            { suit: 'H', face: 'Q' },
+            { suit: 'S', face: '10' }
+          ],
+          '2': [
+            { suit: 'C', face: '10' },
+            { suit: 'H', face: '8' },
+            { suit: 'S', face: 'Q' },
+            { suit: 'H', face: 'J' },
+            { suit: 'C', face: '9' }
+          ],
+          '3': [
+            { suit: 'S', face: '9' },
+            { suit: 'S', face: 'J' },
+            { suit: 'H', face: '10' },
+            { suit: 'S', face: 'A' },
+            { suit: 'C', face: 'Q' }
+          ]
+        }
+      };
+      const G = {
+        ...G_reg
+
+        // hands: {
+        //   '1': [
+        //     { suit: 'C', face: '10' },
+        //     { suit: 'C', face: 'K' },
+        //     { suit: 'H', face: '9' },
+        //     { suit: 'C', face: 'J' },
+        //     { suit: 'H', face: 'Q' }
+        //   ]
+        // },
+
+        // hands: {
+        //   '0': [
+        //     { suit: 'H', face: 'A' },
+        //     { suit: 'H', face: '7' },
+        //     { suit: 'C', face: 'A' },
+        //     { suit: 'H', face: 'K' }
+        //   ],
+        //   '1': [
+        //     { suit: 'S', face: '10' },
+        //     { suit: 'C', face: 'K' },
+        //     { suit: 'H', face: '9' },
+        //     { suit: 'C', face: 'J' },
+        //     { suit: 'H', face: 'Q' }
+        //   ],
+        //   // '1': [
+        //   //   { suit: 'C', face: 'K' },
+        //   //   { suit: 'H', face: '9' },
+        //   //   { suit: 'C', face: 'J' },
+        //   //   { suit: 'H', face: 'Q' },
+        //   //   { suit: 'S', face: '10' }
+        //   // ],
+        //   '2': [
+        //     { suit: 'C', face: '10' },
+        //     { suit: 'H', face: '8' },
+        //     { suit: 'S', face: 'Q' },
+        //     { suit: 'H', face: 'J' },
+        //     { suit: 'C', face: '9' }
+        //   ],
+        //   '3': [
+        //     { suit: 'S', face: '9' },
+        //     { suit: 'S', face: 'J' },
+        //     { suit: 'H', face: '10' },
+        //     { suit: 'S', face: 'A' },
+        //     { suit: 'C', face: 'Q' }
+        //   ]
+        // }
+        // bid: { trump: CLUBS },
+        // currentTrick: {
+        //   startingPlayer: 0,
+        //   playedCards: {
+        //     '0': { suit: 'D', face: '7', playedBy: 0 }
+        //   }
+        // },
+        // dealer: 3,
+        // wij: 0,
+        // zij: 0,
+        // playedTricks: [
+        //   {
+        //     winner: 2,
+        //     points: 18,
+        //     honor: 20,
+        //     cards: [
+        //       { suit: 'D', face: 'K', playedBy: 0 },
+        //       { suit: 'D', face: 'Q', playedBy: 1 },
+        //       { suit: 'D', face: 'A', playedBy: 2 },
+        //       { suit: 'D', face: '9', playedBy: 3 }
+        //     ]
+        //   },
+        //   {
+        //     winner: 1,
+        //     points: 12,
+        //     honor: 0,
+        //     cards: [
+        //       { suit: 'D', face: 'J', playedBy: 0 },
+        //       { suit: 'C', face: '7', playedBy: 1 },
+        //       { suit: 'D', face: '10', playedBy: 2 },
+        //       { suit: 'D', face: '8', playedBy: 3 }
+        //     ]
+        //   },
+        //   {
+        //     winner: 0,
+        //     points: 4,
+        //     honor: 0,
+        //     cards: [
+        //       { suit: 'C', face: '8', playedBy: 0 },
+        //       { suit: 'S', face: '7', playedBy: 1 },
+        //       { suit: 'S', face: '8', playedBy: 2 },
+        //       { suit: 'S', face: 'K', playedBy: 3 }
+        //     ]
+        //   }
+        // ]
+        // currentTrick: {
+        //   startingPlayer: 0,
+        //   playedCards: [{ ...Card(DIAMONDS, '7'), playedBy: 0 }]
+        // }
+      };
+
+      // Act
+      const result = PlayCard(G, { currentPlayer: 1 }, Card(SPADES, '10'));
+      expect(result).toEqual(INVALID_MOVE);
+    });
+
     describe('not being able to follow suit', () => {});
   });
 });
