@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { SuitStringToComponent } from 'Components/Suits';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { SUITES } from 'GameLogic/Card';
+import francken from 'assets/francken-white-logo.png';
 const { SPADES, HEARTS, CLUBS, DIAMONDS } = SUITES;
 
 // TODO: if player name is Sven or sbte, then shake cards
@@ -47,10 +48,32 @@ const CardLi = styled.li`
     right: 4px;
     transform: rotate(180deg);
   }
+
+
+  ${props =>
+    props.flippedToBack &&
+    css`
+      background: no-repeat center center url(${() => francken}),
+        repeating-linear-gradient(
+          -45deg,
+          #173249,
+          #173249 20px,
+          #881838 20px,
+          #881838 40px
+        );
+      background-blend-mode: soft-light;
+
+      background-size: 70%, cover;
+
+      &:before,
+      &:after {
+        content: '';
+      }
+    `}
 `;
 
 const Card = props => {
-  const { disabled = false, card, onClick } = props;
+  const { disabled = false, visible = true, card, onClick } = props;
   const { face, suit } = card;
 
   // Rotate each card a little bit to make the cards feel less static
@@ -72,9 +95,15 @@ const Card = props => {
       rotate={rotate}
       face={face}
       suit={suit}
+      flippedToBack={!visible}
+      disabled={disabled}
     >
-      <SuitStringToComponent suit={suit} />
-      <span>{face}</span>
+      {visible && (
+        <>
+          <SuitStringToComponent suit={suit} />
+          <span>{face}</span>
+        </>
+      )}
     </CardLi>
   );
 };

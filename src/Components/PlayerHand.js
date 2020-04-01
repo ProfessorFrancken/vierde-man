@@ -43,7 +43,8 @@ const PlayerHand = ({ game, hand, playerId, moves }) => (
             key={idx}
             game={game}
             card={card}
-            disabled={playerIsAllowedToPlayCard(game, playerId, card)}
+            visible={playerId === 0}
+            disabled={!playerIsAllowedToPlayCard(game, playerId, card)}
             onClick={() => {
               moves.PlayCard(card);
             }}
