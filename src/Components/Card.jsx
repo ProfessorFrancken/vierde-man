@@ -13,21 +13,34 @@ const suitIcon = {
   [CLUBS]: '♣',
   [DIAMONDS]: '♦'
 };
+const suitColor = {
+  [SPADES]: '#252525',
+  [HEARTS]: '#e44145',
+  [CLUBS]: '#252525',
+  [DIAMONDS]: '#e44145'
+};
 const cardRatio = 2.5;
 const CardLi = styled.li`
+  border-width: 2px !important;
   transition: all 0.3s ease-out;
   transform: rotate(${props => props.rotate}deg);
+  background-color: ${({ disabled }) => (disabled ? '#e6e6e6' : '#fafafa')};
 
   width: ${() => 58 * cardRatio}px;
   height: ${() => 88 * cardRatio}px;
-  color: ${props =>
-    [HEARTS, DIAMONDS].includes(props.suit) ? '#e44145' : '#252525'} !important;
+  color: ${props => suitColor[props.suit]} !important;
 
-  :hover {
-    transform: scale(1) rotate(${props => props.rotate}deg);
-    cursor: pointer;
-    background: white !important;
-  }
+  ${props =>
+    !props.disabled &&
+    !props.flippedToBack &&
+    css`
+      :hover {
+        transform: scale(1) rotate(${props => props.rotate}deg)
+          translate(0, -20%);
+        cursor: pointer;
+        background: white !important;
+      }
+    `}
 
   &:before,
   &:after {
@@ -81,11 +94,9 @@ const Card = props => {
   const [rotate] = useState(Math.floor(baseRotate * (Math.random() * 2 - 1)));
 
   let className =
-    'border p-4 px-4 shadow-sm rounded-lg font-weight-bold d-flex align-items-center justify-content-between flex-column text-center';
-  if (!disabled) {
-    className += ' bg-light text-muted font-weight-light';
-  } else {
-    className += ' border border-primary';
+    'border p-4 px-4 shadow rounded-lg font-weight-bold d-flex align-items-center justify-content-between flex-column text-center';
+  if (disabled) {
+    className += ' text-muted font-weight-light';
   }
 
   return (
