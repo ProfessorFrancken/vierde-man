@@ -29,7 +29,7 @@ const Hand = styled.ul`
   position: relative;
 `;
 
-const PlayerHand = ({ game, hand, playerId, moves }) => (
+const PlayerHand = ({ game, hand, playerId, visible, moves }) => (
   <Hand className="list-unstyled mb-0">
     {hand.map((card, idx) => {
       const fanRotation = 20;
@@ -43,7 +43,7 @@ const PlayerHand = ({ game, hand, playerId, moves }) => (
             key={idx}
             game={game}
             card={card}
-            visible={playerId === 0}
+            visible={visible}
             disabled={!playerIsAllowedToPlayCard(game, playerId, card)}
             onClick={() => {
               moves.PlayCard(card);

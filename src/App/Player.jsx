@@ -67,13 +67,6 @@ const Player = ({
     <PlayerContainer id={id}>
       <KlaverJasTable className="p-2 overflow-hidden" flex-grow-1>
         <Action>
-          {!playerIsActive && phase === 'PlaceBids' && (
-            <div className="d-flex justify-content-center align-items-center flex-grow-1">
-              <h3 className="text-center text-muted">
-                Waiting for player {currentPlayer} to make their turn
-              </h3>
-            </div>
-          )}
           {phase === 'PlaceBids' && (
             <PlaceBid
               placeBid={moves.PlaceBid}
@@ -104,6 +97,7 @@ const Player = ({
                 hand={game.hands[id]}
                 playerId={id}
                 moves={moves}
+                visible={currentPlayer === id}
               />
             </PlayerHandArea>
           );
