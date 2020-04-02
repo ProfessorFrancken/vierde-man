@@ -3,7 +3,7 @@ import { SuitStringToComponent } from 'Components/Suits';
 import { SUITES, SANS } from 'GameLogic/Card';
 import Card from 'Components/Card';
 import { canPlaceBid } from 'GameLogic/Phases/PlaceBids';
-import { WinnerOfTrick } from 'GameLogic/Card';
+import { WinnerOfTrick, PointsOfTrick } from 'GameLogic/Card';
 import PlayedCards from 'App/PlayedCards';
 import { PlayerToStartCurrentTrick } from 'GameLogic/Phases/PlayTricks';
 import _ from 'lodash';
@@ -54,13 +54,23 @@ const ShowResultsOfTrick = ({ game, moves, continueNextTrick, playerId }) => {
     game.currentTrick.playedCards[game.currentTrick.startingPlayer],
     game.bid.trump
   );
-  console.log(winner);
+  const points = PointsOfTrick(game.currentTrick.playedCards, game.bid.trump);
   return (
     <>
       <div className="bg-white rounded shadow text-left" style={{ zIndex: 10 }}>
         <div className="">
           <div className="p-3">
             <h3 className="h5">Player {winner} won the trick</h3>
+            <ul class="list-unstyled mb-0 d-flex justify-content-between text-muted">
+              <li className="text-center">
+                <storng>Points </storng>: {points.points}
+              </li>
+              {points.honor > 0 && (
+                <li className="text-center">
+                  <storng>Honor </storng>: {points.honor}
+                </li>
+              )}
+            </ul>
           </div>
 
           <div className="p-3 bg-light border-top">
