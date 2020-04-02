@@ -6,6 +6,10 @@ import styled from 'styled-components';
 import { default as DebugPanel } from 'App/ScoreBoard';
 import Player from 'App/Player';
 import AprilFirst from 'App/AprilFirst';
+import logger from 'redux-logger';
+import { applyMiddleware } from 'redux';
+import playCardSfx from 'assets/sounds/card_play.mp3';
+import soundsMiddleware from 'redux-sounds';
 
 const PlayerGrid = styled.div`
   display: grid;
@@ -99,6 +103,25 @@ const DebugApp = props => {
   );
 };
 
+const customMiddleware = store => next => action => {
+  // NOTE: we only check if a PlayCard move is made, we don't yet check if it
+  // is / was a valid move
+  if (action.type === 'MAKE_MOVE' && action.payload.type === 'PlayCard') {
+    return next({
+      ...action,
+      meta: { ...action.meta, sound: { play: 'playCard' } }
+    });
+  }
+
+  return next(action);
+};
+const soundsData = {
+  playCard: playCardSfx
+};
+
+// Pre-load our middleware with our sounds data.
+const loadedSoundsMiddleware = soundsMiddleware(soundsData);
+
 const KlaverJasApp = Client({
   game: KlaverJassen,
   numPlayers: 4,
@@ -106,7 +129,8 @@ const KlaverJasApp = Client({
   board: DebugApp,
   loading: props => {
     return 'Loading component';
-  }
+  },
+  enhancer: applyMiddleware(logger, customMiddleware, loadedSoundsMiddleware)
 });
 
 export default KlaverJasApp;
