@@ -44,10 +44,10 @@ const PlayerHand = ({ game, hand, playerId, visible, moves }) => (
             game={game}
             card={card}
             visible={visible}
-            disabled={!playerIsAllowedToPlayCard(game, playerId, card)}
-            onClick={() => {
-              moves.PlayCard(card);
-            }}
+            disabled={
+              !playerIsAllowedToPlayCard(game, playerId, card) || !visible
+            }
+            onClick={() => moves.PlayCard(card)}
           />
         </CardContainer>
       );
