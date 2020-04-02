@@ -21,15 +21,16 @@ const suitColor = {
   [DIAMONDS]: '#e44145',
   APRIL: '#8f8500'
 };
-const cardRatio = 2.5;
-const CardLi = styled.li`
+const CardLi = styled.li.attrs(props => ({
+  cardScale: props.cardScale || 2.5
+}))`
   border-width: 2px !important;
   transition: all 0.3s ease-out;
   transform: rotate(${props => props.rotate}deg);
   background-color: ${({ disabled }) => (disabled ? '#e6e6e6' : '#fafafa')};
 
-  width: ${() => 58 * cardRatio}px;
-  height: ${() => 88 * cardRatio}px;
+  width: ${({ cardScale }) => 58 * cardScale}px;
+  height: ${({ cardScale }) => 88 * cardScale}px;
   color: ${props => suitColor[props.suit]} !important;
 
   ${props =>
