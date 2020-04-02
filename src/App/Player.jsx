@@ -6,7 +6,6 @@ import Score from 'App/Score';
 import PlayerHand from 'Components/PlayerHand';
 import ShowResultsOfTrick from 'App/ShowResultsOfTrick';
 import PlayedCards from 'App/PlayedCards';
-import { WinnerOfTrick } from 'GameLogic/Card';
 
 const PlayerContainer = styled.div`
   display: flex;
@@ -62,7 +61,6 @@ const Player = ({
   phase,
   currentPlayer
 }) => {
-  const playerIsActive = currentPlayer === id;
   const playerId = id;
 
   return (

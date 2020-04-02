@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { SuitStringToComponent } from 'Components/Suits';
-import { SUITES, SANS } from 'GameLogic/Card';
 import Card from 'Components/Card';
-import { canPlaceBid } from 'GameLogic/Phases/PlaceBids';
 import { WinnerOfTrick, PointsOfTrick } from 'GameLogic/Card';
-import PlayedCards from 'App/PlayedCards';
-import { PlayerToStartCurrentTrick } from 'GameLogic/Phases/PlayTricks';
 import _ from 'lodash';
 import styled, { css } from 'styled-components';
-
-const { SPADES, HEARTS, CLUBS, DIAMONDS } = SUITES;
 
 export const Bid = ({ bid }) => {
   if (bid.bid === null) {
@@ -146,45 +140,6 @@ const ShowResultsOfTrick = ({
         </button>
       </div>
     </>
-  );
-
-  const honor = [];
-
-  return (
-    <div
-      className="d-flex flex-column w-50 text-left bg-white mx-auto shadow border my-3"
-      style={{ fontSize: '0.7rem', zIndex: '2' }}
-    >
-      <div className="p-3">
-        <h3 className="h5">Trick results</h3>
-      </div>
-      {honor.length > 0 && (
-        <div className="p-3 bg-light border-top">
-          <h4 className="h6">Honor gained</h4>
-          <ul className="list-unstyled text-muted my-2">
-            {honor.map((honor, idx) => (
-              <li className="d-flex justify-content-between my-2" key={idx}>
-                <div>
-                  <strong>Check</strong>:
-                </div>
-                <div>Honor {honor}</div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      <div className="bg-white">
-        <div className="d-flex justify-content-between ">
-          <button
-            className="m-0 btn btn-sm btn-text text-muted btn-block bg-light p-3 px-3 "
-            type="submit"
-            onClick={continueNextTrick}
-          >
-            Continue next trick
-          </button>
-        </div>
-      </div>
-    </div>
   );
 };
 

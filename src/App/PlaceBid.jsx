@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SuitStringToComponent } from 'Components/Suits';
 import { SUITES, SANS } from 'GameLogic/Card';
-import { canPlaceBid, allowedBidsOnTrump } from 'GameLogic/Phases/PlaceBids';
+import { allowedBidsOnTrump } from 'GameLogic/Phases/PlaceBids';
 import _ from 'lodash';
 
 const { SPADES, HEARTS, CLUBS, DIAMONDS } = SUITES;

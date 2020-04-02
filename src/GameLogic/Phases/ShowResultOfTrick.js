@@ -1,12 +1,5 @@
 import { ActivePlayers } from 'boardgame.io/core';
-import { INVALID_MOVE } from 'boardgame.io/core';
-import {
-  pointsFromHands,
-  handContains,
-  PointsOfTrick,
-  WinnerOfTrick,
-  rankOfTrumpCard
-} from 'GameLogic/Card';
+import { pointsFromHands, PointsOfTrick, WinnerOfTrick } from 'GameLogic/Card';
 import _ from 'lodash';
 
 const isDefined = x => x !== undefined;
@@ -59,8 +52,6 @@ const AllPlayersAreReady = (G, ctx) => {
   }
 
   return { next: 'PlaceBids' };
-  return G.playesThatWantToContinue.length === 4;
-  return true;
 };
 
 // TODO: allow players to optionally accept or decline (laf!) honor
@@ -124,7 +115,6 @@ export const ShowResultOfTrick = {
     if (G.playedTricks.length !== 8) {
       return;
     }
-    const playedTricks = G.playedTricks;
 
     const keepScoreOfPlayedRound = (G, ctx) => {
       const { wij, zij } = pointsFromHands(G);

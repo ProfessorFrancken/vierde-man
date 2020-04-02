@@ -1,11 +1,5 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
-import {
-  pointsFromHands,
-  handContains,
-  PointsOfTrick,
-  WinnerOfTrick,
-  rankOfTrumpCard
-} from 'GameLogic/Card';
+import { handContains, WinnerOfTrick, rankOfTrumpCard } from 'GameLogic/Card';
 import _ from 'lodash';
 
 const isDefined = x => x !== undefined;
@@ -187,60 +181,10 @@ const ATrickHasBeenPlayed = ({ currentTrick }, { numPlayers }) => {
 
   // The current trick contains the card played by each player
   return _.filter(playedCards, isDefined).length === numPlayers;
-};
 
-const finishedTrick = (
-  { currentTrick: { playedCards, startingPlayer }, bid },
-  ctx
-) => {
-  if (!_.every(playedCards, isDefined)) {
-    return undefined;
-  }
-
-  const { trump } = bid;
-  const points = PointsOfTrick(playedCards, trump);
-  const winner = WinnerOfTrick(playedCards, playedCards[startingPlayer], trump);
-
-  return {
-    winner: winner,
-    points: points.points,
-    honor: points.honor,
-    cards: _.map(playedCards, card => card)
-  };
-};
-
-const AfterFinishingTrick = (G, ctx) => {
-  const resultFromRound = finishedTrick(G, ctx);
-  if (resultFromRound === undefined) {
-    return;
-  }
-
-  G.playedTricks.push(resultFromRound);
-  startNewTrick(G, ctx);
-};
-
-const keepScoreOfPlayedRound = (G, ctx) => {
-  const { wij, zij } = pointsFromHands(G);
-
-  G.rounds.push({ wij, zij });
-  G.wij = _.sum(_.map(G.rounds, ({ wij }) => wij));
-  G.zij = _.sum(_.map(G.rounds, ({ zij }) => zij));
-};
-
-// Reset bids so that we can start bidding again
-const startANewRound = (G, ctx) => {
-  G.playedTricks = [];
-  G.bids = [];
-  G.bid = undefined;
-  G.dealer = (G.dealer + 1) % ctx.numPlayers;
-
-  // TODO: check if we can replace this with an end if that returns stuff?
-  ctx.events.setPhase('PlaceBids');
-};
-
-const AfterFinishingHand = (G, ctx) => {
-  keepScoreOfPlayedRound(G, ctx);
-  startANewRound(G, ctx);
+  // TODO: change end if so that:
+  // It summarizes a trick when a single trick has been played
+  // It summarizes a hand when 8 tricks have been played
 };
 
 export const PlayTricks = {
