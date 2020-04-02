@@ -36,6 +36,9 @@ const ContinueToNextTrick = (G, ctx) => {
 
 const WriteDownResultsOfTrick = (G, ctx) => {
   G.playesThatWantToContinue = [];
+
+  // Store current trick
+
   console.log('starting show results');
 };
 
@@ -44,6 +47,22 @@ const AllPlayersAreReady = (G, ctx) => {
     return false;
   }
   console.log('end if?', G.playesThatWantToContinue);
+
+  console.log('end ifff ?');
+  if (G.playesThatWantToContinue.length !== 4) {
+    console.log('dont end');
+    return false;
+  }
+
+  if (G.playedTricks.length !== 7) {
+    console.log('play next trick');
+    console.log(G, G.playedTricks.length);
+
+    return true;
+  }
+
+  console.log('place them bids');
+  return { next: 'PlaceBids' };
   return G.playesThatWantToContinue.length === 4;
   return true;
 };
@@ -60,30 +79,6 @@ export const ShowResultOfTrick = {
   onEnd: (G, ctx) => {
     console.log('ending show results', G.playesThatWantToContinue);
     G.playesThatWantToContinue = [];
-
-    const keepScoreOfPlayedRound = (G, ctx) => {
-      const { wij, zij } = pointsFromHands(G);
-
-      G.rounds.push({ wij, zij });
-      G.wij = _.sum(_.map(G.rounds, ({ wij }) => wij));
-      G.zij = _.sum(_.map(G.rounds, ({ zij }) => zij));
-    };
-
-    // Reset bids so that we can start bidding again
-    const startANewRound = (G, ctx) => {
-      G.playedTricks = [];
-      G.bids = [];
-      G.bid = undefined;
-      G.dealer = (G.dealer + 1) % ctx.numPlayers;
-
-      // TODO: check if we can replace this with an end if that returns stuff?
-      ctx.events.setPhase('PlaceBids');
-    };
-
-    const AfterFinishingHand = (G, ctx) => {
-      keepScoreOfPlayedRound(G, ctx);
-      startANewRound(G, ctx);
-    };
     const startNewTrick = (G, ctx) => {
       G.currentTrick = {
         startingPlayer: PlayerToStartCurrentTrick(G, ctx),
@@ -125,18 +120,43 @@ export const ShowResultOfTrick = {
         return;
       }
 
+      console.log('now pushing the new trick');
       G.playedTricks.push(resultFromRound);
       startNewTrick(G, ctx);
     };
 
     AfterFinishingTrick(G, ctx);
 
-    const playedTricks = G.playedTricks;
-    if (playedTricks.length !== 8) {
+    if (G.playedTricks.length !== 8) {
       return;
     }
-    AfterFinishingHand(G, ctx);
+    const playedTricks = G.playedTricks;
 
+    const keepScoreOfPlayedRound = (G, ctx) => {
+      const { wij, zij } = pointsFromHands(G);
+
+      G.rounds.push({ wij, zij });
+      G.wij = _.sum(_.map(G.rounds, ({ wij }) => wij));
+      G.zij = _.sum(_.map(G.rounds, ({ zij }) => zij));
+    };
+
+    // Reset bids so that we can start bidding again
+    const startANewRound = (G, ctx) => {
+      G.playedTricks = [];
+      G.bids = [];
+      G.bid = undefined;
+      G.dealer = (G.dealer + 1) % ctx.numPlayers;
+      console.log('start biddign agains');
+
+      // TODO: check if we can replace this with an end if that returns stuff?
+      ctx.events.setPhase('PlaceBids');
+    };
+
+    const AfterFinishingHand = (G, ctx) => {
+      keepScoreOfPlayedRound(G, ctx);
+      startANewRound(G, ctx);
+    };
+    AfterFinishingHand(G, ctx);
     // Reset currentTrick
     // If
   },

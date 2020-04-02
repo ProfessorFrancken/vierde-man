@@ -306,6 +306,11 @@ describe('dealing hands', () => {
       client.moves.PlayCard(playTheseHands[round].cards[2]);
       client.moves.PlayCard(playTheseHands[round].cards[3]);
 
+      client.moves.ContinueToNextTrick();
+      client.moves.ContinueToNextTrick();
+      client.moves.ContinueToNextTrick();
+      client.moves.ContinueToNextTrick();
+
       {
         const { G, ctx } = client.store.getState();
         if (round < 7) {
@@ -430,6 +435,11 @@ describe('dealing hands', () => {
           client.moves.PlayCard(these['1'][round]);
           client.moves.PlayCard(these['2'][round]);
         }
+
+        client.moves.ContinueToNextTrick();
+        client.moves.ContinueToNextTrick();
+        client.moves.ContinueToNextTrick();
+        client.moves.ContinueToNextTrick();
 
         {
           const { G, ctx } = client.store.getState();
