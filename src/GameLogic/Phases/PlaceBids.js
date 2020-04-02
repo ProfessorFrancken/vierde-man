@@ -13,6 +13,12 @@ export const ShuffleDeck = (G, ctx) => {
   G.deck = ctx.randomness.Shuffle(G.deck);
 };
 
+export const allowedBidsOnTrump = (bids, trump) =>
+  (trump === SANS
+    ? [70, 80, 90, 100, 110, 120, 130, 'pit']
+    : [80, 90, 100, 110, 120, 130, 140, 150, 160, 'pit']
+  ).filter(bid => canPlaceBid(bids, { bid, suit: trump }));
+
 export const DealCards = (G, ctx, deck) => {
   const stacks = _.chunk(deck, 8);
 

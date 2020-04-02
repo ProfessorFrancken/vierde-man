@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SuitStringToComponent } from 'Components/Suits';
 import { SUITES, SANS } from 'GameLogic/Card';
-import { canPlaceBid } from 'GameLogic/Phases/PlaceBids';
+import { canPlaceBid, allowedBidsOnTrump } from 'GameLogic/Phases/PlaceBids';
 import _ from 'lodash';
 
 const { SPADES, HEARTS, CLUBS, DIAMONDS } = SUITES;
@@ -40,11 +40,7 @@ const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer }) => {
     APRIL: '#8f8500'
   };
 
-  const isSans = trump === SANS;
-  const allowedBids = (isSans
-    ? [70, 80, 90, 100, 110, 120, 130, 'pit']
-    : [80, 90, 100, 110, 120, 130, 140, 150, 160, 'pit']
-  ).filter(bid => canPlaceBid(currentBids, { bid, suit: trump }));
+  const allowedBids = allowedBidsOnTrump(currentBids, trump);
 
   if (!allowedBids.includes(bid)) {
     setBid(allowedBids[0]);
