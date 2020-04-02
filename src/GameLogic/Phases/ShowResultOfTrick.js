@@ -43,30 +43,21 @@ const WriteDownResultsOfTrick = (G, ctx) => {
   G.playesThatWantToContinue = [];
 
   // Store current trick
-
-  console.log('starting show results');
 };
 
 const AllPlayersAreReady = (G, ctx) => {
   if (G.playesThatWantToContinue === undefined) {
     return false;
   }
-  console.log('end if?', G.playesThatWantToContinue);
 
-  console.log('end ifff ?');
   if (G.playesThatWantToContinue.length !== 4) {
-    console.log('dont end');
     return false;
   }
 
   if (G.playedTricks.length !== 7) {
-    console.log('play next trick');
-    console.log(G, G.playedTricks.length);
-
     return true;
   }
 
-  console.log('place them bids');
   return { next: 'PlaceBids' };
   return G.playesThatWantToContinue.length === 4;
   return true;
@@ -82,7 +73,6 @@ export const ShowResultOfTrick = {
   onBegin: WriteDownResultsOfTrick,
   endIf: AllPlayersAreReady,
   onEnd: (G, ctx) => {
-    console.log('ending show results', G.playesThatWantToContinue);
     G.playesThatWantToContinue = [];
     const startNewTrick = (G, ctx) => {
       G.currentTrick = {
@@ -125,7 +115,6 @@ export const ShowResultOfTrick = {
         return;
       }
 
-      console.log('now pushing the new trick');
       G.playedTricks.push(resultFromRound);
       startNewTrick(G, ctx);
     };
@@ -151,7 +140,6 @@ export const ShowResultOfTrick = {
       G.bids = [];
       G.bid = undefined;
       G.dealer = (G.dealer + 1) % ctx.numPlayers;
-      console.log('start biddign agains');
 
       // TODO: check if we can replace this with an end if that returns stuff?
       ctx.events.setPhase('PlaceBids');
