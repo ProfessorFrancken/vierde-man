@@ -4,6 +4,7 @@ import { PlayerToStartCurrentTrick } from 'GameLogic/Phases/PlayTricks';
 import styled from 'styled-components';
 import Score from 'App/Score';
 import PlayerHand from 'Components/PlayerHand';
+import ShowResultsOfTrick from 'App/ShowResultsOfTrick';
 import PlayedCards from 'App/PlayedCards';
 import { WinnerOfTrick } from 'GameLogic/Card';
 
@@ -87,53 +88,7 @@ const Player = ({
           )}
 
           {phase === 'ShowResultOfTrick' && (
-            <>
-              <div className="bg-white rounded shadow text-left">
-                <div className="">
-                  <div className="p-3">
-                    <h3 className="h5">
-                      Player{' '}
-                      {WinnerOfTrick(
-                        game.currentTrick.playedCards,
-                        game.currentTrick.playedCards[
-                          game.currentTrick.startingPlayer
-                        ],
-                        game.bid.trump
-                      )}{' '}
-                      won the trick
-                    </h3>
-                  </div>
-                  <div className="p-3 border-top ">
-                    <div className="form-group form-check text-muted mb-0">
-                      <input
-                        type="checkbox"
-                        className="form-check-input"
-                        id="continueAutomatically"
-                      />
-                      <label
-                        className="form-check-label"
-                        htmlFor="continueAutomatically"
-                      >
-                        Continue next trick automatically
-                      </label>
-                    </div>
-                  </div>
-                </div>
-                <button
-                  className="m-0 btn btn-sm btn-text text-primary btn-block bg-light p-3 px-3"
-                  onClick={() => moves.ContinueToNextTrick()}
-                >
-                  Continue
-                </button>
-              </div>
-              <PlayedCards
-                cards={game.currentTrick.playedCards}
-                startingPlayer={PlayerToStartCurrentTrick(game, {
-                  numPlayers: 4
-                })}
-                playerId={playerId}
-              />
-            </>
+            <ShowResultsOfTrick game={game} moves={moves} playerId={playerId} />
           )}
         </Action>
 
