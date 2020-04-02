@@ -77,9 +77,7 @@ const ShowResultsOfTrick = ({
       <div className="bg-white rounded shadow text-left" style={{ zIndex: 10 }}>
         <div className="">
           <div className="p-3">
-            <h3 className="h5">
-              Player {winner} won the trick (current player: {currentPlayer})
-            </h3>
+            <h3 className="h5">Player {winner} won the trick</h3>
             <ul className="list-unstyled mb-0 d-flex justify-content-between text-muted">
               <li className="text-center">
                 <strong>Points </strong>: {points.points}
