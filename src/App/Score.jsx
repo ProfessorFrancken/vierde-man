@@ -1,6 +1,7 @@
 import React from 'react';
 import { Bid } from 'App/PlaceBid';
 import styled from 'styled-components';
+import _ from 'lodash';
 
 const ScoreContainer = styled.div`
   grid-area: s;
@@ -10,6 +11,16 @@ const ScoreContainer = styled.div`
 `;
 
 const Score = ({ game }) => {
+  const currentTricks = game.playedTricks;
+  const tricksByWij = _(currentTricks)
+    .filter(({ winner }) => [0, 2].includes(winner))
+    .map(({ points, honor }) => points + honor)
+    .sum();
+  const tricksByZij = _(currentTricks)
+    .filter(({ winner }) => [1, 3].includes(winner))
+    .map(({ points, honor }) => points + honor)
+    .sum();
+
   return (
     <ScoreContainer>
       <div className="p-3 bg-light shadow rounded text-left text-muted d-flex flex-column">
@@ -73,14 +84,14 @@ const Score = ({ game }) => {
                     <Bid bid={{ bid: game.bid.bid, suit: game.bid.trump }} />
                   )}
               </div>
-              <span>{game.wij}</span>
+              <span>{tricksByWij}</span>
             </div>
             <span>{game.wij}</span>
           </li>
           <li className="text-muted p-1 mx-2 d-flex flex-column text-left align-items-start">
             <strong>Zij</strong>
             <div className="d-flex justify-content-between">
-              <span>{game.zij}</span>
+              <span>{tricksByZij}</span>
               <div className="ml-2">
                 {game.bid.trump !== undefined &&
                   [1, 3].includes(game.bid.highestBidBy) && (
