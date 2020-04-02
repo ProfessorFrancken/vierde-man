@@ -111,6 +111,7 @@ const Card = props => {
       suit={suit}
       flippedToBack={!visible}
       disabled={disabled}
+      cardScale={props.cardScale}
     >
       {visible && (
         <>
