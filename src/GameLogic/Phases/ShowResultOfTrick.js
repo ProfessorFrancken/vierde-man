@@ -30,8 +30,13 @@ export const PlayerToStartCurrentTrick = (
 // it automatically continues to the PlayTrick phase after a short while,
 // which should allow each player to see the winning card
 
-const ContinueToNextTrick = (G, ctx) => {
+const ContinueToNextTrick = (G, ctx, continueAutomatically = false) => {
   G.playesThatWantToContinue.push(ctx.currentPlayer);
+
+  if (G.continueTrickAutomatically === undefined) {
+    G.continueTrickAutomatically = {};
+  }
+  G.continueTrickAutomatically[ctx.currentPlayer] = continueAutomatically;
 };
 
 const WriteDownResultsOfTrick = (G, ctx) => {

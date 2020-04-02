@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SuitStringToComponent } from 'Components/Suits';
 import { SUITES, SANS } from 'GameLogic/Card';
 import Card from 'Components/Card';
@@ -38,7 +38,30 @@ const CardWrapper = styled.div`
   }
 `;
 
-const ShowResultsOfTrick = ({ game, moves, continueNextTrick, playerId }) => {
+const ShowResultsOfTrick = ({
+  game,
+  moves,
+  continueNextTrick,
+  playerId,
+  currentPlayer
+}) => {
+  const [continueAutomatically, setContinueAutomatically] = useState(
+    (game.continueTrickAutomatically &&
+      game.continueTrickAutomatically[currentPlayer]) === true
+  );
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (
+        game.continueTrickAutomatically &&
+        game.continueTrickAutomatically[currentPlayer]
+      ) {
+        moves.ContinueToNextTrick(true);
+      }
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [currentPlayer, game.continueTrickAutomatically, moves]);
+
   // The cards given are not in the order in which they were played,
   // so we will have to manually order them based on the starting player
   const playedCards = _.concat(
@@ -60,7 +83,9 @@ const ShowResultsOfTrick = ({ game, moves, continueNextTrick, playerId }) => {
       <div className="bg-white rounded shadow text-left" style={{ zIndex: 10 }}>
         <div className="">
           <div className="p-3">
-            <h3 className="h5">Player {winner} won the trick</h3>
+            <h3 className="h5">
+              Player {winner} won the trick (current player: {currentPlayer})
+            </h3>
             <ul className="list-unstyled mb-0 d-flex justify-content-between text-muted">
               <li className="text-center">
                 <strong>Points </strong>: {points.points}
@@ -99,6 +124,10 @@ const ShowResultsOfTrick = ({ game, moves, continueNextTrick, playerId }) => {
                 type="checkbox"
                 className="form-check-input"
                 id="continueAutomatically"
+                checked={continueAutomatically}
+                onChange={() =>
+                  setContinueAutomatically(!continueAutomatically)
+                }
               />
               <label
                 className="form-check-label"
@@ -111,7 +140,7 @@ const ShowResultsOfTrick = ({ game, moves, continueNextTrick, playerId }) => {
         </div>
         <button
           className="m-0 btn btn-sm btn-text text-primary btn-block bg-light p-3 px-3"
-          onClick={() => moves.ContinueToNextTrick()}
+          onClick={() => moves.ContinueToNextTrick(continueAutomatically)}
         >
           Continue
         </button>

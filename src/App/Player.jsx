@@ -88,7 +88,12 @@ const Player = ({
           )}
 
           {phase === 'ShowResultOfTrick' && (
-            <ShowResultsOfTrick game={game} moves={moves} playerId={playerId} />
+            <ShowResultsOfTrick
+              game={game}
+              moves={moves}
+              playerId={playerId}
+              currentPlayer={currentPlayer}
+            />
           )}
         </Action>
 
