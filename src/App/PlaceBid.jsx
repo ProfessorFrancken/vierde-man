@@ -94,7 +94,7 @@ const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer }) => {
 
         <div className="d-flex  justify-content-between">
           <div className="form-group flex-grow-1 mr-2">
-            <label for="">Trump</label>
+            <label htmlFor="">Trump</label>
             <select
               className="form-control form-control-sm"
               style={{ color: suitColor[trump] }}
@@ -114,7 +114,7 @@ const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer }) => {
             </select>
           </div>
           <div className="form-group flex-grow-1 ml-2">
-            <label for="">Bid</label>
+            <label htmlFor="">Bid</label>
             <select
               className="form-control form-control-sm"
               id="bid"

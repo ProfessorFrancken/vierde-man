@@ -62,10 +62,10 @@ const Score = ({ game }) => {
               </td>
             </tr>
             <tr>
-              <td colspan="2" className="text-right">
+              <td colSpan="2" className="text-right">
                 {game.wij}
               </td>
-              <td colspan="2" className="text-left">
+              <td colSpan="2" className="text-left">
                 {game.zij}
               </td>
             </tr>
