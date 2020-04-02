@@ -1,6 +1,7 @@
 import { InitialDeck } from 'GameLogic/Card';
 import { PlaceBids } from 'GameLogic/Phases/PlaceBids';
 import { PlayTricks } from 'GameLogic/Phases/PlayTricks';
+import { ShowResultOfTrick } from 'GameLogic/Phases/ShowResultOfTrick';
 import Randomness from 'GameLogic/Phases/Random';
 
 const SixTeenRoundsHaveBeenPlayed = (G, ctx) => {
@@ -47,7 +48,8 @@ export const KlaverJassen = {
 
   phases: {
     PlaceBids,
-    PlayTricks
+    PlayTricks,
+    ShowResultOfTrick
   },
   plugins: [Randomness],
 

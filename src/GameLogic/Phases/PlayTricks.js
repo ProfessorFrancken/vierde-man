@@ -244,18 +244,17 @@ const AfterFinishingHand = (G, ctx) => {
 };
 
 export const PlayTricks = {
-  next: 'PlayTricks',
+  next: 'ShowResultOfTrick',
   moves: { PlayCard, CallVerzaakt },
   onBegin: startNewTrick,
   endIf: ATrickHasBeenPlayed,
   onEnd: (G, ctx) => {
-    AfterFinishingTrick(G, ctx);
-
-    const playedTricks = G.playedTricks;
-    if (playedTricks.length !== 8) {
-      return;
-    }
-    AfterFinishingHand(G, ctx);
+    // AfterFinishingTrick(G, ctx);
+    // const playedTricks = G.playedTricks;
+    // if (playedTricks.length !== 8) {
+    //   return;
+    // }
+    // AfterFinishingHand(G, ctx);
   },
 
   turn: {

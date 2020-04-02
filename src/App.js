@@ -102,7 +102,7 @@ const DebugApp = props => {
 const KlaverJasApp = Client({
   game: KlaverJassen,
   numPlayers: 4,
-  debug: false,
+  debug: true,
   board: DebugApp,
   loading: props => {
     return 'Loading component';
