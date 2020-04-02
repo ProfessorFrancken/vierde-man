@@ -17,10 +17,10 @@ describe('Determines the winner of a trick', () => {
     const trump = SUITES.SPADES;
     const winner = WinnerOfTrick(
       {
-        '0': Card(SPADES, 'J'),
-        '1': Card(HEARTS, '7'),
-        '2': Card(CLUBS, '7'),
-        '3': Card(DIAMONDS, '9')
+        '0': { ...Card(SPADES, 'J'), playedBy: 0 },
+        '1': { ...Card(HEARTS, '7'), playedBy: 1 },
+        '2': { ...Card(CLUBS, '7'), playedBy: 2 },
+        '3': { ...Card(DIAMONDS, '9'), playedBy: 3 }
       },
       Card(SPADES, 'J'),
       trump
@@ -32,10 +32,10 @@ describe('Determines the winner of a trick', () => {
   it('determines the winner of when using trump', () => {
     const winner = WinnerOfTrick(
       {
-        '0': Card(CLUBS, '10'),
-        '1': Card(CLUBS, 'A'),
-        '2': Card(CLUBS, '9'),
-        '3': Card(CLUBS, 'J')
+        '0': { ...Card(CLUBS, '10'), playedBy: 0 },
+        '1': { ...Card(CLUBS, 'A'), playedBy: 1 },
+        '2': { ...Card(CLUBS, '9'), playedBy: 2 },
+        '3': { ...Card(CLUBS, 'J'), playedBy: 3 }
       },
       Card(CLUBS, '10'),
       CLUBS
@@ -48,10 +48,10 @@ describe('Determines the winner of a trick', () => {
     const trump = SUITES.SPADES;
     const winner = WinnerOfTrick(
       {
-        '0': Card(HEARTS, 'J'),
-        '1': Card(HEARTS, '7'),
-        '2': Card(HEARTS, 'A'),
-        '3': Card(DIAMONDS, '9')
+        '0': { ...Card(HEARTS, 'J'), playedBy: 0 },
+        '1': { ...Card(HEARTS, '7'), playedBy: 1 },
+        '2': { ...Card(HEARTS, 'A'), playedBy: 2 },
+        '3': { ...Card(DIAMONDS, '9'), playedBy: 3 }
       },
       Card(HEARTS, 'J'),
       trump
@@ -64,10 +64,10 @@ describe('Determines the winner of a trick', () => {
     const trump = SUITES.SPADES;
     const winner = WinnerOfTrick(
       {
-        '0': Card(DIAMONDS, 'J'),
-        '1': Card(DIAMONDS, 'A'),
-        '2': Card(HEARTS, 'Q'),
-        '3': Card(HEARTS, 'J')
+        '0': { ...Card(DIAMONDS, 'J'), playedBy: 0 },
+        '1': { ...Card(DIAMONDS, 'A'), playedBy: 1 },
+        '2': { ...Card(HEARTS, 'Q'), playedBy: 2 },
+        '3': { ...Card(HEARTS, 'J'), playedBy: 3 }
       },
       Card(HEARTS, 'J'),
       trump
@@ -80,10 +80,10 @@ describe('Determines the winner of a trick', () => {
     const trump = SUITES.SPADES;
     const winner = WinnerOfTrick(
       {
-        '0': Card(DIAMONDS, 'J'),
-        '1': Card(SPADES, 'A'),
-        '2': Card(HEARTS, 'Q'),
-        '3': Card(HEARTS, 'J')
+        '0': { ...Card(DIAMONDS, 'J'), playedBy: 0 },
+        '1': { ...Card(SPADES, 'A'), playedBy: 1 },
+        '2': { ...Card(HEARTS, 'Q'), playedBy: 2 },
+        '3': { ...Card(HEARTS, 'J'), playedBy: 3 }
       },
       Card(HEARTS, 'J'),
       trump
@@ -96,10 +96,10 @@ describe('Determines the winner of a trick', () => {
     const trump = SUITES.SPADES;
     const winner = WinnerOfTrick(
       {
-        '0': Card(DIAMONDS, 'J'),
-        '1': Card(SPADES, 'A'),
-        '2': Card(HEARTS, 'Q'),
-        '3': Card(SPADES, 'J')
+        '0': { ...Card(DIAMONDS, 'J'), playedBy: 0 },
+        '1': { ...Card(SPADES, 'A'), playedBy: 1 },
+        '2': { ...Card(HEARTS, 'Q'), playedBy: 2 },
+        '3': { ...Card(SPADES, 'J'), playedBy: 3 }
       },
       Card(DIAMONDS, 'J'),
       trump
@@ -112,10 +112,10 @@ describe('Determines the winner of a trick', () => {
     const trump = SANS;
     const winner = WinnerOfTrick(
       {
-        '0': Card(DIAMONDS, 'J'),
-        '1': Card(DIAMONDS, 'Q'),
-        '2': Card(DIAMONDS, 'K'),
-        '3': Card(DIAMONDS, '10')
+        '0': { ...Card(DIAMONDS, 'J'), playedBy: 0 },
+        '1': { ...Card(DIAMONDS, 'Q'), playedBy: 1 },
+        '2': { ...Card(DIAMONDS, 'K'), playedBy: 2 },
+        '3': { ...Card(DIAMONDS, '10'), playedBy: 3 }
       },
       Card(DIAMONDS, 'K'),
       trump
@@ -128,10 +128,10 @@ describe('Determines the winner of a trick', () => {
     const trump = SANS;
     const winner = WinnerOfTrick(
       {
-        '0': Card(CLUBS, '10'),
-        '1': Card(SPADES, 'J'),
-        '2': Card(SPADES, '10'),
-        '3': Card(SPADES, 'K')
+        '0': { ...Card(CLUBS, '10'), playedBy: 0 },
+        '1': { ...Card(SPADES, 'J'), playedBy: 1 },
+        '2': { ...Card(SPADES, '10'), playedBy: 2 },
+        '3': { ...Card(SPADES, 'K'), playedBy: 3 }
       },
       Card(SPADES, '10'),
       trump
@@ -147,10 +147,10 @@ describe('Points of a trick', () => {
     it('gives points to the jack', () => {
       const { points, honor } = PointsOfTrick(
         {
-          '0': Card(SPADES, 'J'),
-          '1': Card(HEARTS, '7'),
-          '2': Card(CLUBS, '7'),
-          '3': Card(DIAMONDS, '9')
+          '0': { ...Card(SPADES, 'J'), playedBy: 0 },
+          '1': { ...Card(HEARTS, '7'), playedBy: 1 },
+          '2': { ...Card(CLUBS, '7'), playedBy: 2 },
+          '3': { ...Card(DIAMONDS, '9'), playedBy: 3 }
         },
         trump
       );
@@ -161,10 +161,10 @@ describe('Points of a trick', () => {
     it('gives points to the nel', () => {
       const { points, honor } = PointsOfTrick(
         {
-          '0': Card(SPADES, '9'),
-          '1': Card(HEARTS, '7'),
-          '2': Card(CLUBS, '7'),
-          '3': Card(DIAMONDS, '9')
+          '0': { ...Card(SPADES, '9'), playedBy: 0 },
+          '1': { ...Card(HEARTS, '7'), playedBy: 1 },
+          '2': { ...Card(CLUBS, '7'), playedBy: 2 },
+          '3': { ...Card(DIAMONDS, '9'), playedBy: 3 }
         },
         trump
       );
@@ -175,10 +175,10 @@ describe('Points of a trick', () => {
     it('gives points to the queen', () => {
       const { points, honor } = PointsOfTrick(
         {
-          '0': Card(SPADES, 'Q'),
-          '1': Card(HEARTS, '7'),
-          '2': Card(CLUBS, 'Q'),
-          '3': Card(DIAMONDS, '9')
+          '0': { ...Card(SPADES, 'Q'), playedBy: 0 },
+          '1': { ...Card(HEARTS, '7'), playedBy: 1 },
+          '2': { ...Card(CLUBS, 'Q'), playedBy: 2 },
+          '3': { ...Card(DIAMONDS, '9'), playedBy: 3 }
         },
         trump
       );
