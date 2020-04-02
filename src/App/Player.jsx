@@ -97,7 +97,7 @@ const Player = ({
         {[0, 1, 2, 3].map(positionId => {
           const id = (playerId + positionId) % 4;
           return (
-            <PlayerHandArea id={positionId}>
+            <PlayerHandArea id={positionId} key={positionId}>
               <PlayerHand
                 game={game}
                 hand={game.hands[id]}

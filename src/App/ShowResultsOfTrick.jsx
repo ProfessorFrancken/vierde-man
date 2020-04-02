@@ -61,13 +61,13 @@ const ShowResultsOfTrick = ({ game, moves, continueNextTrick, playerId }) => {
         <div className="">
           <div className="p-3">
             <h3 className="h5">Player {winner} won the trick</h3>
-            <ul class="list-unstyled mb-0 d-flex justify-content-between text-muted">
+            <ul className="list-unstyled mb-0 d-flex justify-content-between text-muted">
               <li className="text-center">
-                <storng>Points </storng>: {points.points}
+                <strong>Points </strong>: {points.points}
               </li>
               {points.honor > 0 && (
                 <li className="text-center">
-                  <storng>Honor </storng>: {points.honor}
+                  <strong>Honor </strong>: {points.honor}
                 </li>
               )}
             </ul>
@@ -80,9 +80,9 @@ const ShowResultsOfTrick = ({ game, moves, continueNextTrick, playerId }) => {
                   <CardWrapper
                     className="mx-2"
                     winner={winner === card.playedBy}
+                    key={idx}
                   >
                     <Card
-                      key={idx}
                       card={card}
                       onClick={() => {}}
                       cardScale={1.5}

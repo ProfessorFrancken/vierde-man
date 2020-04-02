@@ -38,6 +38,7 @@ const PlayerHand = ({ game, hand, playerId, visible, moves }) => (
           className="card-container"
           rotate={((idx - (hand.length - 1) / 2) * fanRotation) / 4}
           up={(idx - (hand.length - 1) / 2) * fanRotation}
+          key={idx}
         >
           <Card
             key={idx}
