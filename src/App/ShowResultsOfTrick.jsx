@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { SuitStringToComponent } from 'Components/Suits';
 import { SUITES, SANS } from 'GameLogic/Card';
+import Card from 'Components/Card';
 import { canPlaceBid } from 'GameLogic/Phases/PlaceBids';
 import { WinnerOfTrick } from 'GameLogic/Card';
 import PlayedCards from 'App/PlayedCards';
 import { PlayerToStartCurrentTrick } from 'GameLogic/Phases/PlayTricks';
 import _ from 'lodash';
+import styled, { css } from 'styled-components';
 
 const { SPADES, HEARTS, CLUBS, DIAMONDS } = SUITES;
 
@@ -22,21 +24,64 @@ export const Bid = ({ bid }) => {
   );
 };
 
+const CardWrapper = styled.div`
+  li {
+    box-shadow: none !important;
+    transform: rotate(0deg) !important;
+
+    ${({ winner }) =>
+      winner &&
+      1 == 2 &&
+      css`
+        border-color: #252525 !important;
+      `}
+  }
+`;
+
 const ShowResultsOfTrick = ({ game, moves, continueNextTrick, playerId }) => {
+  // The cards given are not in the order in which they were played,
+  // so we will have to manually order them based on the starting player
+  const playedCards = _.concat(
+    ..._(game.currentTrick.playedCards)
+      .reject(card => card === undefined)
+      .partition(({ playedBy }) => playedBy < game.currentTrick.startingPlayer)
+      .reverse()
+      .values()
+  );
+
+  const winner = WinnerOfTrick(
+    game.currentTrick.playedCards,
+    game.currentTrick.playedCards[game.currentTrick.startingPlayer],
+    game.bid.trump
+  );
+  console.log(winner);
   return (
     <>
       <div className="bg-white rounded shadow text-left" style={{ zIndex: 10 }}>
         <div className="">
           <div className="p-3">
-            <h3 className="h5">
-              Player{' '}
-              {WinnerOfTrick(
-                game.currentTrick.playedCards,
-                game.currentTrick.playedCards[game.currentTrick.startingPlayer],
-                game.bid.trump
-              )}{' '}
-              won the trick
-            </h3>
+            <h3 className="h5">Player {winner} won the trick</h3>
+          </div>
+
+          <div className="p-3 bg-light border-top">
+            <ul className="list-unstyled d-flex justify-content-between">
+              {_.map(playedCards, (card, idx) => {
+                return (
+                  <CardWrapper
+                    className="mx-2"
+                    winner={winner === card.playedBy}
+                  >
+                    <Card
+                      key={idx}
+                      card={card}
+                      onClick={() => {}}
+                      cardScale={1.5}
+                      disabled={card.playedBy !== winner}
+                    />
+                  </CardWrapper>
+                );
+              })}
+            </ul>
           </div>
           <div className="p-3 border-top ">
             <div className="form-group form-check text-muted mb-0">
@@ -61,13 +106,6 @@ const ShowResultsOfTrick = ({ game, moves, continueNextTrick, playerId }) => {
           Continue
         </button>
       </div>
-      <PlayedCards
-        cards={game.currentTrick.playedCards}
-        startingPlayer={PlayerToStartCurrentTrick(game, {
-          numPlayers: 4
-        })}
-        playerId={playerId}
-      />
     </>
   );
 
