@@ -3,7 +3,6 @@ import { Client } from 'boardgame.io/react';
 import { KlaverJassen } from 'GameLogic/Game';
 import './App.css';
 import styled from 'styled-components';
-import { default as DebugPanel } from 'App/ScoreBoard';
 import Player from 'App/Player';
 import AprilFirst from 'App/AprilFirst';
 import logger from 'redux-logger';
