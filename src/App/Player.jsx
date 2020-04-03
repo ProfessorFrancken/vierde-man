@@ -109,7 +109,13 @@ const Player = ({
           )}
         </Action>
 
-        <Score game={game} />
+        <Score
+          rounds={game.rounds}
+          playedTricks={game.playedTricks}
+          wij={game.wij}
+          zij={game.zij}
+          bid={game.bid}
+        />
 
         {[0, 1, 2, 3].map(positionId => {
           const id = (playerId + positionId) % 4;
