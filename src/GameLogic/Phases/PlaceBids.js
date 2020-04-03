@@ -60,15 +60,19 @@ export const canPlaceBid = (placedBids, bid) => {
     return true;
   }
 
-  if (bid.bid > highestBid.bid) {
-    return true;
-  }
+  if (isSans(bid)) {
+    if (isSans(highestBid)) {
+      return bid.bid > highestBid.bid;
+    }
 
-  if (isSans(bid) && !isSans(highestBid)) {
     return bid.bid >= highestBid.bid - 2;
   }
 
-  return false;
+  if (isSans(highestBid)) {
+    return bid.bid > highestBid.bid + 2;
+  }
+
+  return bid.bid > highestBid.bid;
 };
 
 const reshuffleIfAllPassed = (G, ctx) => {

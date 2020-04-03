@@ -249,6 +249,24 @@ describe('bidding phase', () => {
       expect(result).toEqual(INVALID_MOVE);
       expect(G.bids.length).toEqual(2);
     });
+
+    it('does not allow bidding 132 CLUBS on 130 SANS after a bid of 100 SANS', () => {
+      const G = {
+        ..._.cloneDeep(initialGame),
+        dealer: 2,
+        bids: [
+          { suit: SANS, bid: 100, bidBy: 2 },
+          { suit: SANS, bid: 130, bidBy: 3 }
+        ]
+      };
+      const result = PlaceBid(
+        G,
+        { currentPlayer: 0 },
+        { suit: CLUBS, bid: 132 }
+      );
+      expect(result).toEqual(INVALID_MOVE);
+      expect(G.bids.length).toEqual(2);
+    });
   });
 
   describe('Passing a bid', () => {
