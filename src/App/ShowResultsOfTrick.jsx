@@ -37,45 +37,38 @@ const CardWrapper = styled.div`
 `;
 
 const ShowResultsOfTrick = ({
-  game,
   moves,
   continueNextTrick,
-  playerId,
-  currentPlayer
+  currentTrick: { playedCards, startingPlayer },
+  trump,
+  currentPlayer,
+  continueTrickAutomatically = {}
 }) => {
+  const winner = WinnerOfTrick(playedCards, playedCards[startingPlayer], trump);
+  const points = PointsOfTrick(playedCards, trump);
   const [continueAutomatically, setContinueAutomatically] = useState(
-    (game.continueTrickAutomatically &&
-      game.continueTrickAutomatically[currentPlayer]) === true
+    continueTrickAutomatically[currentPlayer] === true
   );
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (
-        game.continueTrickAutomatically &&
-        game.continueTrickAutomatically[currentPlayer]
-      ) {
+      if (continueTrickAutomatically[currentPlayer]) {
         moves.ContinueToNextTrick(true);
       }
     }, 500);
     return () => clearTimeout(timer);
-  }, [currentPlayer, game.continueTrickAutomatically, moves]);
+  }, [currentPlayer, continueTrickAutomatically, moves]);
 
   // The cards given are not in the order in which they were played,
   // so we will have to manually order them based on the starting player
-  const playedCards = _.concat(
-    ..._(game.currentTrick.playedCards)
+  const playedCardsInOrder = _.concat(
+    ..._(playedCards)
       .reject(card => card === undefined)
-      .partition(({ playedBy }) => playedBy < game.currentTrick.startingPlayer)
+      .partition(({ playedBy }) => playedBy < startingPlayer)
       .reverse()
       .values()
   );
 
-  const winner = WinnerOfTrick(
-    game.currentTrick.playedCards,
-    game.currentTrick.playedCards[game.currentTrick.startingPlayer],
-    game.bid.trump
-  );
-  const points = PointsOfTrick(game.currentTrick.playedCards, game.bid.trump);
   return (
     <>
       <div className="bg-white rounded shadow text-left" style={{ zIndex: 10 }}>
@@ -96,7 +89,7 @@ const ShowResultsOfTrick = ({
 
           <div className="p-3 bg-light border-top">
             <ul className="list-unstyled d-flex justify-content-between">
-              {_.map(playedCards, (card, idx) => {
+              {_.map(playedCardsInOrder, (card, idx) => {
                 return (
                   <CardWrapper
                     className="mx-2"
