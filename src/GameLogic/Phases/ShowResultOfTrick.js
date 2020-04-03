@@ -40,12 +40,12 @@ const AfterFinishingHand = (G, ctx) => {
 // which should allow each player to see the winning card
 
 const ContinueToNextTrick = (G, ctx, continueAutomatically = false) => {
-  G.playesThatWantToContinue.push(ctx.currentPlayer);
+  G.playersThatWantToContinue.push(ctx.currentPlayer);
   G.continueTrickAutomatically[ctx.currentPlayer] = continueAutomatically;
 };
 
 const WriteDownResultsOfTrick = (G, ctx) => {
-  G.playesThatWantToContinue = [];
+  G.playersThatWantToContinue = [];
 
   // Store the trick that was played
   const resultFromRound = finishedTrick(G, ctx);
@@ -57,11 +57,11 @@ const WriteDownResultsOfTrick = (G, ctx) => {
 };
 
 const AllPlayersAreReady = (G, ctx) => {
-  if (G.playesThatWantToContinue === undefined) {
+  if (G.playersThatWantToContinue === undefined) {
     return false;
   }
 
-  if (G.playesThatWantToContinue.length !== 4) {
+  if (G.playersThatWantToContinue.length !== 4) {
     return false;
   }
 
@@ -100,7 +100,7 @@ export const ShowResultOfTrick = {
   onBegin: WriteDownResultsOfTrick,
   endIf: AllPlayersAreReady,
   onEnd: (G, ctx) => {
-    G.playesThatWantToContinue = [];
+    G.playersThatWantToContinue = [];
 
     AfterFinishingTrick(G, ctx);
 
