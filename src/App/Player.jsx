@@ -68,15 +68,15 @@ const Player = ({
     <PlayerContainer id={id}>
       <KlaverJasTable className="p-2 overflow-hidden" flex-grow-1>
         <Action>
-          {phase === 'PlaceBids' &&
-            (playerId === currentPlayer || practice) && (
-              <PlaceBid
-                placeBid={moves.PlaceBid}
-                pass={moves.Pass}
-                currentBids={game.bids}
-                currentPlayer={currentPlayer}
-              />
-            )}
+          {phase === 'PlaceBids' && (
+            <PlaceBid
+              placeBid={moves.PlaceBid}
+              pass={moves.Pass}
+              currentBids={game.bids}
+              currentPlayer={currentPlayer}
+              active={playerId === currentPlayer || practice}
+            />
+          )}
           {phase === 'PlayTricks' && (
             <PlayedCards
               cards={game.currentTrick.playedCards}

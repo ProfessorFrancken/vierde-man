@@ -19,7 +19,7 @@ export const Bid = ({ bid }) => {
   );
 };
 
-const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer }) => {
+const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer, active }) => {
   const [trump, setTrump] = useState(CLUBS);
   const [bid, setBid] = useState(80);
 
@@ -125,23 +125,27 @@ const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer }) => {
       <div className="bg-white">
         <div className="d-flex justify-content-between ">
           <button
+            disabled={!active}
             className="m-0 btn btn-sm btn-text text-muted btn-block bg-light p-3 px-3 "
             type="submit"
             onClick={() => {
-              const result = pass();
-              console.log({ result });
-              return;
+              if (!active) {
+                return;
+              }
+              pass();
             }}
           >
             Pass
           </button>
           <button
+            disabled={!active}
             className="m-0 btn btn-sm btn-text text-primary btn-block bg-light p-3 px-3"
             type="submit"
             onClick={() => {
-              const result = placeBid({ suit: trump, bid });
-              console.log({ result, suit: trump, bid });
-              return;
+              if (!active) {
+                return;
+              }
+              placeBid({ suit: trump, bid });
             }}
           >
             Submit bid
