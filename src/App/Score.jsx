@@ -31,50 +31,6 @@ const Score = ({ rounds, playedTricks, wij, zij, bid }) => {
         <div className="font-weight-bold mb-2">
           Round {rounds.length + 1} / 16
         </div>
-        <table style={{ fontSize: '0.8rem' }} className="d-none">
-          <thead>
-            <tr>
-              <th colSpan="2" className="text-right">
-                Wij
-              </th>
-              <th colSpan="2" className="text-left">
-                Zij
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td className="text-right">{wij}</td>
-              <td className="text-left">{zij}</td>
-            </tr>
-            <tr>
-              <td>
-                (
-                {bid.trump !== undefined &&
-                  [0, 2].includes(bid.highestBidBy) && (
-                    <Bid bid={{ bid: bid.bid, suit: bid.trump }} />
-                  )}
-                )
-              </td>
-              <td>
-                (
-                {bid.trump !== undefined &&
-                  [1, 3].includes(bid.highestBidBy) && (
-                    <Bid bid={{ bid: bid.bid, suit: bid.trump }} />
-                  )}
-                )
-              </td>
-            </tr>
-            <tr>
-              <td colSpan="2" className="text-right">
-                {wij}
-              </td>
-              <td colSpan="2" className="text-left">
-                {zij}
-              </td>
-            </tr>
-          </tbody>
-        </table>
         <ul
           className="list-unstyled ml-0 mb-0 d-flex justify-content-center"
           style={{ fontSize: '0.8rem' }}
