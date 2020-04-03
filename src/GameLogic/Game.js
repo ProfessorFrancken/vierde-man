@@ -40,7 +40,9 @@ export const KlaverJassen = {
       },
       dealer: ctx.numPlayers - 1,
       wij: 0,
-      zij: 0
+      zij: 0,
+      // Player settings
+      continueTrickAutomatically: {}
     };
   },
 

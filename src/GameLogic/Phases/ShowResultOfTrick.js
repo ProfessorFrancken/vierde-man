@@ -41,17 +41,19 @@ const AfterFinishingHand = (G, ctx) => {
 
 const ContinueToNextTrick = (G, ctx, continueAutomatically = false) => {
   G.playesThatWantToContinue.push(ctx.currentPlayer);
-
-  if (G.continueTrickAutomatically === undefined) {
-    G.continueTrickAutomatically = {};
-  }
   G.continueTrickAutomatically[ctx.currentPlayer] = continueAutomatically;
 };
 
 const WriteDownResultsOfTrick = (G, ctx) => {
   G.playesThatWantToContinue = [];
 
-  // Store current trick
+  // Store the trick that was played
+  const resultFromRound = finishedTrick(G, ctx);
+  if (resultFromRound === undefined) {
+    return;
+  }
+
+  G.playedTricks.push(resultFromRound);
 };
 
 const AllPlayersAreReady = (G, ctx) => {
@@ -64,7 +66,7 @@ const AllPlayersAreReady = (G, ctx) => {
   }
 
   // TODO: add the trick at the beginning of the phase instead
-  if (G.playedTricks.length === 7) {
+  if (G.playedTricks.length === 8) {
     return { next: 'PlaceBids' };
   }
 
@@ -75,10 +77,6 @@ const finishedTrick = (
   { currentTrick: { playedCards, startingPlayer }, bid },
   ctx
 ) => {
-  if (!_.every(playedCards, isDefined)) {
-    return undefined;
-  }
-
   const { trump } = bid;
   const points = PointsOfTrick(playedCards, trump);
   const winner = WinnerOfTrick(playedCards, playedCards[startingPlayer], trump);
@@ -93,12 +91,6 @@ const finishedTrick = (
   };
 };
 const AfterFinishingTrick = (G, ctx) => {
-  const resultFromRound = finishedTrick(G, ctx);
-  if (resultFromRound === undefined) {
-    return;
-  }
-
-  G.playedTricks.push(resultFromRound);
   startNewTrick(G, ctx);
 };
 

@@ -178,7 +178,8 @@ describe('dealing hands', () => {
           // Set the dealer to player 3 so that player 0 starts this round
           dealer: 3,
           them: 0,
-          we: 0
+          we: 0,
+          continueTrickAutomatically: {}
         };
       }
     };
