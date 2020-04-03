@@ -22,7 +22,7 @@ const suitColor = {
   APRIL: '#8f8500'
 };
 const CardLi = styled.li.attrs(props => ({
-  cardScale: props.cardScale || 2.5
+  cardScale: props.cardScale || 2.0
 }))`
   border-width: 2px !important;
   transition: all 0.3s ease-out;
