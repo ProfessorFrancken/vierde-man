@@ -7,6 +7,7 @@ import PlayerHand from 'Components/PlayerHand';
 import ShowResultsOfTrick from 'App/ShowResultsOfTrick';
 import ShowResultsOfHand from 'App/ShowResultOfHand';
 import PlayedCards from 'App/PlayedCards';
+import GameOver from 'App/GameOver';
 
 const PlayerContainer = styled.div`
   display: flex;
@@ -107,15 +108,19 @@ const Player = ({
               continueTrickAutomatically={game.continueTrickAutomatically}
             />
           )}
+
+          {phase === null && <GameOver />}
         </Action>
 
-        <Score
-          rounds={game.rounds}
-          playedTricks={game.playedTricks}
-          wij={game.wij}
-          zij={game.zij}
-          bid={game.bid}
-        />
+        {phase !== null && (
+          <Score
+            rounds={game.rounds}
+            playedTricks={game.playedTricks}
+            wij={game.wij}
+            zij={game.zij}
+            bid={game.bid}
+          />
+        )}
 
         {[0, 1, 2, 3].map(positionId => {
           const id = (playerId + positionId) % 4;
