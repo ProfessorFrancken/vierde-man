@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { SuitStringToComponent } from 'Components/Suits';
-import Card from 'Components/Card';
-import { WinnerOfTrick, PointsOfTrick } from 'GameLogic/Card';
 import _ from 'lodash';
-import styled, { css } from 'styled-components';
 
 const Prominent = ({ children }) => (
   <span>{children === 33 ? "'Vo" : children}</span>
@@ -72,27 +69,35 @@ const ShowResultsOfHand = ({
               <tr>
                 <td>Points</td>
                 <td>
-                  {_(tricksByWij)
-                    .map(({ points }) => points)
-                    .sum()}
+                  <Prominent>
+                    {_(tricksByWij)
+                      .map(({ points }) => points)
+                      .sum()}
+                  </Prominent>
                 </td>
                 <td>
-                  {_(tricksByZij)
-                    .map(({ points }) => points)
-                    .sum()}
+                  <Prominent>
+                    {_(tricksByZij)
+                      .map(({ points }) => points)
+                      .sum()}
+                  </Prominent>
                 </td>
               </tr>
               <tr>
                 <td>Honor</td>
                 <td>
-                  {_(tricksByWij)
-                    .map(({ honor }) => honor)
-                    .sum()}
+                  <Prominent>
+                    {_(tricksByWij)
+                      .map(({ honor }) => honor)
+                      .sum()}
+                  </Prominent>
                 </td>
                 <td>
-                  {_(tricksByZij)
-                    .map(({ honor }) => honor)
-                    .sum()}
+                  <Prominent>
+                    {_(tricksByZij)
+                      .map(({ honor }) => honor)
+                      .sum()}
+                  </Prominent>
                 </td>
               </tr>
               <tr>
@@ -121,8 +126,12 @@ const ShowResultsOfHand = ({
             <tfoot>
               <tr>
                 <th>Total</th>
-                <td>{round.wij}</td>
-                <td>{round.zij}</td>
+                <td>
+                  <Prominent>{round.wij}</Prominent>
+                </td>
+                <td>
+                  <Prominent>{round.zij}</Prominent>
+                </td>
               </tr>
             </tfoot>
           </table>

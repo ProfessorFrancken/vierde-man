@@ -1,39 +1,9 @@
 import { ActivePlayers } from 'boardgame.io/core';
-import { pointsFromHands, PointsOfTrick, WinnerOfTrick } from '../Card';
-import { startNewTrick, PlayerToStartCurrentTrick } from './PlayTricks';
+import { PointsOfTrick, WinnerOfTrick } from '../Card';
+import { startNewTrick } from './PlayTricks';
 import _ from 'lodash';
 
 const isDefined = x => x !== undefined;
-
-const keepScoreOfPlayedRound = (G, ctx) => {
-  const { wij, zij } = pointsFromHands(G);
-
-  G.rounds.push({
-    wij,
-    zij,
-    dealer: G.dealer,
-    playedTricks: [...G.playedTricks],
-    bids: [...G.bids]
-  });
-  G.wij = _.sum(_.map(G.rounds, ({ wij }) => wij));
-  G.zij = _.sum(_.map(G.rounds, ({ zij }) => zij));
-};
-
-// Reset bids so that we can start bidding again
-const startANewRound = (G, ctx) => {
-  G.playedTricks = [];
-  G.bids = [];
-  G.bid = undefined;
-  G.dealer = (G.dealer + 1) % ctx.numPlayers;
-
-  // TODO: check if we can replace this with an end if that returns stuff?
-  ctx.events.setPhase('PlaceBids');
-};
-
-const AfterFinishingHand = (G, ctx) => {
-  keepScoreOfPlayedRound(G, ctx);
-  startANewRound(G, ctx);
-};
 
 // This phase is used as an intermediate after playing one trick
 // it automatically continues to the PlayTrick phase after a short while,

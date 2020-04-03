@@ -1,6 +1,5 @@
 import { ActivePlayers } from 'boardgame.io/core';
-import { pointsFromHands, PointsOfTrick, WinnerOfTrick } from '../Card';
-import { startNewTrick, PlayerToStartCurrentTrick } from './PlayTricks';
+import { pointsFromHands } from '../Card';
 import _ from 'lodash';
 
 // This phase is used as an intermediate after playing a hand where a player clicks the "Play next hand button"
