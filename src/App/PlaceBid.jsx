@@ -84,8 +84,8 @@ const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer, active }) => {
       <div className="bg-white border-top p-3">
         <h4 className="h6">Place bid</h4>
 
-        <div className="d-flex  justify-content-between">
-          <div className="form-group flex-grow-1 mr-2">
+        <div className="d-flex justify-content-between flex-md-row flex-column">
+          <div className="form-group flex-grow-1 mr-md-2">
             <label htmlFor="">Trump</label>
             <select
               className="form-control form-control-sm"
@@ -105,7 +105,7 @@ const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer, active }) => {
               ))}
             </select>
           </div>
-          <div className="form-group flex-grow-1 ml-2">
+          <div className="form-group flex-grow-1 ml-md-2">
             <label htmlFor="">Bid</label>
             <select
               className="form-control form-control-sm"
