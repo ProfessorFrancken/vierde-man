@@ -42,9 +42,20 @@ export const canPlaceBid = (placedBids, bid) => {
     return false;
   }
 
+  // Don't allow duplicate bids
+  if (
+    _.some(
+      placedBids,
+      placedBid => bid.suit === placedBid.suit && bid.bid === placedBid.bid
+    )
+  ) {
+    return false;
+  }
+
   const highestBid = _.maxBy(placedBids, bid =>
     bid !== undefined && !bidIsPass(bid) ? bid.bid : 0
   );
+
   if (highestBid === undefined || highestBid === null) {
     return true;
   }
