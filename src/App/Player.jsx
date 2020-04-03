@@ -111,6 +111,7 @@ const Player = ({
                 playerId={id}
                 moves={moves}
                 visible={practice ? id === currentPlayer : id === playerId}
+                active={phase === 'PlayTricks'}
               />
             </PlayerHandArea>
           );
