@@ -19,7 +19,7 @@ export const PlayerToStartCurrentTrick = (
   return (dealer + 1) % numPlayers;
 };
 
-const startNewTrick = (G, ctx) => {
+export const startNewTrick = (G, ctx) => {
   G.currentTrick = {
     startingPlayer: PlayerToStartCurrentTrick(G, ctx),
     playedCards: {

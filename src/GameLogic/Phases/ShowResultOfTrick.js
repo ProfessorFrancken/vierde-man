@@ -1,22 +1,32 @@
 import { ActivePlayers } from 'boardgame.io/core';
 import { pointsFromHands, PointsOfTrick, WinnerOfTrick } from '../Card';
+import { startNewTrick, PlayerToStartCurrentTrick } from './PlayTricks';
 import _ from 'lodash';
 
 const isDefined = x => x !== undefined;
 
-export const PlayerToStartCurrentTrick = (
-  { dealer, playedTricks },
-  { numPlayers }
-) => {
-  if (playedTricks.length !== 0) {
-    // The winner of the previous trick starts the current trick
-    const { winner } = playedTricks[playedTricks.length - 1];
+const keepScoreOfPlayedRound = (G, ctx) => {
+  const { wij, zij } = pointsFromHands(G);
 
-    return winner;
-  }
+  G.rounds.push({ wij, zij });
+  G.wij = _.sum(_.map(G.rounds, ({ wij }) => wij));
+  G.zij = _.sum(_.map(G.rounds, ({ zij }) => zij));
+};
 
-  // Rotate based on the previous dealer
-  return (dealer + 1) % numPlayers;
+// Reset bids so that we can start bidding again
+const startANewRound = (G, ctx) => {
+  G.playedTricks = [];
+  G.bids = [];
+  G.bid = undefined;
+  G.dealer = (G.dealer + 1) % ctx.numPlayers;
+
+  // TODO: check if we can replace this with an end if that returns stuff?
+  ctx.events.setPhase('PlaceBids');
+};
+
+const AfterFinishingHand = (G, ctx) => {
+  keepScoreOfPlayedRound(G, ctx);
+  startANewRound(G, ctx);
 };
 
 // This phase is used as an intermediate after playing one trick
@@ -47,11 +57,41 @@ const AllPlayersAreReady = (G, ctx) => {
     return false;
   }
 
-  if (G.playedTricks.length !== 7) {
-    return true;
+  // TODO: add the trick at the beginning of the phase instead
+  if (G.playedTricks.length === 7) {
+    return { next: 'PlaceBids' };
   }
 
-  return { next: 'PlaceBids' };
+  return true;
+};
+
+const finishedTrick = (
+  { currentTrick: { playedCards, startingPlayer }, bid },
+  ctx
+) => {
+  if (!_.every(playedCards, isDefined)) {
+    return undefined;
+  }
+
+  const { trump } = bid;
+  const points = PointsOfTrick(playedCards, trump);
+  const winner = WinnerOfTrick(playedCards, playedCards[startingPlayer], trump);
+
+  return {
+    winner: winner,
+    points: points.points,
+    honor: points.honor,
+    cards: _.map(playedCards, card => card)
+  };
+};
+const AfterFinishingTrick = (G, ctx) => {
+  const resultFromRound = finishedTrick(G, ctx);
+  if (resultFromRound === undefined) {
+    return;
+  }
+
+  G.playedTricks.push(resultFromRound);
+  startNewTrick(G, ctx);
 };
 
 // TODO: allow players to optionally accept or decline (laf!) honor
@@ -65,80 +105,12 @@ export const ShowResultOfTrick = {
   endIf: AllPlayersAreReady,
   onEnd: (G, ctx) => {
     G.playesThatWantToContinue = [];
-    const startNewTrick = (G, ctx) => {
-      G.currentTrick = {
-        startingPlayer: PlayerToStartCurrentTrick(G, ctx),
-        playedCards: {
-          0: undefined,
-          1: undefined,
-          2: undefined,
-          3: undefined
-        }
-      };
-    };
-
-    const finishedTrick = (
-      { currentTrick: { playedCards, startingPlayer }, bid },
-      ctx
-    ) => {
-      if (!_.every(playedCards, isDefined)) {
-        return undefined;
-      }
-
-      const { trump } = bid;
-      const points = PointsOfTrick(playedCards, trump);
-      const winner = WinnerOfTrick(
-        playedCards,
-        playedCards[startingPlayer],
-        trump
-      );
-
-      return {
-        winner: winner,
-        points: points.points,
-        honor: points.honor,
-        cards: _.map(playedCards, card => card)
-      };
-    };
-    const AfterFinishingTrick = (G, ctx) => {
-      const resultFromRound = finishedTrick(G, ctx);
-      if (resultFromRound === undefined) {
-        return;
-      }
-
-      G.playedTricks.push(resultFromRound);
-      startNewTrick(G, ctx);
-    };
 
     AfterFinishingTrick(G, ctx);
 
     if (G.playedTricks.length !== 8) {
       return;
     }
-
-    const keepScoreOfPlayedRound = (G, ctx) => {
-      const { wij, zij } = pointsFromHands(G);
-
-      G.rounds.push({ wij, zij });
-      G.wij = _.sum(_.map(G.rounds, ({ wij }) => wij));
-      G.zij = _.sum(_.map(G.rounds, ({ zij }) => zij));
-    };
-
-    // Reset bids so that we can start bidding again
-    const startANewRound = (G, ctx) => {
-      G.playedTricks = [];
-      G.bids = [];
-      G.bid = undefined;
-      G.dealer = (G.dealer + 1) % ctx.numPlayers;
-
-      // TODO: check if we can replace this with an end if that returns stuff?
-      ctx.events.setPhase('PlaceBids');
-    };
-
-    const AfterFinishingHand = (G, ctx) => {
-      keepScoreOfPlayedRound(G, ctx);
-      startANewRound(G, ctx);
-    };
     AfterFinishingHand(G, ctx);
     // Reset currentTrick
     // If
