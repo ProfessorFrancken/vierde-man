@@ -1,5 +1,5 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
-import { handContains, WinnerOfTrick, rankOfTrumpCard } from 'GameLogic/Card';
+import { handContains, WinnerOfTrick, rankOfTrumpCard } from '../Card';
 import _ from 'lodash';
 
 const isDefined = x => x !== undefined;

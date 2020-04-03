@@ -1,6 +1,6 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import _ from 'lodash';
-import { SANS } from 'GameLogic/Card';
+import { SANS } from '../Card';
 
 const bidIsPass = ({ bid, suit }) => bid === null && suit === null;
 export const PASS = null;

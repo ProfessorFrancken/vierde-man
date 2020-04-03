@@ -1,5 +1,5 @@
 import { ActivePlayers } from 'boardgame.io/core';
-import { pointsFromHands, PointsOfTrick, WinnerOfTrick } from 'GameLogic/Card';
+import { pointsFromHands, PointsOfTrick, WinnerOfTrick } from '../Card';
 import _ from 'lodash';
 
 const isDefined = x => x !== undefined;
