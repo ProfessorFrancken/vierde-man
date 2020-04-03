@@ -102,10 +102,6 @@ const AfterFinishingTrick = (G, ctx) => {
   startNewTrick(G, ctx);
 };
 
-// TODO: allow players to optionally accept or decline (laf!) honor
-const AcceptHonor = () => {};
-const DeclineHonor = () => {};
-
 export const ShowResultOfTrick = {
   next: 'PlayTricks',
   moves: { ContinueToNextTrick },
