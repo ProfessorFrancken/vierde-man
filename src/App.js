@@ -35,7 +35,7 @@ const DebugApp = props => {
     <div className="App">
       <div className="d-flex justify-content-between table-decoration">
         <div className="d-flex flex-column flex-grow-1">
-          {!urlParams.has('hoi') ? (
+          {!(urlParams.has('hoi') || urlParams.has('practice')) ? (
             <AprilFirst />
           ) : (
             <SinglePlayer>
@@ -45,6 +45,7 @@ const DebugApp = props => {
                 moves={moves}
                 phase={phase}
                 currentPlayer={parseInt(ctx.currentPlayer, 10)}
+                practice={urlParams.has('practice')}
               />
             </SinglePlayer>
           )}
@@ -56,29 +57,39 @@ const DebugApp = props => {
 
 // TODO: when using a Lobby, consider using the ClientFactory to set enhancer
 // https://github.com/nicolodavis/boardgame.io/blob/master/src/lobby/react.js
-const KlaverJasClient = Client({
-  game: KlaverJassen,
-  numPlayers: 4,
-  debug: true,
-  board: DebugApp,
-  multiplayer: Local(),
-  loading: props => {
-    return 'Loading component';
-  },
-  enhancer: applyMiddleware(
-    logger,
-    playSoundsMiddleware,
-    loadedSoundsMiddleware
-  )
-});
+const KlaverJasClientFactory = multiplayer =>
+  Client({
+    game: KlaverJassen,
+    numPlayers: 4,
+    debug: true,
+    board: DebugApp,
+    multiplayer,
+    loading: props => {
+      return 'Loading component';
+    },
+    enhancer: applyMiddleware(
+      logger,
+      playSoundsMiddleware,
+      loadedSoundsMiddleware
+    )
+  });
 
 const LocalMultiplyaerApp = props => {
+  const urlParams = new URLSearchParams(window.location.search);
+
+  if (urlParams.has('practice')) {
+    const Client = KlaverJasClientFactory(undefined);
+    return <Client />;
+  }
+
+  const LocalKlaverJasClient = KlaverJasClientFactory(Local());
+
   return (
     <PlayerGrid>
-      <KlaverJasClient playerID="0" />
-      <KlaverJasClient playerID="1" />
-      <KlaverJasClient playerID="2" />
-      <KlaverJasClient playerID="3" />
+      <LocalKlaverJasClient playerID="0" />
+      <LocalKlaverJasClient playerID="1" />
+      <LocalKlaverJasClient playerID="2" />
+      <LocalKlaverJasClient playerID="3" />
     </PlayerGrid>
   );
 };

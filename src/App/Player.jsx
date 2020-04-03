@@ -59,7 +59,8 @@ const Player = ({
   moves,
   game,
   phase,
-  currentPlayer
+  currentPlayer,
+  practice = false
 }) => {
   const playerId = id;
 
@@ -67,14 +68,15 @@ const Player = ({
     <PlayerContainer id={id}>
       <KlaverJasTable className="p-2 overflow-hidden" flex-grow-1>
         <Action>
-          {phase === 'PlaceBids' && playerId === currentPlayer && (
-            <PlaceBid
-              placeBid={moves.PlaceBid}
-              pass={moves.Pass}
-              currentBids={game.bids}
-              currentPlayer={currentPlayer}
-            />
-          )}
+          {phase === 'PlaceBids' &&
+            (playerId === currentPlayer || practice) && (
+              <PlaceBid
+                placeBid={moves.PlaceBid}
+                pass={moves.Pass}
+                currentBids={game.bids}
+                currentPlayer={currentPlayer}
+              />
+            )}
           {phase === 'PlayTricks' && (
             <PlayedCards
               cards={game.currentTrick.playedCards}
@@ -104,9 +106,10 @@ const Player = ({
               <PlayerHand
                 game={game}
                 hand={game.hands[id]}
+                phase={phase}
                 playerId={id}
                 moves={moves}
-                visible={id === playerId}
+                visible={practice ? id === currentPlayer : id === playerId}
               />
             </PlayerHandArea>
           );
