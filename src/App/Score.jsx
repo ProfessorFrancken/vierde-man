@@ -3,6 +3,10 @@ import { Bid } from 'App/PlaceBid';
 import styled from 'styled-components';
 import _ from 'lodash';
 
+const Prominent = ({ children }) => (
+  <span>{children === 33 ? "'Vo" : children}</span>
+);
+
 const ScoreContainer = styled.div`
   grid-area: s;
   display: flex;
@@ -84,14 +88,14 @@ const Score = ({ game }) => {
                     <Bid bid={{ bid: game.bid.bid, suit: game.bid.trump }} />
                   )}
               </div>
-              <span>{tricksByWij}</span>
+              <Prominent>{tricksByWij}</Prominent>
             </div>
-            <span>{game.wij}</span>
+            <Prominent>{game.wij}</Prominent>
           </li>
           <li className="text-muted p-1 mx-2 d-flex flex-column text-left align-items-start">
             <strong>Zij</strong>
             <div className="d-flex justify-content-between">
-              <span>{tricksByZij}</span>
+              <Prominent>{tricksByZij}</Prominent>
               <div className="ml-2">
                 {game.bid.trump !== undefined &&
                   [1, 3].includes(game.bid.highestBidBy) && (
@@ -99,7 +103,7 @@ const Score = ({ game }) => {
                   )}
               </div>
             </div>
-            <span>{game.zij}</span>
+            <Prominent>{game.zij}</Prominent>
           </li>
         </ul>
       </div>

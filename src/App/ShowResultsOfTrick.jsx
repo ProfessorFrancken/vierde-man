@@ -5,6 +5,10 @@ import { WinnerOfTrick, PointsOfTrick } from 'GameLogic/Card';
 import _ from 'lodash';
 import styled, { css } from 'styled-components';
 
+const Prominent = ({ children }) => (
+  <span>{children === 33 ? "'Vo" : children}</span>
+);
+
 export const Bid = ({ bid }) => {
   if (bid.bid === null) {
     return <span>Pass</span>;
@@ -80,11 +84,11 @@ const ShowResultsOfTrick = ({
             <h3 className="h5">Player {winner} won the trick</h3>
             <ul className="list-unstyled mb-0 d-flex justify-content-between text-muted">
               <li className="text-center">
-                <strong>Points </strong>: {points.points}
+                <strong>Points </strong>: <Prominent>{points.points}</Prominent>
               </li>
               {points.honor > 0 && (
                 <li className="text-center">
-                  <strong>Honor </strong>: {points.honor}
+                  <strong>Honor </strong>: <Prominent>{points.honor}</Prominent>
                 </li>
               )}
             </ul>
