@@ -87,7 +87,9 @@ const finishedTrick = (
     winner: winner,
     points: points.points,
     honor: points.honor,
-    cards: _.map(playedCards, card => card)
+    cards: _.map(playedCards, card => card),
+    startingPlayer,
+    bid
   };
 };
 const AfterFinishingTrick = (G, ctx) => {
