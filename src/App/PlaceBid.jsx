@@ -43,7 +43,14 @@ const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer, active }) => {
   const allowedBids = allowedBidsOnTrump(currentBids, trump);
 
   if (!allowedBids.includes(bid)) {
-    setBid(allowedBids[0]);
+    if (allowedBids.length === 0) {
+      if (trump === SANS) {
+        // Can't bid any higher, so let's revert to a non SANS bid
+        setTrump(CLUBS);
+      }
+    } else {
+      setBid(allowedBids[0]);
+    }
   }
 
   const changeTrump = e => {
@@ -137,13 +144,15 @@ const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer, active }) => {
             >
               Pass
             </button>
-            <button
-              className="m-0 btn btn-sm btn-text text-primary btn-block bg-light p-3 px-3"
-              type="submit"
-              onClick={() => placeBid({ suit: trump, bid })}
-            >
-              Submit bid
-            </button>
+            {allowedBids.length > 0 && (
+              <button
+                className="m-0 btn btn-sm btn-text text-primary btn-block bg-light p-3 px-3"
+                type="submit"
+                onClick={() => placeBid({ suit: trump, bid })}
+              >
+                Submit bid
+              </button>
+            )}
           </div>
         )}
       </div>
