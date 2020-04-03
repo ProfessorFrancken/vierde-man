@@ -8,7 +8,13 @@ const isDefined = x => x !== undefined;
 const keepScoreOfPlayedRound = (G, ctx) => {
   const { wij, zij } = pointsFromHands(G);
 
-  G.rounds.push({ wij, zij });
+  G.rounds.push({
+    wij,
+    zij,
+    dealer: G.dealer,
+    playedTricks: [...G.playedTricks],
+    bids: [...G.bids]
+  });
   G.wij = _.sum(_.map(G.rounds, ({ wij }) => wij));
   G.zij = _.sum(_.map(G.rounds, ({ zij }) => zij));
 };
