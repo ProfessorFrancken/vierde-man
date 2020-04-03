@@ -1,0 +1,41 @@
+version: '2'
+
+networks:
+  traefik:
+    external:
+      name: traefik_webgateway
+
+services:
+  client:
+    image: node:13.12.0
+    restart: always
+    volumes:
+      - ./:/var/www/vierdeman
+    working_dir: /var/www/vierdeman
+    command: npm run start
+    networks:
+      - default
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=vierdeman-client-web"
+      - "traefik.frontend.rule=Host:vierde-man.nl.localhost"
+      - "traefik.port=3000"
+      - "traefik.docker.network=traefik_webgateway"
+
+  server:
+    image: node:13.12.0
+    restart: always
+    volumes:
+      - ./:/var/www/vierdeman
+    working_dir: /var/www/vierdeman
+    command: node -r esm src/server.js
+    networks:
+      - default
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=vierdeman-client-server"
+      - "traefik.frontend.rule=Host:api.vierde-man.nl.localhost"
+      - "traefik.port=8000"
+      - "traefik.docker.network=traefik_webgateway"
