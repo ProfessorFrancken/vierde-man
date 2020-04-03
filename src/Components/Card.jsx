@@ -5,8 +5,6 @@ import { SUITES } from 'GameLogic/Card';
 import francken from 'assets/francken-white-logo.png';
 const { SPADES, HEARTS, CLUBS, DIAMONDS } = SUITES;
 
-// TODO: if player name is Sven or sbte, then shake cards
-
 const suitIcon = {
   [SPADES]: '♠',
   [HEARTS]: '♥',
