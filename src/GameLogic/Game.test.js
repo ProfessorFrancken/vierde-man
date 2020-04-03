@@ -453,12 +453,12 @@ describe('dealing hands', () => {
 
       {
         const { G, ctx } = client.store.getState();
-        if (handsPlayed < 15) {
-          expect(ctx.phase).toEqual('PlaceBids');
-        } else {
-          expect(ctx.phase).toEqual(null);
-        }
+        expect(ctx.phase).toEqual('ShowResultOfHand');
       }
+      client.moves.PlayNextHand();
+      client.moves.PlayNextHand();
+      client.moves.PlayNextHand();
+      client.moves.PlayNextHand();
     }
 
     {

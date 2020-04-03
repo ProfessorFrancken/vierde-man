@@ -65,12 +65,11 @@ const AllPlayersAreReady = (G, ctx) => {
     return false;
   }
 
-  // TODO: add the trick at the beginning of the phase instead
   if (G.playedTricks.length === 8) {
-    return { next: 'PlaceBids' };
+    return { next: 'ShowResultOfHand' };
   }
 
-  return true;
+  return { next: 'PlayTricks' };
 };
 
 const finishedTrick = (
@@ -90,9 +89,6 @@ const finishedTrick = (
     bid
   };
 };
-const AfterFinishingTrick = (G, ctx) => {
-  startNewTrick(G, ctx);
-};
 
 export const ShowResultOfTrick = {
   next: 'PlayTricks',
@@ -102,14 +98,7 @@ export const ShowResultOfTrick = {
   onEnd: (G, ctx) => {
     G.playersThatWantToContinue = [];
 
-    AfterFinishingTrick(G, ctx);
-
-    if (G.playedTricks.length !== 8) {
-      return;
-    }
-    AfterFinishingHand(G, ctx);
-    // Reset currentTrick
-    // If
+    startNewTrick(G, ctx);
   },
 
   turn: {

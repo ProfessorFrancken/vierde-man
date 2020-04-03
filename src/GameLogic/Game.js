@@ -2,9 +2,14 @@ import { InitialDeck } from './Card';
 import { PlaceBids } from './Phases/PlaceBids';
 import { PlayTricks } from './Phases/PlayTricks';
 import { ShowResultOfTrick } from './Phases/ShowResultOfTrick';
+import { ShowResultOfHand } from './Phases/ShowResultOfHand';
 import Randomness from './Phases/Random';
 
 const SixTeenRoundsHaveBeenPlayed = (G, ctx) => {
+  if (G.bid !== undefined) {
+    return false;
+  }
+
   return G.rounds.length === 4 * 4
     ? {
         winner: G.wij === G.zij ? 'Wij & Zij' : G.wij > G.zij ? 'wij' : 'zij',
@@ -53,7 +58,8 @@ export const KlaverJassen = {
   phases: {
     PlaceBids,
     PlayTricks,
-    ShowResultOfTrick
+    ShowResultOfTrick,
+    ShowResultOfHand
   },
   plugins: [Randomness],
 

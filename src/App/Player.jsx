@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Score from 'App/Score';
 import PlayerHand from 'Components/PlayerHand';
 import ShowResultsOfTrick from 'App/ShowResultsOfTrick';
+import ShowResultsOfHand from 'App/ShowResultOfHand';
 import PlayedCards from 'App/PlayedCards';
 
 const PlayerContainer = styled.div`
@@ -89,6 +90,16 @@ const Player = ({
 
           {phase === 'ShowResultOfTrick' && (
             <ShowResultsOfTrick
+              moves={moves}
+              currentPlayer={currentPlayer}
+              currentTrick={game.currentTrick}
+              trump={game.bid.trump}
+              continueTrickAutomatically={game.continueTrickAutomatically}
+            />
+          )}
+          {phase === 'ShowResultOfHand' && (
+            <ShowResultsOfHand
+              game={game}
               moves={moves}
               currentPlayer={currentPlayer}
               currentTrick={game.currentTrick}
