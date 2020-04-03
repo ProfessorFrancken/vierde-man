@@ -16,7 +16,7 @@ export const ShuffleDeck = (G, ctx) => {
 export const allowedBidsOnTrump = (bids, trump) =>
   (trump === SANS
     ? [70, 80, 90, 100, 110, 120, 130, 'pit']
-    : [80, 90, 100, 110, 120, 130, 140, 150, 160, 'pit']
+    : [82, 92, 102, 112, 122, 132, 142, 152, 162, 'pit']
   ).filter(bid => canPlaceBid(bids, { bid, suit: trump }));
 
 export const DealCards = (G, ctx, deck) => {
@@ -32,7 +32,7 @@ export const DealCards = (G, ctx, deck) => {
 
 const isSans = ({ suit }) => suit === SANS;
 const isAValidBid = bid =>
-  bid !== undefined && (bid.bid >= 80 || (isSans(bid) && bid.bid >= 70));
+  bid !== undefined && (bid.bid >= 82 || (isSans(bid) && bid.bid >= 70));
 export const canPlaceBid = (placedBids, bid) => {
   if (bidIsPass(bid)) {
     return true;
@@ -54,7 +54,7 @@ export const canPlaceBid = (placedBids, bid) => {
   }
 
   if (isSans(bid) && !isSans(highestBid)) {
-    return bid.bid === highestBid.bid;
+    return bid.bid >= highestBid.bid - 2;
   }
 
   return false;

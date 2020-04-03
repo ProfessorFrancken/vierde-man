@@ -106,44 +106,44 @@ describe('bidding phase', () => {
     expect(result).toEqual(INVALID_MOVE);
   });
 
-  it('when not bidding on SANS we start bidding from 80', () => {
+  it('when not bidding on SANS we start bidding from 82', () => {
     const G = { ..._.cloneDeep(initialGame), dealer: 3 };
     const result = PlaceBid(
       G,
       { currentPlayer: 0 },
-      { suit: DIAMONDS, bid: 80 }
+      { suit: DIAMONDS, bid: 82 }
     );
 
     expect(result).toEqual(undefined);
-    expect(G.bids).toEqual([{ suit: DIAMONDS, bid: 80, bidBy: 0 }]);
+    expect(G.bids).toEqual([{ suit: DIAMONDS, bid: 82, bidBy: 0 }]);
   });
 
   it('Allows bidding higher until three people have passed', () => {
     const G = { ..._.cloneDeep(initialGame), dealer: 3 };
-    PlaceBid(G, { currentPlayer: 0 }, { suit: DIAMONDS, bid: 80 });
-    PlaceBid(G, { currentPlayer: 1 }, { suit: HEARTS, bid: 90 });
-    PlaceBid(G, { currentPlayer: 2 }, { suit: DIAMONDS, bid: 100 });
-    PlaceBid(G, { currentPlayer: 3 }, { suit: HEARTS, bid: 110 });
-    PlaceBid(G, { currentPlayer: 0 }, { suit: DIAMONDS, bid: 120 });
-    PlaceBid(G, { currentPlayer: 1 }, { suit: HEARTS, bid: 130 });
-    PlaceBid(G, { currentPlayer: 2 }, { suit: DIAMONDS, bid: 140 });
-    PlaceBid(G, { currentPlayer: 3 }, { suit: HEARTS, bid: 150 });
-    PlaceBid(G, { currentPlayer: 0 }, { suit: DIAMONDS, bid: 160 });
+    PlaceBid(G, { currentPlayer: 0 }, { suit: DIAMONDS, bid: 82 });
+    PlaceBid(G, { currentPlayer: 1 }, { suit: HEARTS, bid: 92 });
+    PlaceBid(G, { currentPlayer: 2 }, { suit: DIAMONDS, bid: 102 });
+    PlaceBid(G, { currentPlayer: 3 }, { suit: HEARTS, bid: 112 });
+    PlaceBid(G, { currentPlayer: 0 }, { suit: DIAMONDS, bid: 122 });
+    PlaceBid(G, { currentPlayer: 1 }, { suit: HEARTS, bid: 132 });
+    PlaceBid(G, { currentPlayer: 2 }, { suit: DIAMONDS, bid: 142 });
+    PlaceBid(G, { currentPlayer: 3 }, { suit: HEARTS, bid: 152 });
+    PlaceBid(G, { currentPlayer: 0 }, { suit: DIAMONDS, bid: 162 });
     Pass(G, { currentPlayer: 1 });
     Pass(G, { currentPlayer: 2 });
     const result = Pass(G, { currentPlayer: 3 });
 
     expect(result).toEqual(undefined);
     expect(G.bids).toEqual([
-      { suit: DIAMONDS, bid: 80, bidBy: 0 },
-      { suit: HEARTS, bid: 90, bidBy: 1 },
-      { suit: DIAMONDS, bid: 100, bidBy: 2 },
-      { suit: HEARTS, bid: 110, bidBy: 3 },
-      { suit: DIAMONDS, bid: 120, bidBy: 0 },
-      { suit: HEARTS, bid: 130, bidBy: 1 },
-      { suit: DIAMONDS, bid: 140, bidBy: 2 },
-      { suit: HEARTS, bid: 150, bidBy: 3 },
-      { suit: DIAMONDS, bid: 160, bidBy: 0 },
+      { suit: DIAMONDS, bid: 82, bidBy: 0 },
+      { suit: HEARTS, bid: 92, bidBy: 1 },
+      { suit: DIAMONDS, bid: 102, bidBy: 2 },
+      { suit: HEARTS, bid: 112, bidBy: 3 },
+      { suit: DIAMONDS, bid: 122, bidBy: 0 },
+      { suit: HEARTS, bid: 132, bidBy: 1 },
+      { suit: DIAMONDS, bid: 142, bidBy: 2 },
+      { suit: HEARTS, bid: 152, bidBy: 3 },
+      { suit: DIAMONDS, bid: 162, bidBy: 0 },
       { suit: null, bid: null, bidBy: 1 },
       { suit: null, bid: null, bidBy: 2 },
       { suit: null, bid: null, bidBy: 3 }
@@ -156,16 +156,16 @@ describe('bidding phase', () => {
     const G = {
       ..._.cloneDeep(initialGame),
       dealer: 2,
-      bids: [{ suit: HEARTS, bid: 100, bidBy: 3 }]
+      bids: [{ suit: HEARTS, bid: 102, bidBy: 3 }]
     };
     const result = PlaceBid(
       G,
       { currentPlayer: 0 },
-      { suit: DIAMONDS, bid: 80 }
+      { suit: DIAMONDS, bid: 82 }
     );
 
     expect(result).toEqual(INVALID_MOVE);
-    expect(G.bids).toEqual([{ suit: HEARTS, bid: 100, bidBy: 3 }]);
+    expect(G.bids).toEqual([{ suit: HEARTS, bid: 102, bidBy: 3 }]);
   });
 
   describe('Bidding on SANS', () => {
@@ -173,7 +173,7 @@ describe('bidding phase', () => {
       const G = {
         ..._.cloneDeep(initialGame),
         dealer: 2,
-        bids: [{ suit: HEARTS, bid: 80, bidBy: 3 }]
+        bids: [{ suit: HEARTS, bid: 82, bidBy: 3 }]
       };
       const result = PlaceBid(G, { currentPlayer: 0 }, { suit: SANS, bid: 80 });
       expect(result).toEqual(undefined);
@@ -184,17 +184,17 @@ describe('bidding phase', () => {
       const G = {
         ..._.cloneDeep(initialGame),
         dealer: 2,
-        bids: [{ suit: HEARTS, bid: 80, bidBy: 3 }]
+        bids: [{ suit: HEARTS, bid: 82, bidBy: 3 }]
       };
       const result = PlaceBid(
         G,
         { currentPlayer: 0 },
-        { suit: DIAMONDS, bid: 80 }
+        { suit: DIAMONDS, bid: 82 }
       );
       expect(result).toEqual(INVALID_MOVE);
 
       expect(G.bids.length).toEqual(1);
-      expect(G.bids[0]).toEqual({ suit: HEARTS, bid: 80, bidBy: 3 });
+      expect(G.bids[0]).toEqual({ suit: HEARTS, bid: 82, bidBy: 3 });
       expect(G.bids[1]).toEqual(undefined);
     });
 
@@ -202,7 +202,7 @@ describe('bidding phase', () => {
       const G = {
         ..._.cloneDeep(initialGame),
         dealer: 2,
-        bids: [{ suit: DIAMONDS, bid: 80, bidBy: 3 }]
+        bids: [{ suit: DIAMONDS, bid: 82, bidBy: 3 }]
       };
       const result = PlaceBid(G, { currentPlayer: 0 }, { suit: SANS, bid: 80 });
       expect(result).toEqual(undefined);
@@ -213,12 +213,12 @@ describe('bidding phase', () => {
       const G = {
         ..._.cloneDeep(initialGame),
         dealer: 2,
-        bids: [{ suit: DIAMONDS, bid: 90, bidBy: 3 }]
+        bids: [{ suit: DIAMONDS, bid: 92, bidBy: 3 }]
       };
       const result = PlaceBid(G, { currentPlayer: 0 }, { suit: SANS, bid: 80 });
       expect(result).toEqual(INVALID_MOVE);
       expect(G.bids.length).toEqual(1);
-      expect(G.bids[0]).toEqual({ suit: DIAMONDS, bid: 90, bidBy: 3 });
+      expect(G.bids[0]).toEqual({ suit: DIAMONDS, bid: 92, bidBy: 3 });
     });
 
     it('does not allow bidding 80 SANS on 80 SANS', () => {
