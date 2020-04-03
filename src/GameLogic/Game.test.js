@@ -23,9 +23,9 @@ describe('dealing hands', () => {
 
     // Place a winning bid by the third player
     client.moves.PlaceBid({ suit: SANS, bid: 70 });
-    client.moves.PlaceBid({ suit: SUITES.CLUBS, bid: 80 });
-    client.moves.PlaceBid({ suit: SUITES.DIAMONDS, bid: 90 });
-    client.moves.PlaceBid({ suit: SUITES.CLUBS, bid: 100 });
+    client.moves.PlaceBid({ suit: SUITES.CLUBS, bid: 82 });
+    client.moves.PlaceBid({ suit: SUITES.DIAMONDS, bid: 92 });
+    client.moves.PlaceBid({ suit: SUITES.CLUBS, bid: 102 });
     client.moves.Pass();
     client.moves.Pass();
     client.moves.Pass();
@@ -34,9 +34,9 @@ describe('dealing hands', () => {
 
     expect(G.bids).toEqual([
       { suit: SANS, bid: 70, bidBy: 0 },
-      { suit: SUITES.CLUBS, bid: 80, bidBy: 1 },
-      { suit: SUITES.DIAMONDS, bid: 90, bidBy: 2 },
-      { suit: SUITES.CLUBS, bid: 100, bidBy: 3 },
+      { suit: SUITES.CLUBS, bid: 82, bidBy: 1 },
+      { suit: SUITES.DIAMONDS, bid: 92, bidBy: 2 },
+      { suit: SUITES.CLUBS, bid: 102, bidBy: 3 },
       { suit: null, bid: null, bidBy: 0 },
       { suit: null, bid: null, bidBy: 1 },
       { suit: null, bid: null, bidBy: 2 }
@@ -45,7 +45,7 @@ describe('dealing hands', () => {
     expect(ctx.phase).toEqual('PlayTricks');
     expect(G.rounds).toEqual([]);
     expect(G.bid).toEqual({
-      bid: 100,
+      bid: 102,
       highestBidBy: 3,
       trump: SUITES.CLUBS
     });
@@ -67,7 +67,7 @@ describe('dealing hands', () => {
 
     // Place a winning bid by the third player
     client.moves.Pass();
-    client.moves.PlaceBid({ suit: SUITES.CLUBS, bid: 80 });
+    client.moves.PlaceBid({ suit: SUITES.CLUBS, bid: 82 });
     client.moves.Pass();
     client.moves.Pass();
 
@@ -75,7 +75,7 @@ describe('dealing hands', () => {
     expect(ctx.phase).toEqual('PlaceBids');
     expect(G.bids).toEqual([
       { suit: null, bid: null, bidBy: 0 },
-      { suit: CLUBS, bid: 80, bidBy: 1 },
+      { suit: CLUBS, bid: 82, bidBy: 1 },
       { suit: null, bid: null, bidBy: 2 },
       { suit: null, bid: null, bidBy: 3 }
     ]);
@@ -94,7 +94,7 @@ describe('dealing hands', () => {
     client.moves.Pass();
     client.moves.Pass();
     client.moves.Pass();
-    client.moves.PlaceBid({ suit: SUITES.CLUBS, bid: 80 });
+    client.moves.PlaceBid({ suit: SUITES.CLUBS, bid: 82 });
 
     const { G, ctx } = client.store.getState();
     expect(ctx.phase).toEqual('PlaceBids');
@@ -102,7 +102,7 @@ describe('dealing hands', () => {
       { suit: null, bid: null, bidBy: 0 },
       { suit: null, bid: null, bidBy: 1 },
       { suit: null, bid: null, bidBy: 2 },
-      { suit: CLUBS, bid: 80, bidBy: 3 }
+      { suit: CLUBS, bid: 82, bidBy: 3 }
     ]);
   });
 
@@ -153,14 +153,14 @@ describe('dealing hands', () => {
             3: stacks[3]
           },
           bids: [
-            { suit: SUITES.SPADES, bid: 100, bidBy: 0 },
+            { suit: SUITES.SPADES, bid: 102, bidBy: 0 },
             { suit: null, bid: null, bidBy: 1 },
             { suit: null, bid: null, bidBy: 2 },
             { suit: null, bid: null, bidBy: 3 }
           ],
           trump: SUITES.SPADES,
           bid: {
-            bid: 100,
+            bid: 102,
             trump: SUITES.SPADES,
             highestBidBy: 0
           },
