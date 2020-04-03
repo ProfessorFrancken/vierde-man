@@ -15,6 +15,8 @@ const SixTeenRoundsHaveBeenPlayed = (G, ctx) => {
 };
 export const KlaverJassen = {
   name: 'klarver-jassen',
+  minPlayers: 4,
+  maxPlayers: 4,
 
   setup: ctx => {
     return {

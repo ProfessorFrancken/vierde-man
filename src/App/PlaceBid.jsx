@@ -74,11 +74,7 @@ const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer }) => {
                   <strong>Player {bid.bidBy}</strong>:
                 </div>
                 <div>
-                  {bid.bidBy === currentPlayer ? (
-                    <span>Placing bid</span>
-                  ) : (
-                    <Bid bid={bid} />
-                  )}
+                  <Bid bid={bid} />
                 </div>
               </li>
             ))}
