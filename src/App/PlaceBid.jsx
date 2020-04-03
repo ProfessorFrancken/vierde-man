@@ -123,34 +123,29 @@ const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer, active }) => {
         </div>
       </div>
       <div className="bg-white">
-        <div className="d-flex justify-content-between ">
-          <button
-            disabled={!active}
-            className="m-0 btn btn-sm btn-text text-muted btn-block bg-light p-3 px-3 "
-            type="submit"
-            onClick={() => {
-              if (!active) {
-                return;
-              }
-              pass();
-            }}
-          >
-            Pass
-          </button>
-          <button
-            disabled={!active}
-            className="m-0 btn btn-sm btn-text text-primary btn-block bg-light p-3 px-3"
-            type="submit"
-            onClick={() => {
-              if (!active) {
-                return;
-              }
-              placeBid({ suit: trump, bid });
-            }}
-          >
-            Submit bid
-          </button>
-        </div>
+        {!active && (
+          <div className="p-3 bg-light text-muted ">
+            Waiting for player {currentPlayer} to place a bid
+          </div>
+        )}
+        {active && (
+          <div className="d-flex justify-content-between ">
+            <button
+              className="m-0 btn btn-sm btn-text text-muted btn-block bg-light p-3 px-3 "
+              type="submit"
+              onClick={() => pass()}
+            >
+              Pass
+            </button>
+            <button
+              className="m-0 btn btn-sm btn-text text-primary btn-block bg-light p-3 px-3"
+              type="submit"
+              onClick={() => placeBid({ suit: trump, bid })}
+            >
+              Submit bid
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
