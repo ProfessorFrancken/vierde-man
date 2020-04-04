@@ -28,7 +28,7 @@ const Score = ({ rounds, playedTricks, wij, zij, bid }) => {
 
   return (
     <ScoreContainer>
-      <div className="p-3 bg-light shadow rounded text-left text-muted d-flex flex-column">
+      <div className="m-3 m-md-4 m-lg-5 p-3 bg-light shadow rounded text-left text-muted d-flex flex-column">
         <div className="font-weight-bold mb-2">
           Round {rounds.length + 1} / 16
         </div>
