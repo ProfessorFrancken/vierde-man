@@ -13,7 +13,11 @@ const PlayerGrid = styled.div`
   display: flex;
   height: 100vh;
   grid-template-rows: 1fr 1fr 1fr 1fr;
-    'player-0 player-1 player-2 player-3'
+    'player-0 player-1 player-2 player-3';
+
+  .klaverjas-table {
+    width: 25vw;
+  }
 `;
 
 const SinglePlayer = styled.div`

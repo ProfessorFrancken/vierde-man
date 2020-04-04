@@ -74,7 +74,7 @@ const Player = ({
 
   return (
     <PlayerContainer id={id}>
-      <KlaverJasTable className="overflow-hidden" flex-grow-1>
+      <KlaverJasTable className="klaverjas-table overflow-hidden" flex-grow-1>
         <Action>
           {phase === 'PlaceBids' && (
             <PlaceBid
