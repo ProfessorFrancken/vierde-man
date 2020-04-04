@@ -20,10 +20,12 @@ const PlayerContainer = styled.div`
 
 const KlaverJasTable = styled.div`
   display: grid;
-  width: 100%;
-  height: 100%;
-  grid-template-rows: 1fr 3fr 1fr;
-  grid-template-columns: 1fr 3fr 1fr;
+  width: 100vw;
+  height: 100vh;
+
+  // Use minmax: https://stackoverflow.com/questions/54099056/grid-display-columns-have-not-equal-width
+  grid-template-rows: minmax(0, 1fr) 3fr minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) 3fr minmax(0, 1fr);
   grid-template-areas:
     's   p2 .'
     'p1  a  p3'
@@ -72,7 +74,7 @@ const Player = ({
 
   return (
     <PlayerContainer id={id}>
-      <KlaverJasTable className="p-2 overflow-hidden" flex-grow-1>
+      <KlaverJasTable className="overflow-hidden" flex-grow-1>
         <Action>
           {phase === 'PlaceBids' && (
             <PlaceBid

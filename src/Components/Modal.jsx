@@ -11,9 +11,8 @@ const Dialog = ({ children, className, ...props }) => {
     // 'w-50',
     'text-left',
     'bg-white',
-    'mx-auto',
     'shadow',
-    'border my-3'
+    'border'
   ];
 
   return (
