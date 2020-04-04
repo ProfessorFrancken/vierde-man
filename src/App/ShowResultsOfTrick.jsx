@@ -10,6 +10,43 @@ const Prominent = ({ children }) => (
   <span>{children === 33 ? "'Vo" : children}</span>
 );
 
+const CardWrapper = styled.div`
+  li {
+    box-shadow: none !important;
+    transform: rotate(0deg) !important;
+  }
+`;
+
+const PlayedCards = ({ playedCards, winner }) => (
+  <ul className="list-unstyled d-flex justify-content-between mb-0">
+    {_.map(playedCards, (card, idx) => (
+      <CardWrapper className="mx-2" winner={winner === card.playedBy} key={idx}>
+        <Card
+          card={card}
+          onClick={() => {}}
+          cardScale={1.5}
+          disabled={card.playedBy !== winner}
+        />
+      </CardWrapper>
+    ))}
+  </ul>
+);
+
+const CheckContinueAutomatically = ({ checked, onChange }) => (
+  <div className="form-group form-check text-muted mb-0">
+    <input
+      type="checkbox"
+      className="form-check-input"
+      id="continueAutomatically"
+      checked={checked}
+      onChange={onChange}
+    />
+    <label className="form-check-label" htmlFor="continueAutomatically">
+      Continue next trick automatically
+    </label>
+  </div>
+);
+
 export const Bid = ({ bid }) => {
   if (bid.bid === null) {
     return <span>Pass</span>;
@@ -22,20 +59,6 @@ export const Bid = ({ bid }) => {
     </span>
   );
 };
-
-const CardWrapper = styled.div`
-  li {
-    box-shadow: none !important;
-    transform: rotate(0deg) !important;
-
-    ${({ winner }) =>
-      winner &&
-      1 == 2 &&
-      css`
-        border-color: #252525 !important;
-      `}
-  }
-`;
 
 const ShowResultsOfTrick = ({
   moves,
@@ -75,49 +98,24 @@ const ShowResultsOfTrick = ({
       <Modal.Header>
         <Modal.Title>Player {winner} won the trick</Modal.Title>
         <ul className="list-unstyled mb-0 d-flex justify-content-between text-muted">
-          <li className="text-center">
+          <li>
             <strong>Points </strong>: <Prominent>{points.points}</Prominent>
           </li>
           {points.honor > 0 && (
-            <li className="text-center">
+            <li>
               <strong>Honor </strong>: <Prominent>{points.honor}</Prominent>
             </li>
           )}
         </ul>
       </Modal.Header>
       <Modal.Body className="bg-light">
-        <ul className="list-unstyled d-flex justify-content-between">
-          {_.map(playedCardsInOrder, (card, idx) => {
-            return (
-              <CardWrapper
-                className="mx-2"
-                winner={winner === card.playedBy}
-                key={idx}
-              >
-                <Card
-                  card={card}
-                  onClick={() => {}}
-                  cardScale={1.5}
-                  disabled={card.playedBy !== winner}
-                />
-              </CardWrapper>
-            );
-          })}
-        </ul>
+        <PlayedCards playedCards={playedCardsInOrder} winner={winner} />
       </Modal.Body>
       <Modal.Body className="border-top">
-        <div className="form-group form-check text-muted mb-0">
-          <input
-            type="checkbox"
-            className="form-check-input"
-            id="continueAutomatically"
-            checked={continueAutomatically}
-            onChange={() => setContinueAutomatically(!continueAutomatically)}
-          />
-          <label className="form-check-label" htmlFor="continueAutomatically">
-            Continue next trick automatically
-          </label>
-        </div>
+        <CheckContinueAutomatically
+          checked={continueAutomatically}
+          onChange={() => setContinueAutomatically(!continueAutomatically)}
+        />
       </Modal.Body>
       <Modal.Footer>
         <Modal.Actions>
