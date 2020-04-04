@@ -3,8 +3,6 @@ import { PointsOfTrick, WinnerOfTrick } from '../Card';
 import { startNewTrick } from './PlayTricks';
 import _ from 'lodash';
 
-const isDefined = x => x !== undefined;
-
 // This phase is used as an intermediate after playing one trick
 // it automatically continues to the PlayTrick phase after a short while,
 // which should allow each player to see the winning card
