@@ -4,19 +4,22 @@ import Card from 'Components/Card';
 import styled, { css } from 'styled-components';
 
 const CardContainer = styled.div`
+  --fromMiddle: ${({ fromMiddle }) => fromMiddle};
+  --fromMiddleAbs: ${({ fromMiddle }) => Math.abs(fromMiddle)};
+
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(
-      ${({ rotate }) => -(50 - (5 * rotate) / 1)}%,
-      ${({ rotate }) => -(30 - 1.0 * Math.abs(rotate))}%
+      calc(var(--x-scale) * var(--fromMiddle) - var(--x-offset)),
+      calc(var(--y-scale) * var(--fromMiddleAbs) - var(--y-offset))
     )
-    rotate(${({ rotate }) => rotate}deg);
+    rotate(calc(var(--fromMiddle) * var(--rotation)));
   transform-origin: bottom right;
   z-index: var(--hand-card-z-index);
 
-  ${props =>
-    !props.disabled &&
+  ${({ disabled }) =>
+    !disabled &&
     css`
       :hover {
         z-index: var(--hand-card-hover-z-index);
@@ -31,6 +34,20 @@ const Hand = styled.ul`
   display: flex;
   justify-content: center;
   position: relative;
+
+  --position-on-table: ${({ positionOnTable }) => positionOnTable};
+  --rotation: ${({ positionOnTable }) =>
+    [1, 3].includes(positionOnTable) ? 3 : 5}deg;
+  --x-transform: ${({ xTransform }) => xTransform || 1}px;
+  --y-transform: ${({ yTransform }) => yTransform || 1}px;
+
+  --x-offset: 50%;
+  --y-offset: 30%;
+  --x-scale: 25%;
+  --y-scale: 5%;
+
+  // Rotate slightely so that the middle cards are better centered
+  transform: rotate(calc(0.5 * var(--rotation)));
 `;
 
 const PlayerHand = ({
@@ -39,18 +56,20 @@ const PlayerHand = ({
   playerId,
   visible,
   moves,
+  positionOnTable,
   active = false
 }) => (
-  <Hand className="list-unstyled mb-0">
+  <Hand className="list-unstyled mb-0" positionOnTable={positionOnTable}>
     {hand.map((card, idx) => {
-      const fanRotation = 20;
       const disabled =
         !active || !visible || !playerIsAllowedToPlayCard(game, playerId, card);
+
+      const fanRotation = 5;
       return (
         <CardContainer
           className="card-container"
-          rotate={((idx - (hand.length - 1) / 2) * fanRotation) / 4}
-          up={(idx - (hand.length - 1) / 2) * fanRotation}
+          rotate={(idx - (hand.length - 1) / 2) * fanRotation}
+          fromMiddle={idx - (hand.length - 1) / 2}
           disabled={disabled}
           key={idx}
         >
