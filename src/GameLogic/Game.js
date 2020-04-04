@@ -3,7 +3,7 @@ import { PlaceBids } from './Phases/PlaceBids';
 import { PlayTricks } from './Phases/PlayTricks';
 import { ShowResultOfTrick } from './Phases/ShowResultOfTrick';
 import { ShowResultOfHand } from './Phases/ShowResultOfHand';
-import Randomness from './Phases/Random';
+import Randomness from './Random';
 
 const SixTeenRoundsHaveBeenPlayed = (G, ctx) => {
   if (G.bid !== undefined) {
