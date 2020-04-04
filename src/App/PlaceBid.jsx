@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { SuitStringToComponent } from 'Components/Suits';
 import { SUITES, SANS } from 'GameLogic/Card';
 import { allowedBidsOnTrump } from 'GameLogic/Phases/PlaceBids';
+import Modal from 'Components/Modal';
 import _ from 'lodash';
 
 const { SPADES, HEARTS, CLUBS, DIAMONDS } = SUITES;
@@ -64,15 +65,12 @@ const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer, active }) => {
   const bidsToShow = _.take([...currentBids].reverse(), 3);
 
   return (
-    <div
-      className="d-flex flex-column w-50 text-left bg-white mx-auto shadow border my-3"
-      style={{ fontSize: '0.7rem', zIndex: '2' }}
-    >
-      <div className="p-3">
-        <h3 className="h5">Bidding round</h3>
-      </div>
+    <Modal.Dialog className="">
+      <Modal.Header>
+        <Modal.Title>Bidding round</Modal.Title>
+      </Modal.Header>
       {bidsToShow.length > 0 && (
-        <div className="p-3 bg-light border-top">
+        <Modal.Body className="bg-light border-top">
           <h4 className="h6">Previous bids</h4>
           <ul className="list-unstyled text-muted my-2">
             {bidsToShow.map((bid, idx) => (
@@ -86,9 +84,9 @@ const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer, active }) => {
               </li>
             ))}
           </ul>
-        </div>
+        </Modal.Body>
       )}
-      <div className="bg-white border-top p-3">
+      <Modal.Body className="bg-white border-top">
         <h4 className="h6">Place bid</h4>
 
         <div className="d-flex justify-content-between flex-md-row flex-column">
@@ -128,35 +126,30 @@ const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer, active }) => {
             </select>
           </div>
         </div>
-      </div>
-      <div className="bg-white">
+      </Modal.Body>
+      <Modal.Footer>
         {!active && (
-          <div className="p-3 bg-light text-muted ">
+          <Modal.Body>
             Waiting for player {currentPlayer} to place a bid
-          </div>
+          </Modal.Body>
         )}
         {active && (
-          <div className="d-flex justify-content-between ">
-            <button
-              className="m-0 btn btn-sm btn-text text-muted btn-block bg-light p-3 px-3 "
-              type="submit"
-              onClick={() => pass()}
-            >
+          <Modal.Actions>
+            <Modal.Action className="text-muted" onClick={() => pass()}>
               Pass
-            </button>
+            </Modal.Action>
             {allowedBids.length > 0 && (
-              <button
-                className="m-0 btn btn-sm btn-text text-primary btn-block bg-light p-3 px-3"
-                type="submit"
+              <Modal.Action
+                className="text-primary"
                 onClick={() => placeBid({ suit: trump, bid })}
               >
                 Submit bid
-              </button>
+              </Modal.Action>
             )}
-          </div>
+          </Modal.Actions>
         )}
-      </div>
-    </div>
+      </Modal.Footer>
+    </Modal.Dialog>
   );
 };
 
