@@ -11,6 +11,8 @@ const Prominent = ({ children }) => (
 );
 
 const CardWrapper = styled.div`
+  --cardScale: 1.5;
+
   li {
     box-shadow: none !important;
     transform: rotate(0deg) !important;
@@ -24,7 +26,6 @@ const PlayedCards = ({ playedCards, winner }) => (
         <Card
           card={card}
           onClick={() => {}}
-          cardScale={1.5}
           disabled={card.playedBy !== winner}
         />
       </CardWrapper>

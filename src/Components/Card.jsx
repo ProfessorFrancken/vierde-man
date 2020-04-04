@@ -22,8 +22,6 @@ const suitColor = {
 const CardLi = styled.li.attrs(props => ({
   cardScale: props.cardScale || 2.0
 }))`
-  --cardScale: ${({ cardScale }) => cardScale};
-
   border-width: 2px !important;
   transition: all 0.3s ease-out;
   transform: rotate(${props => props.rotate}deg);
