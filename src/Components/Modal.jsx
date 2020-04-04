@@ -19,7 +19,7 @@ const Dialog = ({ children, className, ...props }) => {
   return (
     <div
       {...props}
-      style={{ fontSize: '0.7rem', zIndex: '2' }}
+      style={{ fontSize: '0.7rem', zIndex: 'var(--modal-z-index)' }}
       className={classNames(componentClasses, className)}
     >
       {children}

@@ -23,4 +23,14 @@ body {
 
   --card-background-color: #fafafa;
   --disabled-card-background-color: #e6e6e6;
+
+  --modal-z-index: 10;
+  --score-z-index: 5;
+
+  --card-stack-z-index: 0;
+  --card-stack-hover-card-z-index: 10;
+
+  --card-container-z-index: 0;
+  --hand-card-z-index: 0;
+  --hand-card-hover-z-index: 10;
 }

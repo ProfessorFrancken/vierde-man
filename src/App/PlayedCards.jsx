@@ -4,7 +4,7 @@ import _ from 'lodash';
 import styled from 'styled-components';
 
 const CardStack = styled.ul`
-  z-index: 0;
+  z-index: var(--card-stack-z-index);
   width: 100%;
   height: 100%;
   display: flex;
@@ -18,7 +18,7 @@ const CardStack = styled.ul`
     left: 50%;
     transform: translate(-50%, -50%) rotate(0deg);
     transform-origin: center center;
-    z-index: 0;
+    z-index: var(--card-stack-card-z-index);
 
     &:nth-child(1) {
       transform: translate(-50%, -30%)
@@ -49,7 +49,7 @@ const CardStack = styled.ul`
     }
 
     :hover {
-      z-index: 10;
+      z-index: var(--card-stack-hover-card-z-index);
     }
   }
 `;

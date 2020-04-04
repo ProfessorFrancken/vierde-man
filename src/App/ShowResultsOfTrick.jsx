@@ -94,7 +94,7 @@ const ShowResultsOfTrick = ({
   );
 
   return (
-    <Modal.Dialog style={{ zIndex: 10 }}>
+    <Modal.Dialog style={{ zIndex: 'var(--modal-z-index)' }}>
       <Modal.Header>
         <Modal.Title>Player {winner} won the trick</Modal.Title>
         <ul className="list-unstyled mb-0 d-flex justify-content-between text-muted">

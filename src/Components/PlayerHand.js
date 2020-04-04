@@ -13,15 +13,15 @@ const CardContainer = styled.div`
     )
     rotate(${({ rotate }) => rotate}deg);
   transform-origin: bottom right;
-  z-index: 0;
+  z-index: var(--hand-card-z-index);
 
   :hover {
-    z-index: 10;
+    z-index: var(--hand-card-hover-z-index);
   }
 `;
 
 const Hand = styled.ul`
-  z-index: 0;
+  z-index: var(--hand-z-index);
   width: 100%;
   height: 100%;
   display: flex;

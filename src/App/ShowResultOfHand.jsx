@@ -142,7 +142,7 @@ const ShowResultsOfHand = ({
   const round = game.rounds[game.rounds.length - 1];
 
   return (
-    <Modal.Dialog style={{ zIndex: 10 }}>
+    <Modal.Dialog style={{ zIndex: 'var(--modal-z-index)' }}>
       <Modal.Header>
         <Modal.Title>Finished hand</Modal.Title>
       </Modal.Header>
