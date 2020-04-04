@@ -126,10 +126,10 @@ const Player = ({
           />
         )}
 
-        {[0, 1, 2, 3].map(positionId => {
-          const id = (playerId + positionId) % 4;
+        {[0, 1, 2, 3].map(positionOnTable => {
+          const id = (playerId + positionOnTable) % 4;
           return (
-            <PlayerHandArea id={positionId} key={positionId}>
+            <PlayerHandArea id={positionOnTable} key={positionOnTable}>
               <PlayerHand
                 game={game}
                 hand={game.hands[id]}
@@ -138,6 +138,7 @@ const Player = ({
                 moves={moves}
                 visible={practice ? id === currentPlayer : id === playerId}
                 active={phase === 'PlayTricks'}
+                positionOnTable={positionOnTable}
               />
             </PlayerHandArea>
           );
