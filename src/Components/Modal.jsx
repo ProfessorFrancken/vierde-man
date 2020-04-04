@@ -28,7 +28,7 @@ const Dialog = ({ children, className, ...props }) => {
   );
 };
 const Header = ({ children, className, ...props }) => {
-  const componentClasses = ['p-3'];
+  const componentClasses = ['p-3 border-bottom'];
   return (
     <div {...props} className={classNames(componentClasses, className)}>
       {children}
@@ -56,7 +56,7 @@ const Table = ({ className, ...props }) => {
 };
 
 const Footer = ({ children, className, ...props }) => {
-  const componentClasses = ['bg-light', 'text-muted'];
+  const componentClasses = ['bg-light', 'text-muted', 'border-top'];
   return (
     <div {...props} className={classNames(componentClasses, className)}>
       {children}
