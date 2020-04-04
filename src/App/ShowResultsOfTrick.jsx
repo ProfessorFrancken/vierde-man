@@ -3,7 +3,7 @@ import { SuitStringToComponent } from 'Components/Suits';
 import Card from 'Components/Card';
 import { WinnerOfTrick, PointsOfTrick } from 'GameLogic/Card';
 import _ from 'lodash';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import Modal from 'Components/Modal';
 
 const Prominent = ({ children }) => (

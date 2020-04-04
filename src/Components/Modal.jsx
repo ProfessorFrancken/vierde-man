@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import styled, { css } from 'styled-components';
+import React from 'react';
 import classNames from 'classnames';
 
 const Modal = ({ className, ...props }) => {
