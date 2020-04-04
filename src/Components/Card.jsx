@@ -93,7 +93,13 @@ const CardLi = styled.li.attrs(props => ({
 `;
 
 const Card = props => {
-  const { disabled = false, visible = true, card, onClick } = props;
+  const {
+    onlyShowCorners = false,
+    disabled = false,
+    visible = true,
+    card,
+    onClick
+  } = props;
   const { face, suit } = card;
 
   // Rotate each card a little bit to make the cards feel less static
@@ -117,7 +123,7 @@ const Card = props => {
       disabled={disabled}
       cardScale={props.cardScale}
     >
-      {visible && (
+      {!onlyShowCorners && visible && (
         <>
           <SuitStringToComponent suit={suit} />
           <span>{face}</span>
