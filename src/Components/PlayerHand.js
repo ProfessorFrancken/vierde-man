@@ -1,7 +1,7 @@
 import React from 'react';
 import { playerIsAllowedToPlayCard } from 'GameLogic/Phases/PlayTricks';
 import Card from 'Components/Card';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const CardContainer = styled.div`
   position: absolute;
@@ -15,9 +15,13 @@ const CardContainer = styled.div`
   transform-origin: bottom right;
   z-index: var(--hand-card-z-index);
 
-  :hover {
-    z-index: var(--hand-card-hover-z-index);
-  }
+  ${props =>
+    !props.disabled &&
+    css`
+      :hover {
+        z-index: var(--hand-card-hover-z-index);
+      }
+    `}
 `;
 
 const Hand = styled.ul`
@@ -45,6 +49,11 @@ const PlayerHand = ({
           className="card-container"
           rotate={((idx - (hand.length - 1) / 2) * fanRotation) / 4}
           up={(idx - (hand.length - 1) / 2) * fanRotation}
+          disabled={
+            !active ||
+            !playerIsAllowedToPlayCard(game, playerId, card) ||
+            !visible
+          }
           key={idx}
         >
           <Card
