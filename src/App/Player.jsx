@@ -25,9 +25,9 @@ const KlaverJasTable = styled.div`
   grid-template-rows: 1fr 3fr 1fr;
   grid-template-columns: 1fr 3fr 1fr;
   grid-template-areas:
-    '.  p2 .'
+    's  p2 .'
     'p1 a  p3'
-    't  p0 s';
+    't  p0 .';
 `;
 
 const Action = styled.div`

@@ -12,6 +12,7 @@ const ScoreContainer = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
+  z-index: 10;
 `;
 
 const Score = ({ rounds, playedTricks, wij, zij, bid }) => {
