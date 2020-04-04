@@ -4,6 +4,7 @@ import Card from 'Components/Card';
 import { WinnerOfTrick, PointsOfTrick } from 'GameLogic/Card';
 import _ from 'lodash';
 import styled, { css } from 'styled-components';
+import Modal from 'Components/Modal';
 
 const Prominent = ({ children }) => (
   <span>{children === 33 ? "'Vo" : children}</span>
@@ -70,71 +71,64 @@ const ShowResultsOfTrick = ({
   );
 
   return (
-    <>
-      <div className="bg-white rounded shadow text-left" style={{ zIndex: 10 }}>
-        <div className="">
-          <div className="p-3">
-            <h3 className="h5">Player {winner} won the trick</h3>
-            <ul className="list-unstyled mb-0 d-flex justify-content-between text-muted">
-              <li className="text-center">
-                <strong>Points </strong>: <Prominent>{points.points}</Prominent>
-              </li>
-              {points.honor > 0 && (
-                <li className="text-center">
-                  <strong>Honor </strong>: <Prominent>{points.honor}</Prominent>
-                </li>
-              )}
-            </ul>
-          </div>
-
-          <div className="p-3 bg-light border-top">
-            <ul className="list-unstyled d-flex justify-content-between">
-              {_.map(playedCardsInOrder, (card, idx) => {
-                return (
-                  <CardWrapper
-                    className="mx-2"
-                    winner={winner === card.playedBy}
-                    key={idx}
-                  >
-                    <Card
-                      card={card}
-                      onClick={() => {}}
-                      cardScale={1.5}
-                      disabled={card.playedBy !== winner}
-                    />
-                  </CardWrapper>
-                );
-              })}
-            </ul>
-          </div>
-          <div className="p-3 border-top ">
-            <div className="form-group form-check text-muted mb-0">
-              <input
-                type="checkbox"
-                className="form-check-input"
-                id="continueAutomatically"
-                checked={continueAutomatically}
-                onChange={() =>
-                  setContinueAutomatically(!continueAutomatically)
-                }
-              />
-              <label
-                className="form-check-label"
-                htmlFor="continueAutomatically"
+    <Modal.Dialog style={{ zIndex: 10 }}>
+      <Modal.Header>
+        <Modal.Title>Player {winner} won the trick</Modal.Title>
+        <ul className="list-unstyled mb-0 d-flex justify-content-between text-muted">
+          <li className="text-center">
+            <strong>Points </strong>: <Prominent>{points.points}</Prominent>
+          </li>
+          {points.honor > 0 && (
+            <li className="text-center">
+              <strong>Honor </strong>: <Prominent>{points.honor}</Prominent>
+            </li>
+          )}
+        </ul>
+      </Modal.Header>
+      <Modal.Body className="bg-light">
+        <ul className="list-unstyled d-flex justify-content-between">
+          {_.map(playedCardsInOrder, (card, idx) => {
+            return (
+              <CardWrapper
+                className="mx-2"
+                winner={winner === card.playedBy}
+                key={idx}
               >
-                Continue next trick automatically
-              </label>
-            </div>
-          </div>
+                <Card
+                  card={card}
+                  onClick={() => {}}
+                  cardScale={1.5}
+                  disabled={card.playedBy !== winner}
+                />
+              </CardWrapper>
+            );
+          })}
+        </ul>
+      </Modal.Body>
+      <Modal.Body className="border-top">
+        <div className="form-group form-check text-muted mb-0">
+          <input
+            type="checkbox"
+            className="form-check-input"
+            id="continueAutomatically"
+            checked={continueAutomatically}
+            onChange={() => setContinueAutomatically(!continueAutomatically)}
+          />
+          <label className="form-check-label" htmlFor="continueAutomatically">
+            Continue next trick automatically
+          </label>
         </div>
-        <button
-          className="m-0 btn btn-sm btn-text text-primary btn-block bg-light p-3 px-3"
-          onClick={() => moves.ContinueToNextTrick(continueAutomatically)}
-        >
-          Continue
-        </button>
-      </div>
-    </>
+      </Modal.Body>
+      <Modal.Footer>
+        <Modal.Actions>
+          <Modal.Action
+            onClick={() => moves.ContinueToNextTrick(continueAutomatically)}
+          >
+            Continue
+          </Modal.Action>
+        </Modal.Actions>
+      </Modal.Footer>
+    </Modal.Dialog>
   );
 };
 

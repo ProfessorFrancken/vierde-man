@@ -126,7 +126,7 @@ const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer, active }) => {
   const bidsToShow = _.take([...currentBids].reverse(), 3);
 
   return (
-    <Modal.Dialog className="">
+    <Modal.Dialog>
       <Modal.Header>
         <Modal.Title>Bidding round</Modal.Title>
       </Modal.Header>

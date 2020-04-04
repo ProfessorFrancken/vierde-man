@@ -9,7 +9,7 @@ const Dialog = ({ children, className, ...props }) => {
   const componentClasses = [
     'd-flex',
     'flex-column',
-    'w-50',
+    // 'w-50',
     'text-left',
     'bg-white',
     'mx-auto',
