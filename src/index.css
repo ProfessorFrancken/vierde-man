@@ -5,11 +5,10 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  background:  no-repeat center center url('./assets/francken.png'),
+               url('./assets/table-background.jpg');
+  background-blend-mode: overlay;
 }
 
 :root {
@@ -18,4 +17,10 @@ code {
   width: 100vw;
   max-width: 100%;
   height: 100vh;
+
+  --red-suit-color: #e44145;
+  --black-suit-color: #252525;
+
+  --card-background-color: #fafafa;
+  --disabled-card-background-color: #e6e6e6;
 }

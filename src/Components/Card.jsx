@@ -13,10 +13,10 @@ const suitIcon = {
   APRIL: '🐸'
 };
 const suitColor = {
-  [SPADES]: '#252525',
-  [HEARTS]: '#e44145',
-  [CLUBS]: '#252525',
-  [DIAMONDS]: '#e44145',
+  [SPADES]: 'var(--black-suit-color)',
+  [HEARTS]: 'var(--red-suit-color)',
+  [CLUBS]: 'var(--black-suit-color)',
+  [DIAMONDS]: 'var(--red-suit-color)',
   APRIL: '#8f8500'
 };
 const CardLi = styled.li.attrs(props => ({
@@ -27,7 +27,8 @@ const CardLi = styled.li.attrs(props => ({
   border-width: 2px !important;
   transition: all 0.3s ease-out;
   transform: rotate(${props => props.rotate}deg);
-  background-color: ${({ disabled }) => (disabled ? '#e6e6e6' : '#fafafa')};
+  background-color: var(${({ disabled }) =>
+    disabled ? '--disabled-card-background-color' : '--card-background-color'});
 
   width: calc(var(--cardScale) * 58px);
   height: calc(var(--cardScale) * 88px);

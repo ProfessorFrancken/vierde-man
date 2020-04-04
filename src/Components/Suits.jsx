@@ -10,14 +10,11 @@ const SuitIcon = props => {
   return <img src={props.src} style={imgStyle} alt={props.alt} />;
 };
 
-const red = '#e44145';
-const black = '#252525';
-
 const RedSuit = styled.span`
-  color: ${red};
+  color: var(--red-suit-color);
 `;
 const BlackSuit = styled.span`
-  color: ${black};
+  color: var(--black-suit-color);
 `;
 
 export const Spades = () => <BlackSuit>♠</BlackSuit>;

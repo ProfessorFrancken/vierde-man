@@ -32,11 +32,11 @@ const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer, active }) => {
     [DIAMONDS]: '♦ Diamonds'
   };
   const suitColor = {
-    [SANS]: '#252525',
-    [SPADES]: '#252525',
-    [HEARTS]: '#e44145',
-    [CLUBS]: '#252525',
-    [DIAMONDS]: '#e44145',
+    [SANS]: 'var(--black-suit-color)',
+    [SPADES]: 'var(--black-suit-color)',
+    [HEARTS]: 'var(--red-suit-color)',
+    [CLUBS]: 'var(--black-suit-color)',
+    [DIAMONDS]: 'var(--red-suit-color)',
     APRIL: '#8f8500'
   };
 
