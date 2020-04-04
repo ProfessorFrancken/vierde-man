@@ -26,6 +26,54 @@ const SinglePlayer = styled.div`
   grid-template-rows: 1fr;
   grid-template-columns: 1fr;
   grid-template-areas: 'player-0 player-1 player-2 player-3';
+
+  --x-offset: 50%;
+  --y-offset: 30%;
+  --x-scale: 25%;
+  --y-scale: 5%;
+  --cardScale: 1;
+
+  // Small devices (landscape phones, 576px and up)
+  @media (min-width: 250px) {
+    --cardScale: 1.1;
+
+    --x-offset: 50%;
+    --y-offset: 30%;
+    --x-scale: 25%;
+    --y-scale: 3%;
+  }
+
+  @media (min-width: 400px) {
+    --cardScale: 1.4;
+  }
+
+  // Small devices (landscape phones, 576px and up)
+  @media (min-width: 576px) {
+    --cardScale: 1.6;
+
+    --x-offset: 50%;
+    --y-offset: 30%;
+    --x-scale: 25%;
+    --y-scale: 5%;
+  }
+
+  // Medium devices (tablets, 768px and up)
+  @media (min-width: 768px) {
+    --cardScale: 1.8;
+  }
+
+  // Large devices (desktops, 992px and up)
+  @media (min-width: 992px) {
+    --cardScale: 2;
+  }
+
+  // Extra large devices (large desktops, 1200px and up)
+  @media (min-width: 1200px) {
+    --cardScale: 2.4;
+    --x-scale: 35%;
+    --y-scale: 6%;
+    --y-offset: 40%;
+  }
 `;
 
 const DebugApp = props => {

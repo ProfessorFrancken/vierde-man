@@ -39,34 +39,8 @@ const Hand = styled.ul`
   --rotation: ${({ positionOnTable }) =>
     [1, 3].includes(positionOnTable) ? 3 : 5}deg;
 
-  --x-offset: 50%;
-  --y-offset: 30%;
-  --x-scale: 25%;
-  --y-scale: 5%;
-
   // Rotate slightely so that the middle cards are better centered
   transform: rotate(calc(0.5 * var(--rotation)));
-  --cardScale: 1;
-
-  // Small devices (landscape phones, 576px and up)
-  @media (min-width: 576px) {
-    --cardScale: 1.3;
-  }
-
-  // Medium devices (tablets, 768px and up)
-  @media (min-width: 768px) {
-    --cardScale: 1.5;
-  }
-
-  // Large devices (desktops, 992px and up)
-  @media (min-width: 992px) {
-    --cardScale: 1.8;
-  }
-
-  // Extra large devices (large desktops, 1200px and up)
-  @media (min-width: 1200px) {
-    --cardScale: 2;
-  }
 `;
 
 const PlayerHand = ({
