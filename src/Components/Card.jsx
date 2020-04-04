@@ -68,8 +68,8 @@ const CardLi = styled.li.attrs(props => ({
 
 
   /* Define bled-mode and size here so that they don't transition when flipping a card */
-  background-blend-mode: soft-light;
   background-size: 70%, cover;
+  background-blend-mode: unset;
 
   ${props =>
     props.flippedToBack &&
