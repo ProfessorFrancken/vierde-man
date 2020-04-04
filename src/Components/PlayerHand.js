@@ -44,16 +44,14 @@ const PlayerHand = ({
   <Hand className="list-unstyled mb-0">
     {hand.map((card, idx) => {
       const fanRotation = 20;
+      const disabled =
+        !active || !visible || !playerIsAllowedToPlayCard(game, playerId, card);
       return (
         <CardContainer
           className="card-container"
           rotate={((idx - (hand.length - 1) / 2) * fanRotation) / 4}
           up={(idx - (hand.length - 1) / 2) * fanRotation}
-          disabled={
-            !active ||
-            !playerIsAllowedToPlayCard(game, playerId, card) ||
-            !visible
-          }
+          disabled={disabled}
           key={idx}
         >
           <Card
@@ -61,13 +59,9 @@ const PlayerHand = ({
             game={game}
             card={card}
             visible={visible}
-            disabled={
-              !active ||
-              !playerIsAllowedToPlayCard(game, playerId, card) ||
-              !visible
-            }
+            disabled={disabled}
             onClick={() => {
-              if (active && playerIsAllowedToPlayCard(game, playerId, card)) {
+              if (!disabled) {
                 moves.PlayCard(card);
               }
             }}
