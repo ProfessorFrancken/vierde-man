@@ -22,13 +22,15 @@ const suitColor = {
 const CardLi = styled.li.attrs(props => ({
   cardScale: props.cardScale || 2.0
 }))`
+  --cardScale: ${({ cardScale }) => cardScale};
+
   border-width: 2px !important;
   transition: all 0.3s ease-out;
   transform: rotate(${props => props.rotate}deg);
   background-color: ${({ disabled }) => (disabled ? '#e6e6e6' : '#fafafa')};
 
-  width: ${({ cardScale }) => 58 * cardScale}px;
-  height: ${({ cardScale }) => 88 * cardScale}px;
+  width: calc(var(--cardScale) * 58px);
+  height: calc(var(--cardScale) * 88px);
   color: ${props => suitColor[props.suit]} !important;
 
   ${props =>
