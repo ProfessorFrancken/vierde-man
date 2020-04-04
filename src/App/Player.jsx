@@ -34,8 +34,12 @@ const Action = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  grid-area: a;
   flex-direction: column;
+
+  grid-row-start: s;
+  grid-row-end: p1;
+  grid-column-start: s;
+  grid-column-end: p3;
 `;
 const PlayerHandArea = styled.div`
   grid-area: ${props => 'p' + props.id};
