@@ -74,7 +74,7 @@ const App = () => {
   const urlParams = new URLSearchParams(window.location.search);
 
   if (urlParams.has('practice')) {
-    const Client = KlaverJasClientFactory();
+    const Client = KlaverJasClientFactory({});
     return (
       <AppContainer>
         <Client />
