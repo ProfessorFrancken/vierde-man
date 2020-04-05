@@ -82,7 +82,7 @@ const Player = ({
               pass={moves.Pass}
               currentBids={game.bids}
               currentPlayer={currentPlayer}
-              active={playerId === currentPlayer || practice}
+              active={playerId === currentPlayer}
             />
           )}
           {phase === 'PlayTricks' && (
@@ -142,7 +142,7 @@ const Player = ({
                 phase={phase}
                 playerId={id}
                 moves={moves}
-                visible={practice ? id === currentPlayer : id === playerId}
+                visible={id === playerId}
                 active={phase === 'PlayTricks' && currentPlayer === id}
                 positionOnTable={positionOnTable}
               />

@@ -33,7 +33,7 @@ const KlaverJasBoard = props => {
       <div className="App overflow-hidden">
         <SinglePlayer>
           <Player
-            id={playerID}
+            id={playerID === null ? parseInt(ctx.currentPlayer, 10) : playerID}
             game={G}
             moves={moves}
             phase={phase}
