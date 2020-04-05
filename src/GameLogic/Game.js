@@ -47,7 +47,9 @@ export const KlaverJassen = {
       wij: 0,
       zij: 0,
       // Player settings
-      continueTrickAutomatically: {}
+      continueTrickAutomatically: {},
+      playersThatWantToContinue: [],
+      playersThatWantToPlayNextHand: []
     };
   },
 
