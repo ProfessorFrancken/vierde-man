@@ -2,7 +2,7 @@ import React from 'react';
 import { KlaverJassen } from 'GameLogic/Game';
 import styled from 'styled-components';
 import AprilFirst from 'App/AprilFirst';
-import { Lobby } from 'boardgame.io/react';
+import Lobby from 'lobby/react';
 import { Local } from 'boardgame.io/multiplayer';
 import KlaverJasBoard from 'KlaverJasBoard';
 import KlaverJasClientFactory from 'KlaverJasClientFactory';
