@@ -23,7 +23,7 @@ const CardLi = styled.li.attrs(props => ({
   cardScale: props.cardScale || 2.0
 }))`
   border-width: 2px !important;
-  transition: all 0.3s ease-out;
+  transition: transform 0.3s ease-out;
   transform: rotate(${props => props.rotate}deg);
   background-color: var(${({ disabled }) =>
     disabled ? '--disabled-card-background-color' : '--card-background-color'});
@@ -37,10 +37,8 @@ const CardLi = styled.li.attrs(props => ({
     !props.flippedToBack &&
     css`
       :hover {
-        transform: scale(1) rotate(${props => props.rotate}deg)
-          translate(0, -20%);
+        transform: rotate(${props => props.rotate}deg) translate(0, -20%);
         cursor: pointer;
-        background: white !important;
       }
     `}
 
