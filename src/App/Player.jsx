@@ -139,7 +139,7 @@ const Player = ({
                 playerId={id}
                 moves={moves}
                 visible={practice ? id === currentPlayer : id === playerId}
-                active={phase === 'PlayTricks'}
+                active={phase === 'PlayTricks' && currentPlayer === id}
                 positionOnTable={positionOnTable}
               />
             </PlayerHandArea>
