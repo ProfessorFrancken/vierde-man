@@ -103,6 +103,7 @@ const Player = ({
               currentTrick={game.currentTrick}
               trump={game.bid.trump}
               continueTrickAutomatically={game.continueTrickAutomatically}
+              playersThatWantToContinue={game.playersThatWantToContinue}
             />
           )}
           {phase === 'ShowResultOfHand' && (
@@ -114,6 +115,7 @@ const Player = ({
               currentTrick={game.currentTrick}
               trump={game.bid.trump}
               continueTrickAutomatically={game.continueTrickAutomatically}
+              playersThatWantToPlayNextHand={game.playersThatWantToPlayNextHand}
             />
           )}
 

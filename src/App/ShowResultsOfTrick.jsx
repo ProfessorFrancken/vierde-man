@@ -69,22 +69,26 @@ const ShowResultsOfTrick = ({
   trump,
   playerId,
   currentPlayer,
-  continueTrickAutomatically = {}
+  continueTrickAutomatically = {},
+  playersThatWantToContinue = []
 }) => {
   const winner = WinnerOfTrick(playedCards, playedCards[startingPlayer], trump);
   const points = PointsOfTrick(playedCards, trump);
   const [continueAutomatically, setContinueAutomatically] = useState(
-    continueTrickAutomatically[currentPlayer] === true
+    continueTrickAutomatically[playerId] === true
   );
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (continueTrickAutomatically[currentPlayer]) {
-        moves.ContinueToNextTrick(true);
+      if (
+        continueTrickAutomatically[playerId] &&
+        !playersThatWantToContinue.includes(playerId)
+      ) {
+        moves.ContinueToNextTrick(playerId, true);
       }
-    }, 500);
+    }, 1000);
     return () => clearTimeout(timer);
-  }, [currentPlayer, continueTrickAutomatically, moves]);
+  }, [playerId, continueTrickAutomatically, moves]);
 
   // The cards given are not in the order in which they were played,
   // so we will have to manually order them based on the starting player
@@ -123,13 +127,19 @@ const ShowResultsOfTrick = ({
         />
       </Modal.Body>
       <Modal.Footer>
-        <Modal.Actions>
-          <Modal.Action
-            onClick={() => moves.ContinueToNextTrick(continueAutomatically)}
-          >
-            Continue
-          </Modal.Action>
-        </Modal.Actions>
+        {playersThatWantToContinue.includes(playerId) ? (
+          <Modal.Body className="p-4">Waiting for other players</Modal.Body>
+        ) : (
+          <Modal.Actions>
+            <Modal.Action
+              onClick={() =>
+                moves.ContinueToNextTrick(playerId, continueAutomatically)
+              }
+            >
+              Continue
+            </Modal.Action>
+          </Modal.Actions>
+        )}
       </Modal.Footer>
     </Modal.Dialog>
   );

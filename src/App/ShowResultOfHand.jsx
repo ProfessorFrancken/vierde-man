@@ -123,21 +123,22 @@ const ShowResultsOfHand = ({
   continueNextTrick,
   currentTrick: { playedCards, startingPlayer },
   trump,
-  continueTrickAutomatically = {}
   playerId,
+  continueTrickAutomatically = {},
+  playersThatWantToPlayNextHand = []
 }) => {
   const [continueAutomatically, setContinueAutomatically] = useState(
-    continueTrickAutomatically[currentPlayer] === true
+    continueTrickAutomatically[playerId] === true
   );
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (continueTrickAutomatically[currentPlayer]) {
-        moves.PlayNextHand(true);
+      if (continueTrickAutomatically[playerId]) {
+        moves.PlayNextHand(playerId, true);
       }
-    }, 500);
+    }, 5000);
     return () => clearTimeout(timer);
-  }, [currentPlayer, continueTrickAutomatically, moves]);
+  }, [playerId, continueTrickAutomatically, moves]);
 
   const round = game.rounds[game.rounds.length - 1];
 
@@ -161,7 +162,9 @@ const ShowResultsOfHand = ({
         ) : (
           <Modal.Actions>
             <Modal.Action
-              onClick={() => moves.PlayNextHand(continueAutomatically)}
+              onClick={() =>
+                moves.PlayNextHand(playerId, continueAutomatically)
+              }
             >
               Play next hand
             </Modal.Action>

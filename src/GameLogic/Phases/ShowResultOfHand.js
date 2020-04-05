@@ -3,9 +3,18 @@ import { pointsFromHands } from '../Card';
 import _ from 'lodash';
 
 // This phase is used as an intermediate after playing a hand where a player clicks the "Play next hand button"
-export const PlayNextHand = (G, ctx, continueAutomatically = false) => {
-  G.playersThatWantToPlayNextHand.push(ctx.currentPlayer);
-  G.continueTrickAutomatically[ctx.currentPlayer] = continueAutomatically;
+export const PlayNextHand = (
+  G,
+  ctx,
+  playerId,
+  continueAutomatically = false
+) => {
+  G.playersThatWantToPlayNextHand.push(
+    playerId === null ? parseInt(ctx.currentPlayer, 10) : playerId
+  );
+  G.continueTrickAutomatically[
+    playerId === null ? parseInt(ctx.currentPlayer, 10) : playerId
+  ] = continueAutomatically;
 };
 
 const AllPlayersAreReady = (G, ctx) => {

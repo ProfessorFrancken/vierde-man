@@ -7,9 +7,18 @@ import _ from 'lodash';
 // it automatically continues to the PlayTrick phase after a short while,
 // which should allow each player to see the winning card
 
-const ContinueToNextTrick = (G, ctx, continueAutomatically = false) => {
-  G.playersThatWantToContinue.push(ctx.currentPlayer);
-  G.continueTrickAutomatically[ctx.currentPlayer] = continueAutomatically;
+const ContinueToNextTrick = (
+  G,
+  ctx,
+  playerId,
+  continueAutomatically = false
+) => {
+  G.playersThatWantToContinue.push(
+    playerId === null ? parseInt(ctx.currentPlayer, 10) : playerId
+  );
+  G.continueTrickAutomatically[
+    playerId === null ? parseInt(ctx.currentPlayer, 10) : playerId
+  ] = continueAutomatically;
 };
 
 const WriteDownResultsOfTrick = (G, ctx) => {
