@@ -44,11 +44,16 @@ const KlaverJasClientFactory = multiplayer =>
     )
   });
 
+const config = {
+  gameServer: process.env.REACT_APP_GAME_SERVER,
+  lobbyServer: process.env.REACT_APP_LOBBY_SERVER
+};
+
 const KlaverJasLobby = () => (
   <div>
     <Lobby
-      gameServer="http://api.vierde-man.nl.localhost"
-      lobbyServer="http://api.vierde-man.nl.localhost"
+      gameServer={config.gameServer}
+      lobbyServer={config.lobbyServer}
       gameComponents={[{ game: KlaverJassen, board: KlaverJasBoard }]}
       debug={true}
       clientFactory={({ game, board, debug, multiplayer }) => {
@@ -58,7 +63,7 @@ const KlaverJasLobby = () => (
           debug: false,
           board: KlaverJasBoard,
           multiplayer: SocketIO({
-            server: 'http://api.vierde-man.nl.localhost'
+            server: config.gameServer
           }),
           loading: props => {
             return 'Loading component';

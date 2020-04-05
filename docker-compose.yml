@@ -22,6 +22,9 @@ services:
       - "traefik.frontend.rule=Host:vierde-man.nl.localhost"
       - "traefik.port=3000"
       - "traefik.docker.network=traefik_webgateway"
+    environment:
+      - REACT_APP_GAME_SERVER=http://api.vierde-man.nl.localhost
+      - REACT_APP_LOBBY_SERVER=http://api.vierde-man.nl.localhost
 
   server:
     image: node:13.12.0
