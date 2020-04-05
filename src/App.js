@@ -1,14 +1,12 @@
 import React from 'react';
-import { Client } from 'boardgame.io/react';
 import { KlaverJassen } from 'GameLogic/Game';
 import styled from 'styled-components';
 import AprilFirst from 'App/AprilFirst';
-import logger from 'redux-logger';
-import { applyMiddleware } from 'redux';
-import { loadedSoundsMiddleware, playSoundsMiddleware } from 'Sound';
 import { Lobby } from 'boardgame.io/react';
-import { Local, SocketIO } from 'boardgame.io/multiplayer';
+import { Local } from 'boardgame.io/multiplayer';
 import KlaverJasBoard from 'KlaverJasBoard';
+import KlaverJasClientFactory from 'KlaverJasClientFactory';
+import config from 'config';
 import './Lobby.css';
 
 const LocalMultiPlayerGrid = styled.div`
@@ -21,63 +19,6 @@ const LocalMultiPlayerGrid = styled.div`
     width: 25vw;
   }
 `;
-
-// TODO: when using a Lobby, consider using the ClientFactory to set enhancer
-// https://github.com/nicolodavis/boardgame.io/blob/master/src/lobby/react.js
-// const defaultMulti = SocketIO({
-//       server: 'http://api.vierde-man.nl.localhost'
-//     });
-const KlaverJasClientFactory = multiplayer =>
-  Client({
-    game: KlaverJassen,
-    numPlayers: 4,
-    debug: true,
-    board: KlaverJasBoard,
-    multiplayer,
-    loading: props => {
-      return 'Loading component';
-    },
-    enhancer: applyMiddleware(
-      logger,
-      playSoundsMiddleware,
-      loadedSoundsMiddleware
-    )
-  });
-
-const config = {
-  gameServer: process.env.REACT_APP_GAME_SERVER,
-  lobbyServer: process.env.REACT_APP_LOBBY_SERVER
-};
-
-const KlaverJasLobby = () => (
-  <div>
-    <Lobby
-      gameServer={config.gameServer}
-      lobbyServer={config.lobbyServer}
-      gameComponents={[{ game: KlaverJassen, board: KlaverJasBoard }]}
-      debug={true}
-      clientFactory={({ game, board, debug, multiplayer }) => {
-        return Client({
-          game: KlaverJassen,
-          numPlayers: 4,
-          debug: false,
-          board: KlaverJasBoard,
-          multiplayer: SocketIO({
-            server: config.gameServer
-          }),
-          loading: props => {
-            return 'Loading component';
-          },
-          enhancer: applyMiddleware(
-            logger,
-            playSoundsMiddleware,
-            loadedSoundsMiddleware
-          )
-        });
-      }}
-    />
-  </div>
-);
 
 const AppContainer = styled.div`
   --x-offset: 50%;
@@ -133,7 +74,7 @@ const App = () => {
   const urlParams = new URLSearchParams(window.location.search);
 
   if (urlParams.has('practice')) {
-    const Client = KlaverJasClientFactory(undefined);
+    const Client = KlaverJasClientFactory();
     return (
       <AppContainer>
         <Client />
@@ -141,7 +82,9 @@ const App = () => {
     );
   }
   if (urlParams.has('hoi')) {
-    const LocalKlaverJasClient = KlaverJasClientFactory(Local());
+    const LocalKlaverJasClient = KlaverJasClientFactory({
+      multiplayer: Local()
+    });
     return (
       <LocalMultiPlayerGrid>
         <LocalKlaverJasClient playerID="0" />
@@ -154,7 +97,13 @@ const App = () => {
   if (urlParams.has('lobby')) {
     return (
       <AppContainer>
-        <KlaverJasLobby />;
+        <Lobby
+          gameServer={config.gameServer}
+          lobbyServer={config.lobbyServer}
+          gameComponents={[{ game: KlaverJassen, board: KlaverJasBoard }]}
+          debug={true}
+          clientFactory={KlaverJasClientFactory}
+        />
       </AppContainer>
     );
   }
