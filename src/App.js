@@ -7,7 +7,6 @@ import { Local } from 'boardgame.io/multiplayer';
 import KlaverJasBoard from 'KlaverJasBoard';
 import KlaverJasClientFactory from 'KlaverJasClientFactory';
 import config from 'config';
-import './Lobby.css';
 
 const LocalMultiPlayerGrid = styled.div`
   display: flex;

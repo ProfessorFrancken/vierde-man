@@ -14,6 +14,8 @@ import { MCTSBot } from 'boardgame.io/ai';
 import { Local } from 'boardgame.io/multiplayer';
 import { SocketIO } from 'boardgame.io/multiplayer';
 import { LobbyConnection } from './connection';
+
+import Modal from 'Components/Modal';
 import LobbyLoginForm from './login-form';
 import LobbyRoomInstance from './room-instance';
 import LobbyCreateRoomForm from './create-room-form';
@@ -264,7 +266,7 @@ class Lobby extends React.Component {
     }
 
     return (
-      <div id="lobby-view" style={{ padding: 50 }}>
+      <div id="lobby-view" className="p-5">
         <div className={this._getPhaseVisibility(LobbyPhases.ENTER)}>
           <LobbyLoginForm
             key={playerName}
@@ -273,48 +275,79 @@ class Lobby extends React.Component {
           />
         </div>
 
-        <div className={this._getPhaseVisibility(LobbyPhases.LIST)}>
-          <p>Welcome, {playerName}</p>
+        <div className="container">
+          <Modal.Dialog>
+            <Modal.Header>
+              <Modal.Title> Welcome, {playerName} </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <div className="alert alert-primary">
+                Want to chat while playing a boompje? Join the{' '}
+                <a
+                  href="https://discord.gg/gHb2jUq"
+                  className="font-weight-bold"
+                >
+                  unofficial Francken Discord
+                </a>
+                .
+              </div>
+              <p>Join a room, or open a new room.</p>
+              <LobbyCreateRoomForm
+                games={gameComponents}
+                createGame={this._createRoom}
+              />
+            </Modal.Body>
+            <Modal.Table className="border-bottom">
+              <table className="table mb-0">
+                <thead>
+                  <tr>
+                    <th>Rooms</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.connection.rooms.map(room => {
+                    const { gameID, gameName, players } = room;
+                    return (
+                      <LobbyRoomInstance
+                        key={'instance-' + gameID}
+                        room={{
+                          gameID,
+                          gameName,
+                          players: Object.values(players)
+                        }}
+                        playerName={playerName}
+                        onClickJoin={this._joinRoom}
+                        onClickLeave={this._leaveRoom}
+                        onClickPlay={this._startGame}
+                      />
+                    );
+                  })}
+                </tbody>
+              </table>
+            </Modal.Table>
+            <Modal.Body>
+              {errorMsg && <div className="alert alert-danger">{errorMsg}</div>}
+              <p className="text-muted">
+                Rooms that become empty are automatically deleted.
+              </p>
 
-          <div className="phase-title" id="game-creation">
-            <span>Create a room:</span>
-            <LobbyCreateRoomForm
-              games={gameComponents}
-              createGame={this._createRoom}
-            />
-          </div>
-          <p className="phase-title">Join a room:</p>
-          <div id="instances">
-            <table>
-              <tbody>
-                {this.renderRooms(this.connection.rooms, playerName)}
-              </tbody>
-            </table>
-            <span className="error-msg">
-              {errorMsg}
-              <br />
-            </span>
-          </div>
-          <p className="phase-title">
-            Rooms that become empty are automatically deleted.
-          </p>
-        </div>
+              {runningGame && (
+                <runningGame.app
+                  gameID={runningGame.gameID}
+                  playerID={runningGame.playerID}
+                  credentials={runningGame.credentials}
+                />
+              )}
+              <div className="buttons" id="game-exit">
+                <button onClick={this._exitRoom}>Exit game</button>
+              </div>
 
-        <div className={this._getPhaseVisibility(LobbyPhases.PLAY)}>
-          {runningGame && (
-            <runningGame.app
-              gameID={runningGame.gameID}
-              playerID={runningGame.playerID}
-              credentials={runningGame.credentials}
-            />
-          )}
-          <div className="buttons" id="game-exit">
-            <button onClick={this._exitRoom}>Exit game</button>
-          </div>
-        </div>
-
-        <div className="buttons" id="lobby-exit">
-          <button onClick={this._exitLobby}>Exit lobby</button>
+              <div className="buttons" id="lobby-exit">
+                <button onClick={this._exitLobby}>Exit lobby</button>
+              </div>
+            </Modal.Body>
+          </Modal.Dialog>
         </div>
       </div>
     );
