@@ -62,8 +62,6 @@ const PlayedCards = ({ cards, startingPlayer, playerId }) => {
     Math.random()
   ]);
 
-  console.log(randomPlacements);
-
   // The cards given are not in the order in which they were played,
   // so we will have to manually order them based on the starting player
   const playedCards = _.concat(
