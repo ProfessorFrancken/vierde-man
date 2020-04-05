@@ -99,6 +99,7 @@ const Player = ({
             <ShowResultsOfTrick
               moves={moves}
               currentPlayer={currentPlayer}
+              playerId={playerId}
               currentTrick={game.currentTrick}
               trump={game.bid.trump}
               continueTrickAutomatically={game.continueTrickAutomatically}
@@ -109,6 +110,7 @@ const Player = ({
               game={game}
               moves={moves}
               currentPlayer={currentPlayer}
+              playerId={playerId}
               currentTrick={game.currentTrick}
               trump={game.bid.trump}
               continueTrickAutomatically={game.continueTrickAutomatically}

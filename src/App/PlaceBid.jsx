@@ -3,6 +3,7 @@ import { SuitStringToComponent } from 'Components/Suits';
 import { SUITES, SANS } from 'GameLogic/Card';
 import { allowedBidsOnTrump } from 'GameLogic/Phases/PlaceBids';
 import Modal from 'Components/Modal';
+import PlayerName from 'Components/PlayerName';
 import _ from 'lodash';
 
 const { SPADES, HEARTS, CLUBS, DIAMONDS } = SUITES;
@@ -14,7 +15,9 @@ const PreviousBids = ({ bidsToShow }) => {
       <ul className="list-unstyled text-muted my-2">
         {bidsToShow.map((bid, idx) => (
           <li className="d-flex justify-content-between my-2" key={idx}>
-            <strong>Player {bid.bidBy}</strong>
+            <strong>
+              <PlayerName playerId={bid.bidBy} />
+            </strong>
             <Bid bid={bid} />
           </li>
         ))}

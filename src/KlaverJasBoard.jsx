@@ -21,7 +21,15 @@ const KlaverJasBoard = props => {
     props.playerID === null ? null : parseInt(props.playerID, 10) || 0;
 
   return (
-    <GameContext.Provider game={G} ctx={ctx} moves={moves} playerID={playerID}>
+    <GameContext.Provider
+      value={{
+        game: G,
+        ctx: ctx,
+        moves: moves,
+        playerID: playerID,
+        gameMetadata: props.gameMetadata
+      }}
+    >
       <div className="App overflow-hidden">
         <SinglePlayer>
           <Player

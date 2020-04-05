@@ -123,8 +123,8 @@ const ShowResultsOfHand = ({
   continueNextTrick,
   currentTrick: { playedCards, startingPlayer },
   trump,
-  currentPlayer,
   continueTrickAutomatically = {}
+  playerId,
 }) => {
   const [continueAutomatically, setContinueAutomatically] = useState(
     continueTrickAutomatically[currentPlayer] === true
@@ -156,13 +156,17 @@ const ShowResultsOfHand = ({
         />
       </Modal.Body>
       <Modal.Footer>
-        <Modal.Actions>
-          <Modal.Action
-            onClick={() => moves.PlayNextHand(continueAutomatically)}
-          >
-            Play next hand
-          </Modal.Action>
-        </Modal.Actions>
+        {playersThatWantToPlayNextHand.includes(playerId) ? (
+          <Modal.Body className="p-4">Waiting for other players</Modal.Body>
+        ) : (
+          <Modal.Actions>
+            <Modal.Action
+              onClick={() => moves.PlayNextHand(continueAutomatically)}
+            >
+              Play next hand
+            </Modal.Action>
+          </Modal.Actions>
+        )}
       </Modal.Footer>
     </Modal.Dialog>
   );

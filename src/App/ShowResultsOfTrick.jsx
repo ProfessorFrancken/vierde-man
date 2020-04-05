@@ -5,6 +5,7 @@ import { WinnerOfTrick, PointsOfTrick } from 'GameLogic/Card';
 import _ from 'lodash';
 import styled from 'styled-components';
 import Modal from 'Components/Modal';
+import PlayerName from 'Components/PlayerName';
 
 const Prominent = ({ children }) => (
   <span>{children === 33 ? "'Vo" : children}</span>
@@ -66,6 +67,7 @@ const ShowResultsOfTrick = ({
   continueNextTrick,
   currentTrick: { playedCards, startingPlayer },
   trump,
+  playerId,
   currentPlayer,
   continueTrickAutomatically = {}
 }) => {
@@ -97,7 +99,9 @@ const ShowResultsOfTrick = ({
   return (
     <Modal.Dialog style={{ zIndex: 'var(--modal-z-index)' }}>
       <Modal.Header>
-        <Modal.Title>Player {winner} won the trick</Modal.Title>
+        <Modal.Title>
+          <PlayerName playerId={winner} /> won the trick
+        </Modal.Title>
         <ul className="list-unstyled mb-0 d-flex justify-content-between text-muted">
           <li>
             <strong>Points </strong>: <Prominent>{points.points}</Prominent>
