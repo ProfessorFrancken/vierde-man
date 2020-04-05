@@ -86,12 +86,14 @@ const App = () => {
       multiplayer: Local()
     });
     return (
-      <LocalMultiPlayerGrid>
-        <LocalKlaverJasClient playerID="0" />
-        <LocalKlaverJasClient playerID="1" />
-        <LocalKlaverJasClient playerID="2" />
-        <LocalKlaverJasClient playerID="3" />
-      </LocalMultiPlayerGrid>
+      <AppContainer>
+        <LocalMultiPlayerGrid>
+          <LocalKlaverJasClient playerID="0" />
+          <LocalKlaverJasClient playerID="1" />
+          <LocalKlaverJasClient playerID="2" />
+          <LocalKlaverJasClient playerID="3" />
+        </LocalMultiPlayerGrid>
+      </AppContainer>
     );
   }
   if (urlParams.has('lobby')) {
