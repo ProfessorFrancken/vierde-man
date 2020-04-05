@@ -137,6 +137,59 @@ describe('dealing hands', () => {
     expect(oldHands === hands).toEqual(false);
   });
 
+  it('Deals new cards when 4 players have passed a second time', () => {
+    const KlaverJasScenario = {
+      ...KlaverJassen
+    };
+    const client = Client({
+      game: KlaverJasScenario,
+      numPlayers: 4
+    });
+
+    const {
+      G: { hands: oldHands }
+    } = client.store.getState();
+
+    client.moves.Pass();
+    client.moves.Pass();
+    client.moves.Pass();
+    client.moves.Pass();
+
+    {
+      const { G } = client.store.getState();
+      expect(G.bids[0]).toEqual({ suit: null, bid: null, bidBy: 0 });
+      expect(G.bids[1]).toEqual({ suit: null, bid: null, bidBy: 1 });
+      expect(G.bids[2]).toEqual({ suit: null, bid: null, bidBy: 2 });
+      expect(G.bids[3]).toEqual({ suit: null, bid: null, bidBy: 3 });
+    }
+
+    const {
+      G: { hands: firstShuffle }
+    } = client.store.getState();
+
+    expect(oldHands === firstShuffle).toEqual(false);
+
+    client.moves.Pass();
+    client.moves.Pass();
+    client.moves.Pass();
+    client.moves.Pass();
+
+    {
+      const { G } = client.store.getState();
+      expect(G.bids[4]).toEqual({ suit: null, bid: null, bidBy: 0 });
+      expect(G.bids[5]).toEqual({ suit: null, bid: null, bidBy: 1 });
+      expect(G.bids[6]).toEqual({ suit: null, bid: null, bidBy: 2 });
+      expect(G.bids[7]).toEqual({ suit: null, bid: null, bidBy: 3 });
+    }
+
+    const {
+      G: { hands }
+    } = client.store.getState();
+
+    expect(oldHands === hands).toEqual(false);
+    expect(firstShuffle === hands).toEqual(false);
+  });
+
   it('allows to play a hand of Klaverjas', () => {
     const KlaverJasScenario = {
       ...KlaverJassen,

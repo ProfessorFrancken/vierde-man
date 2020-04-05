@@ -76,11 +76,12 @@ export const canPlaceBid = (placedBids, bid) => {
 };
 
 const reshuffleIfAllPassed = (G, ctx) => {
-  const isDefined = x => x !== undefined;
-
   if (
-    _.filter(G.bids, isDefined).length === 4 &&
-    _.every(_.filter(G.bids, isDefined), bidIsPass)
+    _([...G.bids])
+      .reverse()
+      .take(4)
+      .filter(bidIsPass)
+      .value().length === 4
   ) {
     ShuffleDeck(G, ctx);
     DealCards(G, ctx, G.deck);
