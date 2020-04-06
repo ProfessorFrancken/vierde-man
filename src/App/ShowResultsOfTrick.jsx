@@ -92,7 +92,7 @@ const ShowResultsOfTrick = ({
       }
     }, 1000);
     return () => clearTimeout(timer);
-  }, [playerId, continueTrickAutomatically, moves]);
+  }, [playerId, playersThatWantToContinue, continueTrickAutomatically, moves]);
 
   // The cards given are not in the order in which they were played,
   // so we will have to manually order them based on the starting player
