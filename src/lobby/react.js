@@ -265,6 +265,16 @@ class Lobby extends React.Component {
       });
     }
 
+    if (runningGame) {
+      return (
+        <runningGame.app
+          gameID={runningGame.gameID}
+          playerID={runningGame.playerID}
+          credentials={runningGame.credentials}
+        />
+      );
+    }
+
     return (
       <div id="lobby-view" className="p-5">
         <div className={this._getPhaseVisibility(LobbyPhases.ENTER)}>
@@ -332,13 +342,6 @@ class Lobby extends React.Component {
                 Rooms that become empty are automatically deleted.
               </p>
 
-              {runningGame && (
-                <runningGame.app
-                  gameID={runningGame.gameID}
-                  playerID={runningGame.playerID}
-                  credentials={runningGame.credentials}
-                />
-              )}
               <div className="buttons" id="game-exit">
                 <button onClick={this._exitRoom}>Exit game</button>
               </div>
