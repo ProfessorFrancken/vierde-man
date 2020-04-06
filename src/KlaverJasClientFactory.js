@@ -8,7 +8,7 @@ import KlaverJasBoard from 'KlaverJasBoard';
 const KlaverJasClientFactory = ({
   game = KlaverJassen,
   board = KlaverJasBoard,
-  debug = true,
+  debug = false,
   multiplayer = undefined
 }) =>
   Client({

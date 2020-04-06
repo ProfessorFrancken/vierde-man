@@ -102,7 +102,7 @@ const App = () => {
           gameServer={config.gameServer}
           lobbyServer={config.lobbyServer}
           gameComponents={[{ game: KlaverJassen, board: KlaverJasBoard }]}
-          debug={true}
+          debug={false}
           clientFactory={KlaverJasClientFactory}
         />
       </AppContainer>
