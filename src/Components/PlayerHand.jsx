@@ -39,8 +39,11 @@ const Hand = styled.ul`
   --rotation: ${({ positionOnTable }) =>
     [1, 3].includes(positionOnTable) ? 3 : 5}deg;
 
-  // Rotate slightely so that the middle cards are better centered
-  transform: rotate(calc(0.5 * var(--rotation)));
+  // Rotate based on position on table and add small rotation so that the middle
+  // cards are better centered
+  transform: rotate(
+    calc(90deg * var(--position-on-table) + 0.5 * var(--rotation))
+  );
 `;
 
 const PlayerHand = ({

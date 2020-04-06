@@ -45,17 +45,6 @@ const Action = styled.div`
 `;
 const PlayerHandArea = styled.div`
   grid-area: ${props => 'p' + props.id};
-
-  ul {
-    transform: ${({ id }) =>
-      id === 0
-        ? ''
-        : id === 1
-        ? 'rotate(90deg)'
-        : id === 2
-        ? 'rotate(180deg)'
-        : 'rotate(-90deg)'};
-  }
 `;
 
 const Player = ({
