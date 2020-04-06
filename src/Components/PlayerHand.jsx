@@ -44,6 +44,20 @@ const Hand = styled.ul`
   transform: rotate(
     calc(90deg * var(--position-on-table) + 0.5 * var(--rotation))
   );
+
+  ${({ active }) =>
+    active &&
+    css`
+      div:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        box-shadow: var(--active-shadow);
+      }
+    `}
 `;
 
 const PlayerHand = ({
@@ -55,7 +69,11 @@ const PlayerHand = ({
   positionOnTable,
   active = false
 }) => (
-  <Hand className="list-unstyled mb-0" positionOnTable={positionOnTable}>
+  <Hand
+    className="list-unstyled mb-0"
+    positionOnTable={positionOnTable}
+    active={active}
+  >
     {hand.map((card, idx) => {
       const disabled =
         !active || !visible || !playerIsAllowedToPlayCard(game, playerId, card);

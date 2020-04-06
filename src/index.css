@@ -35,4 +35,6 @@ body {
   --card-container-z-index: 0;
   --hand-card-z-index: 0;
   --hand-card-hover-z-index: 10;
+
+  --active-shadow: 0px -30px 50px 2px #eed18f5c;
 }
