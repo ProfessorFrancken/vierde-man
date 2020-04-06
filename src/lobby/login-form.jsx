@@ -42,7 +42,9 @@ class LobbyLoginForm extends React.Component {
               />
 
               {this.state.nameErrorMsg && (
-                <div class="invalid-feedback">{this.state.nameErrorMsg}</div>
+                <div className="invalid-feedback">
+                  {this.state.nameErrorMsg}
+                </div>
               )}
             </div>
           </Modal.Body>

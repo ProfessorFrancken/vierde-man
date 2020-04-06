@@ -14,7 +14,7 @@ const PreviousBids = ({ bidsToShow }) => {
       <h4 className="h6">Previous bids</h4>
       <ul className="list-unstyled text-muted my-2">
         {bidsToShow.map((bid, idx) => (
-          <li className="d-flex justify-content-between my-2" key={idx}>
+          <li className="d-flex justify-content-between my-2" key={bid.bidBy}>
             <strong>
               <PlayerName playerId={bid.bidBy} />
             </strong>

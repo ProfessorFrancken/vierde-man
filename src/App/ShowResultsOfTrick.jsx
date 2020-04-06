@@ -23,7 +23,11 @@ const CardWrapper = styled.div`
 const PlayedCards = ({ playedCards, winner }) => (
   <ul className="list-unstyled d-flex justify-content-between mb-0">
     {_.map(playedCards, (card, idx) => (
-      <CardWrapper className="mx-2" winner={winner === card.playedBy} key={idx}>
+      <CardWrapper
+        className="mx-2"
+        winner={winner === card.playedBy}
+        key={card.playedBy}
+      >
         <Card
           card={card}
           onClick={() => {}}

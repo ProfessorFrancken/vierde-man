@@ -29,7 +29,7 @@ export const Card = ({ card }) => {
     return <span>Waiting for turn...</span>;
   }
   return (
-    <div class="d-flex justify-content-center align-items-center mt-1">
+    <div className="d-flex justify-content-center align-items-center mt-1">
       <strong className="mr-2">{card.face}</strong>
       <SuitStringToComponent suit={card.suit} />
     </div>

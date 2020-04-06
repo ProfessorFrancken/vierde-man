@@ -85,10 +85,9 @@ const PlayerHand = ({
           rotate={(idx - (hand.length - 1) / 2) * fanRotation}
           fromMiddle={idx - (hand.length - 1) / 2}
           disabled={disabled}
-          key={idx}
+          key={`card-${card.suit}-${card.face}`}
         >
           <Card
-            key={idx}
             game={game}
             card={card}
             visible={visible}

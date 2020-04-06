@@ -81,7 +81,7 @@ const PlayedCards = ({ cards, startingPlayer, playerId }) => {
       randomPlacements={randomPlacements}
     >
       {_.map(playedCards, (card, idx) => {
-        return <Card key={idx} card={card} onClick={() => {}} />;
+        return <Card key={card.playedBy} card={card} onClick={() => {}} />;
       })}
     </CardStack>
   );
