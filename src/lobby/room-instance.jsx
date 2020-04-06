@@ -9,33 +9,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const LeaveButton = ({ gameID, gameName, onClick }) => (
-  <button
-    key={`button-leave-${gameID}`}
-    onClick={onClick}
-    className="btn btn-primary"
-  >
-    Leave
-  </button>
-);
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const PlayButton = ({ gameID, gameName, onClick, seatId }) => (
-  <button
-    key={`button-play-${gameID}`}
-    onClick={onClick}
-    className="btn btn-primary"
-  >
+  <button onClick={onClick} className="btn btn-primary">
     Play
-  </button>
-);
-
-const JoinButton = ({ gameID, gameName, onClick, seatId }) => (
-  <button
-    key={`button-join-${gameID}`}
-    onClick={onClick}
-    className="btn btn-primary"
-  >
-    Join
   </button>
 );
 
@@ -52,160 +31,108 @@ class LobbyRoomInstance extends React.Component {
     onClickPlay: PropTypes.func.isRequired
   };
 
-  _createInstanceButtons = room => {
+  render() {
+    const room = this.props.room;
+    const freeSeat = room.players.find(player => !player.name);
     const playerSeat = room.players.find(
       player => player.name === this.props.playerName
     );
-    const freeSeat = room.players.find(player => !player.name);
 
-    const canLeave = playerSeat;
-    const canJoin = !playerSeat && freeSeat;
-    const canPlay = playerSeat && !freeSeat;
-    const canSpectate = !playerSeat && !freeSeat;
+    const PlayerTd = ({ room, player, playerSeat }) => (
+      <td>
+        {player.name ? (
+          playerSeat && playerSeat.id === player.id ? (
+            <button
+              className={`btn btn-text ${playerSeat ? 'text-white' : ''}`}
+              onClick={() =>
+                this.props.onClickLeave(room.gameName, room.gameID)
+              }
+              title="Leave room"
+            >
+              <span className="text-white">{player.name}</span>
 
-    return (
-      <div>
-        {canJoin && (
-          <JoinButton
-            gameID={room.gameID}
-            gameName={room.gameName}
-            seatId={freeSeat.id}
-            onClick={() =>
-              this.props.onClickJoin(
-                room.gameName,
-                room.gameID,
-                '' + freeSeat.id
-              )
-            }
-          />
-        )}
-        {canPlay && (
-          <PlayButton
-            gameId={room.gameID}
-            gameName={room.gameName}
-            seatId={playerSeat.id}
-            onClick={() =>
-              this.props.onClickPlay(room.gameName, {
-                gameID: room.gameID,
-                playerID: '' + playerSeat.id,
-                numPlayers: 4
-              })
-            }
-          />
-        )}
-        {canLeave && (
-          <LeaveButton
-            gameID={room.gameID}
-            gameName={room.gameName}
-            onClick={() => this.props.onClickLeave(room.gameName, room.gameID)}
-          />
-        )}
-        {canSpectate && (
+              <FontAwesomeIcon icon={faTimes} className="ml-2" />
+            </button>
+          ) : (
+            <button
+              className={`btn btn-text ${playerSeat ? 'text-white' : ''}`}
+            >
+              {player.name}
+            </button>
+          )
+        ) : playerSeat ? (
+          <button class="btn btn-text">Waiting for plyaer</button>
+        ) : (
           <button
-            key={`button-spectate-${room.gameID}`}
+            className="btn btn-text text-primary"
             onClick={() =>
-              this.props.onClickPlay(room.gameName, {
-                gameID: room.gameID,
-                numPlayers: room.players.length
-              })
+              this.props.onClickJoin(room.gameName, room.gameID, '' + player.id)
             }
-            className="btn btn-primary"
           >
-            Spectate
+            Join
           </button>
         )}
-      </div>
+      </td>
     );
 
-    // already seated: waiting for game to start
-    if (playerSeat && freeSeat) {
-      return (
-        <LeaveButton
-          gameID={room.gameID}
-          gameName={room.gameName}
-          onClick={() => this.props.onClickLeave(room.gameName, room.gameID)}
-        />
-      );
-    }
-
-    // at least 1 seat is available
-    if (freeSeat) {
-      return (
-        <JoinButton
-          gameID={room.gameID}
-          gameName={room.gameName}
-          seatId={freeSeat.id}
-          onClick={() =>
-            this.props.onClickJoin(room.gameName, room.gameID, '' + freeSeat.id)
-          }
-        />
-      );
-    }
-
-    // room is full
-    if (playerSeat) {
-      return (
-        <>
-          <PlayButton
-            gameId={room.gameID}
-            gameName={room.gameName}
-            seatId={playerSeat.id}
-            onClick={() =>
-              this.props.onClickPlay(room.gameName, {
-                gameID: room.gameID,
-                playerID: '' + playerSeat.id,
-                numPlayers: 4
-              })
-            }
-          />
-          <LeaveButton
-            gameID={room.gameID}
-            gameName={room.gameName}
-            onClick={() => this.props.onClickLeave(room.gameName, room.gameID)}
-          />
-        </>
-      );
-    }
-
-    // Spectate button
     return (
-      <button
-        key={`button-spectate-${room.gameID}`}
-        onClick={() =>
-          this.props.onClickPlay(room.gameName, {
-            gameID: room.gameID,
-            numPlayers: room.players.length
-          })
-        }
-        className="btn btn-primary"
-      >
-        Spectate
-      </button>
-    );
-  };
-
-  render() {
-    const room = this.props.room;
-    return (
-      <tr key={`line-${room.gameID}`}>
-        <td key={`cell-seats-${room.gameID}`}>
-          <ul className="list-unstyled d-flex justify-content-between mb-0">
-            {room.players.map(player => (
-              <li
-                className={`p-2 px-3 bg-light rounded ${
-                  player.name ? 'text-primary' : 'text-muted'
-                }`}
-              >
-                {player.name ? player.name : 'Free'}
-              </li>
-            ))}
-          </ul>
-        </td>
+      <tr className={playerSeat ? 'bg-success text-white' : ''}>
+        {room.players
+          .filter(({ id }) => [0, 2].includes(id))
+          .map(player => (
+            <PlayerTd
+              key={`player-${player.id}`}
+              room={room}
+              player={player}
+              playerSeat={playerSeat}
+            />
+          ))}
+        {room.players
+          .filter(({ id }) => [1, 3].includes(id))
+          .map(player => (
+            <PlayerTd
+              key={`player-${player.id}`}
+              room={room}
+              player={player}
+              playerSeat={playerSeat}
+            />
+          ))}
         <td
           key={`cell-buttons-${room.gameID}`}
           className="d-flex justify-content-between"
         >
-          {this._createInstanceButtons(room)}
+          {playerSeat && freeSeat && (
+            <button className="btn btn-text" disabled>
+              Waiting for players to join
+            </button>
+          )}
+          {playerSeat && !freeSeat && (
+            <PlayButton
+              gameId={room.gameID}
+              gameName={room.gameName}
+              seatId={playerSeat.id}
+              onClick={() =>
+                this.props.onClickPlay(room.gameName, {
+                  gameID: room.gameID,
+                  playerID: '' + playerSeat.id,
+                  numPlayers: 4
+                })
+              }
+            />
+          )}
+          {!playerSeat && !freeSeat && (
+            <button
+              onClick={() =>
+                this.props.onClickPlay(room.gameName, {
+                  gameID: room.gameID,
+                  numPlayers: room.players.length
+                })
+              }
+              className="btn btn-primary"
+            >
+              Spectate
+            </button>
+          )}
         </td>
       </tr>
     );

@@ -192,7 +192,7 @@ class Lobby extends React.Component {
       }
     }
 
-    if (gameOpts.numPlayers == 1) {
+    if (gameOpts.numPlayers === 1) {
       const maxPlayers = gameCode.game.maxPlayers;
       let bots = {};
       for (let i = 1; i < maxPlayers; i++) {
@@ -276,82 +276,88 @@ class Lobby extends React.Component {
     }
 
     return (
-      <div id="lobby-view" className="p-5">
-        <div className={this._getPhaseVisibility(LobbyPhases.ENTER)}>
-          <LobbyLoginForm
-            key={playerName}
-            playerName={playerName}
-            onEnter={this._enterLobby}
-          />
-        </div>
+      <div id="lobby-view" className="p-2 p-md-5">
+        {this.state.phase === LobbyPhases.ENTER && (
+          <div className={this._getPhaseVisibility(LobbyPhases.ENTER)}>
+            <LobbyLoginForm
+              key={playerName}
+              playerName={playerName}
+              onEnter={this._enterLobby}
+            />
+          </div>
+        )}
 
-        <div className="container">
-          <Modal.Dialog>
-            <Modal.Header>
-              <Modal.Title> Welcome, {playerName} </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <div className="alert alert-primary">
-                Want to chat while playing a boompje? Join the{' '}
-                <a
-                  href="https://discord.gg/gHb2jUq"
-                  className="font-weight-bold"
-                >
-                  unofficial Francken Discord
-                </a>
-                .
-              </div>
-              <p>Join a room, or open a new room.</p>
-              <LobbyCreateRoomForm
-                games={gameComponents}
-                createGame={this._createRoom}
-              />
-            </Modal.Body>
-            <Modal.Table className="border-bottom">
-              <table className="table mb-0">
-                <thead>
-                  <tr>
-                    <th>Rooms</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.connection.rooms.map(room => {
-                    const { gameID, gameName, players } = room;
-                    return (
-                      <LobbyRoomInstance
-                        key={'instance-' + gameID}
-                        room={{
-                          gameID,
-                          gameName,
-                          players: Object.values(players)
-                        }}
-                        playerName={playerName}
-                        onClickJoin={this._joinRoom}
-                        onClickLeave={this._leaveRoom}
-                        onClickPlay={this._startGame}
-                      />
-                    );
-                  })}
-                </tbody>
-              </table>
-            </Modal.Table>
-            <Modal.Body>
-              {errorMsg && <div className="alert alert-danger">{errorMsg}</div>}
-              <p className="text-muted">
-                Rooms that become empty are automatically deleted.
-              </p>
-
-              <div className="buttons" id="game-exit">
-                <button onClick={this._exitRoom}>Exit game</button>
-              </div>
-
-              <div className="buttons" id="lobby-exit">
-                <button onClick={this._exitLobby}>Exit lobby</button>
-              </div>
-            </Modal.Body>
-          </Modal.Dialog>
-        </div>
+        {this.state.phase === LobbyPhases.LIST && (
+          <div className="container">
+            <Modal.Dialog>
+              <Modal.Header>
+                <div className="d-flex justify-content-between">
+                  <Modal.Title> Welcome, {playerName} </Modal.Title>
+                  <button
+                    className="btn btn-text text-muted bg-light"
+                    onClick={this._exitLobby}
+                  >
+                    Change username
+                  </button>
+                </div>
+              </Modal.Header>
+              <Modal.Body>
+                <div className="alert alert-primary">
+                  Want to chat while playing a boompje? Join the{' '}
+                  <a
+                    href="https://discord.gg/gHb2jUq"
+                    className="font-weight-bold"
+                  >
+                    unofficial Francken Discord
+                  </a>
+                  .
+                </div>
+                <div className="d-flex justify-content-between align-items-center">
+                  <p className="mb-0">Join a room, or open a new room.</p>
+                  <LobbyCreateRoomForm
+                    games={gameComponents}
+                    createGame={this._createRoom}
+                  />
+                </div>
+              </Modal.Body>
+              <Modal.Table className="border-bottom table-responsive ">
+                <table className="table mb-0">
+                  <thead>
+                    <tr>
+                      <th colSpan="2">Wij</th>
+                      <th colSpan="2">Zij</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {this.connection.rooms.map(room => {
+                      const { gameID, gameName, players } = room;
+                      return (
+                        <LobbyRoomInstance
+                          key={'instance-' + gameID}
+                          room={{
+                            gameID,
+                            gameName,
+                            players: Object.values(players)
+                          }}
+                          playerName={playerName}
+                          onClickJoin={this._joinRoom}
+                          onClickLeave={this._leaveRoom}
+                          onClickPlay={this._startGame}
+                        />
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </Modal.Table>
+              {errorMsg && (
+                <Modal.Body>
+                  <div className="alert alert-danger">{errorMsg}</div>
+                </Modal.Body>
+              )}
+            </Modal.Dialog>
+          </div>
+        )}
       </div>
     );
   }
