@@ -12,13 +12,6 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faRocket, faEye } from '@fortawesome/free-solid-svg-icons';
 
-const PlayButton = ({ gameID, gameName, onClick, seatId }) => (
-  <button onClick={onClick} className="btn btn-text text-white">
-    <FontAwesomeIcon icon={faRocket} className="mr-2" />
-    Play
-  </button>
-);
-
 class LobbyRoomInstance extends React.Component {
   static propTypes = {
     room: PropTypes.shape({
@@ -33,10 +26,11 @@ class LobbyRoomInstance extends React.Component {
   };
 
   render() {
-    const room = this.props.room;
+    const props = this.props;
+    const room = props.room;
     const freeSeat = room.players.find(player => !player.name);
     const playerSeat = room.players.find(
-      player => player.name === this.props.playerName
+      player => player.name === props.playerName
     );
 
     const PlayerTd = ({ room, player, playerSeat, className }) => (
@@ -61,7 +55,7 @@ class LobbyRoomInstance extends React.Component {
           <button
             className="btn btn-text text-primary"
             onClick={() =>
-              this.props.onClickJoin(room.gameName, room.gameID, '' + player.id)
+              props.onClickJoin(room.gameName, room.gameID, '' + player.id)
             }
           >
             Join
@@ -103,23 +97,24 @@ class LobbyRoomInstance extends React.Component {
             </button>
           )}
           {playerSeat && !freeSeat && (
-            <PlayButton
-              gameId={room.gameID}
-              gameName={room.gameName}
-              seatId={playerSeat.id}
+            <button
               onClick={() =>
-                this.props.onClickPlay(room.gameName, {
+                props.onClickPlay(room.gameName, {
                   gameID: room.gameID,
                   playerID: '' + playerSeat.id,
                   numPlayers: 4
                 })
               }
-            />
+              className="btn btn-text text-white"
+            >
+              <FontAwesomeIcon icon={faRocket} className="mr-2" />
+              Play
+            </button>
           )}
           {!playerSeat && !freeSeat && (
             <button
               onClick={() =>
-                this.props.onClickPlay(room.gameName, {
+                props.onClickPlay(room.gameName, {
                   gameID: room.gameID,
                   numPlayers: room.players.length
                 })
@@ -134,9 +129,7 @@ class LobbyRoomInstance extends React.Component {
           {playerSeat && (
             <button
               className={`btn btn-text ${playerSeat ? 'text-white' : ''}`}
-              onClick={() =>
-                this.props.onClickLeave(room.gameName, room.gameID)
-              }
+              onClick={() => props.onClickLeave(room.gameName, room.gameID)}
               title="Leave room"
             >
               <FontAwesomeIcon icon={faTimes} className="mr-2" />
