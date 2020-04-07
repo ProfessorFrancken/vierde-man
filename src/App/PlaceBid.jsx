@@ -20,7 +20,10 @@ const PreviousBids = ({ bidsToShow }) => {
         }}
       >
         {bidsToShow.map((bid, idx) => (
-          <li className="d-flex justify-content-between my-2" key={bid.bidBy}>
+          <li
+            className="d-flex justify-content-between my-2"
+            key={`${bid.bidBy}-${idx}`}
+          >
             <strong>
               <PlayerName playerId={bid.bidBy} />
             </strong>
