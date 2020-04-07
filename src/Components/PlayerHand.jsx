@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { playerIsAllowedToPlayCard } from 'GameLogic/Phases/PlayTricks';
 import Card from 'Components/Card';
 import styled, { css } from 'styled-components';
@@ -46,6 +46,27 @@ const Hand = styled.ul`
   );
 `;
 
+const usePlayLastCard = (moves, cantPlay, hand, game, playerId) => {
+  useEffect(() => {
+    if (hand.length === 1) {
+      const card = hand[0];
+      const disabled =
+        cantPlay || !playerIsAllowedToPlayCard(game, playerId, card);
+
+      if (!disabled) {
+        const timer = setTimeout(() => {
+          moves.PlayCard(card);
+        }, 300);
+
+        return () => {
+          clearTimeout(timer);
+        };
+      }
+    }
+  }, [moves, cantPlay, hand, game, playerId]);
+};
+
+// If player is active, and has only 1 card left, play card
 const PlayerHand = ({
   game,
   hand,
@@ -54,40 +75,45 @@ const PlayerHand = ({
   moves,
   positionOnTable,
   active = false
-}) => (
-  <Hand
-    className="list-unstyled mb-0"
-    positionOnTable={positionOnTable}
-    active={active}
-  >
-    {hand.map((card, idx) => {
-      const disabled =
-        !active || !visible || !playerIsAllowedToPlayCard(game, playerId, card);
+}) => {
+  const cantPlay = !active || !visible;
+  usePlayLastCard(moves, cantPlay, hand, game, playerId);
 
-      const fanRotation = 5;
-      return (
-        <CardContainer
-          className="card-container"
-          rotate={(idx - (hand.length - 1) / 2) * fanRotation}
-          fromMiddle={idx - (hand.length - 1) / 2}
-          disabled={disabled}
-          key={`card-${card.suit}-${card.face}`}
-        >
-          <Card
-            game={game}
-            card={card}
-            visible={visible}
+  return (
+    <Hand
+      className="list-unstyled mb-0"
+      positionOnTable={positionOnTable}
+      active={active}
+    >
+      {hand.map((card, idx) => {
+        const disabled =
+          cantPlay || !playerIsAllowedToPlayCard(game, playerId, card);
+
+        const fanRotation = 5;
+        return (
+          <CardContainer
+            className="card-container"
+            rotate={(idx - (hand.length - 1) / 2) * fanRotation}
+            fromMiddle={idx - (hand.length - 1) / 2}
             disabled={disabled}
-            onClick={() => {
-              if (!disabled) {
-                moves.PlayCard(card);
-              }
-            }}
-          />
-        </CardContainer>
-      );
-    })}
-  </Hand>
-);
+            key={`card-${card.suit}-${card.face}`}
+          >
+            <Card
+              game={game}
+              card={card}
+              visible={visible}
+              disabled={disabled}
+              onClick={() => {
+                if (!disabled) {
+                  moves.PlayCard(card);
+                }
+              }}
+            />
+          </CardContainer>
+        );
+      })}
+    </Hand>
+  );
+};
 
 export default PlayerHand;
