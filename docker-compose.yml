@@ -25,6 +25,7 @@ services:
     environment:
       - REACT_APP_GAME_SERVER=http://api.vierde-man.nl.localhost
       - REACT_APP_LOBBY_SERVER=http://api.vierde-man.nl.localhost
+      - REACT_APP_PUBLIC=true
 
   server:
     image: node:13.12.0
