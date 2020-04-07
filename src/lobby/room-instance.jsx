@@ -10,10 +10,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faRocket, faEye } from '@fortawesome/free-solid-svg-icons';
 
 const PlayButton = ({ gameID, gameName, onClick, seatId }) => (
-  <button onClick={onClick} className="btn btn-primary">
+  <button onClick={onClick} className="btn btn-text text-white">
+    <FontAwesomeIcon icon={faRocket} className="mr-2" />
     Play
   </button>
 );
@@ -38,20 +39,14 @@ class LobbyRoomInstance extends React.Component {
       player => player.name === this.props.playerName
     );
 
-    const PlayerTd = ({ room, player, playerSeat }) => (
-      <td>
+    const PlayerTd = ({ room, player, playerSeat, className }) => (
+      <td className={className}>
         {player.name ? (
           playerSeat && playerSeat.id === player.id ? (
             <button
               className={`btn btn-text ${playerSeat ? 'text-white' : ''}`}
-              onClick={() =>
-                this.props.onClickLeave(room.gameName, room.gameID)
-              }
-              title="Leave room"
             >
-              <span className="text-white">{player.name}</span>
-
-              <FontAwesomeIcon icon={faTimes} className="ml-2" />
+              {player.name}
             </button>
           ) : (
             <button
@@ -95,6 +90,7 @@ class LobbyRoomInstance extends React.Component {
               room={room}
               player={player}
               playerSeat={playerSeat}
+              className={playerSeat ? 'bg-success' : 'bg-light'}
             />
           ))}
         <td
@@ -128,9 +124,23 @@ class LobbyRoomInstance extends React.Component {
                   numPlayers: room.players.length
                 })
               }
-              className="btn btn-primary"
+              className="btn btn-text bg-secondary text-white"
             >
+              <FontAwesomeIcon icon={faEye} className="mr-2" />
               Spectate
+            </button>
+          )}
+
+          {playerSeat && (
+            <button
+              className={`btn btn-text ${playerSeat ? 'text-white' : ''}`}
+              onClick={() =>
+                this.props.onClickLeave(room.gameName, room.gameID)
+              }
+              title="Leave room"
+            >
+              <FontAwesomeIcon icon={faTimes} className="mr-2" />
+              Leave
             </button>
           )}
         </td>

@@ -325,7 +325,9 @@ class Lobby extends React.Component {
                   <thead>
                     <tr>
                       <th colSpan="2">Wij</th>
-                      <th colSpan="2">Zij</th>
+                      <th colSpan="2" className="bg-light">
+                        Zij
+                      </th>
                       <th>Actions</th>
                     </tr>
                   </thead>
