@@ -2,14 +2,17 @@ import React from 'react';
 import PlaceBid from 'App/PlaceBid';
 import { PlayerToStartCurrentTrick } from 'GameLogic/Phases/PlayTricks';
 import styled, { css } from 'styled-components';
-import Score from 'App/Score';
 import PlayerHand from 'Components/PlayerHand';
 import ShowResultsOfTrick from 'App/ShowResultsOfTrick';
 import ShowResultsOfHand from 'App/ShowResultOfHand';
 import PlayedCards from 'App/PlayedCards';
 import GameOver from 'App/GameOver';
+import InformationBar from 'App/InformationBar';
 
 const PlayerContainer = styled.div`
+  width: 100vw;
+  height: 100vh;
+
   display: flex;
   align-items: flex-start;
   flex-direction: column;
@@ -20,6 +23,11 @@ const PlayerContainer = styled.div`
 
 const KlaverJasTable = styled.div`
   border: solid 0.5em #fdb76582;
+
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  max-height: 100%;
 
   @media (min-width: 768px) {
       border-width: 1em;
@@ -47,14 +55,12 @@ ${({ currentPlayer, playerId }) =>
   `}
 
   display: grid;
-  width: 100vw;
-  height: 100vh;
 
   // Use minmax: https://stackoverflow.com/questions/54099056/grid-display-columns-have-not-equal-width
   grid-template-rows: minmax(0, 1fr) 3fr minmax(0, 1fr);
   grid-template-columns: minmax(0, 1fr) 3fr minmax(0, 1fr);
   grid-template-areas:
-    's   p2 .'
+    'p2  p2  p2'
     'p1  a  p3'
     'p0  p0 p0';
 `;
@@ -65,9 +71,9 @@ const Action = styled.div`
   align-items: center;
   flex-direction: column;
 
-  grid-row-start: s;
+  grid-row-start: p2;
   grid-row-end: p1;
-  grid-column-start: s;
+  grid-column-start: p2;
   grid-column-end: p3;
 `;
 const PlayerHandArea = styled.div`
@@ -89,7 +95,19 @@ const Player = ({
   const playerId = id;
 
   return (
-    <PlayerContainer id={id}>
+    <PlayerContainer id={id} className="game">
+      <InformationBar
+        playerId={playerId}
+        game={game}
+        currentPlayer={currentPlayer}
+        phase={phase}
+        rounds={game.rounds}
+        playedTricks={game.playedTricks}
+        wij={game.wij}
+        zij={game.zij}
+        bid={game.bid}
+      />
+
       <KlaverJasTable
         className="klaverjas-table overflow-hidden"
         playerId={playerId}
@@ -141,16 +159,6 @@ const Player = ({
 
           {phase === null && <GameOver />}
         </Action>
-
-        {phase !== null && (
-          <Score
-            rounds={game.rounds}
-            playedTricks={game.playedTricks}
-            wij={game.wij}
-            zij={game.zij}
-            bid={game.bid}
-          />
-        )}
 
         {[0, 1, 2, 3].map(positionOnTable => {
           const id = (playerId + positionOnTable) % 4;
