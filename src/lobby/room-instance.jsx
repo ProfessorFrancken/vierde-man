@@ -11,7 +11,7 @@ const LobbyRoom = props => {
   );
 
   const PlayerTd = ({ room, player, playerSeat, className }) => (
-    <td className={className}>
+    <td className={`text-center ${className}`}>
       {player.name ? (
         playerSeat && playerSeat.id === player.id ? (
           <button className={`btn btn-text ${playerSeat ? 'text-white' : ''}`}>
@@ -62,13 +62,8 @@ const LobbyRoom = props => {
         ))}
       <td
         key={`cell-buttons-${room.gameID}`}
-        className="d-flex justify-content-between"
+        className="d-flex justify-content-end"
       >
-        {playerSeat && freeSeat && (
-          <button className="btn btn-text" disabled>
-            Waiting for players to join
-          </button>
-        )}
         {playerSeat && !freeSeat && (
           <button
             onClick={() =>
@@ -92,7 +87,7 @@ const LobbyRoom = props => {
                 numPlayers: room.players.length
               })
             }
-            className="btn btn-text bg-secondary text-white"
+            className="btn btn-text bg-light text-dark"
           >
             <FontAwesomeIcon icon={faEye} className="mr-2" />
             Spectate

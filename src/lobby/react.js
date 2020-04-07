@@ -20,6 +20,13 @@ import LobbyLoginForm from './login-form';
 import LobbyRoomInstance from './room-instance';
 import LobbyCreateRoomForm from './create-room-form';
 
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect
+} from 'react-router-dom';
+
 const LobbyPhases = {
   ENTER: 'enter',
   PLAY: 'play',
@@ -175,6 +182,7 @@ class Lobby extends React.Component {
   };
 
   _startGame = (gameName, gameOpts) => {
+    console.log({ gameOpts, gameName });
     const gameCode = this.connection._getGameComponents(gameName);
     if (!gameCode) {
       this.setState({
@@ -243,124 +251,128 @@ class Lobby extends React.Component {
   };
 
   render() {
-    const { gameComponents, renderer } = this.props;
-    const { errorMsg, playerName, phase, runningGame } = this.state;
-
-    if (renderer) {
-      return renderer({
-        errorMsg,
-        gameComponents,
-        rooms: this.connection.rooms,
-        phase,
-        playerName,
-        runningGame,
-        handleEnterLobby: this._enterLobby,
-        handleExitLobby: this._exitLobby,
-        handleCreateRoom: this._createRoom,
-        handleJoinRoom: this._joinRoom,
-        handleLeaveRoom: this._leaveRoom,
-        handleExitRoom: this._exitRoom,
-        handleRefreshRooms: this._updateConnection,
-        handleStartGame: this._startGame
-      });
-    }
-
-    if (runningGame) {
-      return (
-        <runningGame.app
-          gameID={runningGame.gameID}
-          playerID={runningGame.playerID}
-          credentials={runningGame.credentials}
-        />
-      );
-    }
+    const { gameComponents } = this.props;
+    const { errorMsg, playerName, runningGame } = this.state;
 
     return (
-      <div id="lobby-view" className="p-2 p-md-5">
-        {this.state.phase === LobbyPhases.ENTER && (
-          <div className={this._getPhaseVisibility(LobbyPhases.ENTER)}>
-            <LobbyLoginForm
-              key={playerName}
-              playerName={playerName}
-              onEnter={this._enterLobby}
-            />
-          </div>
-        )}
+      <Router>
+        <Switch>
+          <Route path="/games/:gameID">
+            {runningGame ? (
+              <runningGame.app
+                gameID={runningGame.gameID}
+                playerID={runningGame.playerID}
+                credentials={runningGame.credentials}
+              />
+            ) : (
+              <Redirect to="/lobby" />
+            )}
+          </Route>
+          <Route exact path="/login">
+            {this.state.phase === LobbyPhases.ENTER ? (
+              <LobbyLoginForm
+                key={playerName}
+                playerName={playerName}
+                onEnter={this._enterLobby}
+              />
+            ) : (
+              <Redirect to="/lobby" />
+            )}
+          </Route>
+          <Route exact path="/lobby">
+            {runningGame ? (
+              <Redirect to={`games/${runningGame.gameID}`} />
+            ) : (
+              <div id="lobby-view" className="p-2 p-md-5">
+                {this.state.phase === LobbyPhases.ENTER && (
+                  <Redirect to={`/login`} />
+                )}
 
-        {this.state.phase === LobbyPhases.LIST && (
-          <div className="container">
-            <Modal.Dialog>
-              <Modal.Header>
-                <div className="d-flex justify-content-between">
-                  <Modal.Title> Welcome, {playerName} </Modal.Title>
-                  <button
-                    className="btn btn-text text-muted bg-light"
-                    onClick={this._exitLobby}
-                  >
-                    Change username
-                  </button>
-                </div>
-              </Modal.Header>
-              <Modal.Body>
-                <div className="alert alert-primary">
-                  Want to chat while playing a boompje? Join the{' '}
-                  <a
-                    href="https://discord.gg/gHb2jUq"
-                    className="font-weight-bold"
-                  >
-                    unofficial Francken Discord
-                  </a>
-                  .
-                </div>
-                <div className="d-flex justify-content-between align-items-center">
-                  <p className="mb-0">Join a room, or open a new room.</p>
-                  <LobbyCreateRoomForm
-                    games={gameComponents}
-                    createGame={this._createRoom}
-                  />
-                </div>
-              </Modal.Body>
-              <Modal.Table className="border-bottom table-responsive ">
-                <table className="table mb-0">
-                  <thead>
-                    <tr>
-                      <th colSpan="2">Wij</th>
-                      <th colSpan="2" className="bg-light">
-                        Zij
-                      </th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.connection.rooms.map(room => {
-                      const { gameID, gameName, players } = room;
-                      return (
-                        <LobbyRoomInstance
-                          key={'instance-' + gameID}
-                          room={{
-                            gameID,
-                            gameName,
-                            players: Object.values(players)
-                          }}
-                          playerName={playerName}
-                          onClickJoin={this._joinRoom}
-                          onClickLeave={this._leaveRoom}
-                          onClickPlay={this._startGame}
-                        />
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </Modal.Table>
-              {errorMsg && (
-                <Modal.Body>
-                  <div className="alert alert-danger">{errorMsg}</div>
-                </Modal.Body>
-              )}
-            </Modal.Dialog>
-          </div>
-        )}
-      </div>
+                {this.state.phase === LobbyPhases.LIST && (
+                  <div className="container">
+                    <Modal.Dialog>
+                      <Modal.Header>
+                        <div className="d-flex justify-content-between">
+                          <Modal.Title> Welcome, {playerName} </Modal.Title>
+                          <button
+                            className="btn btn-text text-muted bg-light"
+                            onClick={this._exitLobby}
+                          >
+                            Change username
+                          </button>
+                        </div>
+                      </Modal.Header>
+                      <Modal.Body>
+                        <div className="alert alert-primary">
+                          Want to chat while playing a boompje? Join the{' '}
+                          <a
+                            href="https://discord.gg/gHb2jUq"
+                            className="font-weight-bold"
+                          >
+                            unofficial Francken Discord
+                          </a>
+                          .
+                        </div>
+                        <div className="d-flex justify-content-between align-items-center">
+                          <p className="mb-0">
+                            Join a room, or open a new room.
+                          </p>
+                          <LobbyCreateRoomForm
+                            games={gameComponents}
+                            createGame={this._createRoom}
+                          />
+                        </div>
+                      </Modal.Body>
+                      <Modal.Table className="border-bottom table-responsive ">
+                        <table className="table mb-0">
+                          <thead>
+                            <tr>
+                              <th className="text-center" colSpan="2">
+                                Wij
+                              </th>
+                              <th colSpan="2" className="text-center bg-light">
+                                Zij
+                              </th>
+                              <th className="text-right">Actions</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {this.connection.rooms.map(room => {
+                              const { gameID, gameName, players } = room;
+                              return (
+                                <LobbyRoomInstance
+                                  key={'instance-' + gameID}
+                                  room={{
+                                    gameID,
+                                    gameName,
+                                    players: Object.values(players)
+                                  }}
+                                  playerName={playerName}
+                                  onClickJoin={this._joinRoom}
+                                  onClickLeave={this._leaveRoom}
+                                  onClickPlay={this._startGame}
+                                />
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      </Modal.Table>
+                      {errorMsg && (
+                        <Modal.Body>
+                          <div className="alert alert-danger">{errorMsg}</div>
+                        </Modal.Body>
+                      )}
+                    </Modal.Dialog>
+                  </div>
+                )}
+              </div>
+            )}
+          </Route>
+          <Route>
+            <Redirect to="/lobby" />
+          </Route>
+        </Switch>
+      </Router>
     );
   }
 }
