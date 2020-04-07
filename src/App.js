@@ -86,7 +86,7 @@ const App = () => {
     });
     return (
       <AppContainer>
-        <LocalMultiPlayerGrid>
+        <LocalMultiPlayerGrid className="overflow-hidden">
           <LocalKlaverJasClient playerID="0" />
           <LocalKlaverJasClient playerID="1" />
           <LocalKlaverJasClient playerID="2" />

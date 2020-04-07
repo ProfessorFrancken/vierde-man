@@ -1,7 +1,7 @@
 import React from 'react';
 import PlaceBid from 'App/PlaceBid';
 import { PlayerToStartCurrentTrick } from 'GameLogic/Phases/PlayTricks';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Score from 'App/Score';
 import PlayerHand from 'Components/PlayerHand';
 import ShowResultsOfTrick from 'App/ShowResultsOfTrick';
@@ -19,6 +19,33 @@ const PlayerContainer = styled.div`
 `;
 
 const KlaverJasTable = styled.div`
+  border: solid 0.5em #fdb76582;
+
+  @media (min-width: 768px) {
+      border-width: 1em;
+   }
+
+${({ currentPlayer, playerId }) =>
+  currentPlayer === playerId % 4 &&
+  css`
+    border-bottom-color: var(--active-border-color);
+  `}
+${({ currentPlayer, playerId }) =>
+  currentPlayer === (playerId + 1) % 4 &&
+  css`
+    border-left-color: var(--active-border-color);
+  `}
+${({ currentPlayer, playerId }) =>
+  currentPlayer === (playerId + 2) % 4 &&
+  css`
+    border-top-color: var(--active-border-color);
+  `}
+${({ currentPlayer, playerId }) =>
+  currentPlayer === (playerId + 3) % 4 &&
+  css`
+    border-right-color: var(--active-border-color);
+  `}
+
   display: grid;
   width: 100vw;
   height: 100vh;
@@ -63,7 +90,11 @@ const Player = ({
 
   return (
     <PlayerContainer id={id}>
-      <KlaverJasTable className="klaverjas-table overflow-hidden" flex-grow-1>
+      <KlaverJasTable
+        className="klaverjas-table overflow-hidden"
+        playerId={playerId}
+        currentPlayer={currentPlayer}
+      >
         <Action>
           {phase === 'PlaceBids' && (
             <PlaceBid

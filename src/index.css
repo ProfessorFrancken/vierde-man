@@ -36,5 +36,7 @@ body {
   --hand-card-z-index: 0;
   --hand-card-hover-z-index: 10;
 
-  --active-shadow: 0px -30px 50px 2px #eed18f5c;
+  --active-border-color: #173249dd;
+  --active-shadow-color: #eed18f5c;
+  --active-shadow: 0px -30px 50px 2px var(--active-shadow-color);
 }
