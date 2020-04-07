@@ -21,10 +21,10 @@ const CardWrapper = styled.div`
 `;
 
 const PlayedCards = ({ playedCards, winner }) => (
-  <ul className="list-unstyled d-flex justify-content-between mb-0">
+  <ul className="list-unstyled d-flex justify-content-between mb-0 flex-wrap">
     {_.map(playedCards, (card, idx) => (
       <CardWrapper
-        className="mx-2"
+        className="mx-2 my-2"
         winner={winner === card.playedBy}
         key={card.playedBy}
       >
