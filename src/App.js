@@ -127,7 +127,7 @@ const App = () => (
             </AppContainer>
           </Route>
           <Route>
-            {config.public ? (
+            {config.public === true ? (
               <Redirect to="/lobby" />
             ) : (
               <AppContainer>
