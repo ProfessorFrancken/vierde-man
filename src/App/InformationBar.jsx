@@ -72,7 +72,10 @@ const PlayedCards = ({ lastTrick }) => {
     <div>
       <h4 className="h5">Last trick</h4>
       <h6>
-        Won by <PlayerName playerId={winner} />
+        Won by{' '}
+        <strong>
+          <PlayerName playerId={winner} />
+        </strong>
       </h6>
       <ul className="list-unstyled d-flex justify-content-between mb-0 flex-wrap">
         {_.map(playedCards, (card, idx) => (
@@ -93,20 +96,26 @@ const PlayedCards = ({ lastTrick }) => {
     </div>
   );
 };
-const Menu = ({ playedTricks, wij, zij, open, setOpen }) => {
+const Menu = ({ rounds, playedTricks, wij, zij, open, setOpen, playerId }) => {
   return (
     <StyledMenu open={open} className="bg-white border-right shadow">
       <div
         className="text-white border-bottom p-3 d-flex justify-content-between align-items-center"
         style={{ backgroundColor: '#173249' }}
       >
-        <h4 className="h6 mb-0 text-white">Vierde man?</h4>
         <FontAwesomeIcon icon={faTimes} onClick={() => setOpen(false)} />
+        <h4 className="h6 mb-0 text-white">Vierde man?</h4>
+      </div>
+
+      <div className="list-unstyled p-3 bg-white border-bottom text-center text-muted">
+        Round {rounds.length + 1} / 16
       </div>
       <div className="list-unstyled p-3 bg-white border-bottom">
         <div className="d-flex justify-content-between  font-weight-bold">
           <h4 className="h6">Wij</h4>
-          <small>{wij}</small>
+          <small>
+            <Prominent>{wij} </Prominent>
+          </small>
         </div>
         <ul
           className="list-unstyled d-flex justify-content-between font-weight-light mb-0"
@@ -123,7 +132,9 @@ const Menu = ({ playedTricks, wij, zij, open, setOpen }) => {
       <div className="list-unstyled p-3 bg-white border-bottom">
         <div className="d-flex justify-content-between  font-weight-bold">
           <h4 className="h6">Zij</h4>
-          <small>{zij}</small>
+          <small>
+            <Prominent>{zij} </Prominent>
+          </small>
         </div>
         <ul
           className="list-unstyled d-flex justify-content-between font-weight-light mb-0"
@@ -140,13 +151,10 @@ const Menu = ({ playedTricks, wij, zij, open, setOpen }) => {
       {playedTricks.length > 0 && (
         <div className="p-3 border-bottom">
           <PlayedCards lastTrick={playedTricks[playedTricks.length - 1]} />
-          <PlayedCards lastTrick={playedTricks[playedTricks.length - 1]} />
-          <PlayedCards lastTrick={playedTricks[playedTricks.length - 1]} />
-          <PlayedCards lastTrick={playedTricks[playedTricks.length - 1]} />
         </div>
       )}
       <button
-        className="bg-light border-bottom p-3 justify-self-end d-flex justify-content-start align-items-center"
+        className="btn bg-light border-bottom p-3 justify-self-end d-flex justify-content-start align-items-center"
         onClick={() => alert('Sorry, this has not yet been implemented')}
       >
         <FontAwesomeIcon icon={faTree} fixedWidth className="text-dark" />
@@ -165,7 +173,7 @@ const Menu = ({ playedTricks, wij, zij, open, setOpen }) => {
         </div>
       </a>
       <button
-        className="bg-light border-top p-3 justify-self-end d-flex justify-content-start align-items-center"
+        className="btn bg-light border-top p-3 justify-self-end d-flex justify-content-start align-items-center"
         onClick={() => alert('Sorry, this has not yet been implemented')}
       >
         <FontAwesomeIcon icon={faCogs} fixedWidth className="text-dark" />
@@ -184,7 +192,7 @@ const Menu = ({ playedTricks, wij, zij, open, setOpen }) => {
       </a>
 
       <button
-        className="bg-light border-top p-3 justify-self-end d-flex justify-content-start align-items-center"
+        className="btn bg-light border-top p-3 justify-self-end d-flex justify-content-start align-items-center"
         onClick={() => alert('Sorry, this has not yet been implemented')}
       >
         <FontAwesomeIcon icon={faUser} fixedWidth className="text-dark" />
@@ -197,7 +205,9 @@ const Menu = ({ playedTricks, wij, zij, open, setOpen }) => {
           className="bg-white rounded-circle border border-white d-none"
         />
         <div className="px-3 d-flex flex-column">
-          <h4 className="h6 mb-1">Mark Redeman</h4>
+          <h4 className="h6 mb-1">
+            <PlayerName playerId={playerId} />
+          </h4>
           <small className="text-muted">View profile</small>
         </div>
       </button>
@@ -225,6 +235,7 @@ const InformationBar = props => {
   const zij = 10;
   const bid = props.bid;
   const rounds = props.rounds;
+  const playerId = props.playerId;
   const playedTricks = props.playedTricks;
 
   return (
@@ -234,33 +245,41 @@ const InformationBar = props => {
         <Menu
           open={open}
           setOpen={setOpen}
+          rounds={rounds}
           playedTricks={playedTricks}
           wij={wij}
           zij={zij}
+          playerId={playerId}
         />
       </div>
       <div className="mx-2 p-2">
-        {bid.trump !== undefined && [0, 2].includes(bid.highestBidBy) && (
-          <Bid bid={{ bid: bid.bid, suit: bid.trump }} />
-        )}
         Wij: <Prominent>{wij}</Prominent>
       </div>
-      <div className="d-flex flex-column text-center mx-auto p-2">
-        <small className="text-muted">Round {rounds.length + 1} / 16</small>
+      <div className="d-flex justify-content-center text-center mx-auto p-2">
+        {bid.trump !== undefined && [0, 2].includes(bid.highestBidBy) && (
+          <div className="mr-2">
+            <Bid bid={{ bid: bid.bid, suit: bid.trump }} />
+          </div>
+        )}
         <small className="text-muted">
-          <PlayerName playerId={props.currentPlayer} /> is
-          {props.phase === 'PlaceBids' && ' placing a bid'}
-          {props.phase === 'PlayTricks' && ' selecting a card'}
+          <PlayerName playerId={props.currentPlayer} />
+          <span class="d-none d-sm-inline">
+            is
+            {props.phase === 'PlaceBids' && ' placing a bid'}
+            {props.phase === 'PlayTricks' && ' selecting a card'}
+          </span>
         </small>
+        {bid.trump !== undefined && [1, 3].includes(bid.highestBidBy) && (
+          <div className="ml-2">
+            <Bid bid={{ bid: bid.bid, suit: bid.trump }} />
+          </div>
+        )}
       </div>
       <div className="mx-2 p-2">
-        {bid.trump !== undefined && [1, 3].includes(bid.highestBidBy) && (
-          <Bid bid={{ bid: bid.bid, suit: bid.trump }} />
-        )}
         Zij: <Prominent>{zij}</Prominent>
       </div>
       <div
-        className="border-left p-2 px-3 h-100 d-flex align-items-center bg-light"
+        className="border-left p-2 px-3 h-100 d-flex align-items-center bg-light d-none"
         onClick={() => alert('Sorry, this has not yet been implemented')}
       >
         <FontAwesomeIcon icon={faComments} />
