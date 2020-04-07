@@ -7,7 +7,12 @@ import { Local } from 'boardgame.io/multiplayer';
 import KlaverJasBoard from 'KlaverJasBoard';
 import KlaverJasClientFactory from 'KlaverJasClientFactory';
 import config from 'config';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect
+} from 'react-router-dom';
 
 const LocalMultiPlayerGrid = styled.div`
   display: flex;
@@ -102,12 +107,8 @@ const App = () => (
           );
         }}
       />
-    </Switch>
-    <Route>
-      <AppContainer>
-        {1 == 2 ? (
-          <AprilFirst />
-        ) : (
+      <Route exact path="/lobby">
+        <AppContainer>
           <Lobby
             gameServer={config.gameServer}
             lobbyServer={config.lobbyServer}
@@ -115,9 +116,18 @@ const App = () => (
             debug={false}
             clientFactory={KlaverJasClientFactory}
           />
+        </AppContainer>
+      </Route>
+      <Route>
+        {config.public ? (
+          <Redirect to="/lobby" />
+        ) : (
+          <AppContainer>
+            <AprilFirst />
+          </AppContainer>
         )}
-      </AppContainer>
-    </Route>
+      </Route>
+    </Switch>
   </Router>
 );
 
