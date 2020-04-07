@@ -23,7 +23,7 @@ const LobbyRoom = props => {
           </button>
         )
       ) : playerSeat ? (
-        <button class="btn btn-text">Waiting for plyaer</button>
+        <button className="btn btn-text">Waiting for plyaer</button>
       ) : (
         <button
           className="btn btn-text text-primary"

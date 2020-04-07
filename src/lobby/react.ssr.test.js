@@ -9,7 +9,7 @@ import ReactDOMServer from 'react-dom/server';
 /* mock server requests */
 global.fetch = jest.fn().mockReturnValue({ status: 200, json: () => [] });
 
-describe('lobby', () => {
+xdescribe('lobby', () => {
   test('is rendered', () => {
     const components = [{ board: 'Board', game: { name: 'GameName' } }];
     const ssrRender = ReactDOMServer.renderToString(
