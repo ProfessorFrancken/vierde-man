@@ -4,7 +4,6 @@ import { SUITES, SANS } from 'GameLogic/Card';
 import { allowedBidsOnTrump } from 'GameLogic/Phases/PlaceBids';
 import Modal from 'Components/Modal';
 import PlayerName from 'Components/PlayerName';
-import _ from 'lodash';
 
 const { SPADES, HEARTS, CLUBS, DIAMONDS } = SUITES;
 
@@ -12,7 +11,14 @@ const PreviousBids = ({ bidsToShow }) => {
   return (
     <>
       <h4 className="h6">Previous bids</h4>
-      <ul className="list-unstyled text-muted my-2">
+      <ul
+        className="list-unstyled text-muted my-2"
+        style={{
+          maxHeight: '7rem',
+          overflowY: 'scroll',
+          scrollbarWidth: 'none'
+        }}
+      >
         {bidsToShow.map((bid, idx) => (
           <li className="d-flex justify-content-between my-2" key={bid.bidBy}>
             <strong>
@@ -126,7 +132,7 @@ const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer, active }) => {
     setBid(parseInt(e.target.value, 10));
   };
 
-  const bidsToShow = _.take([...currentBids].reverse(), 3);
+  const bidsToShow = [...currentBids].reverse();
 
   return (
     <Modal.Dialog>
