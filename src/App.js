@@ -7,6 +7,7 @@ import { Local } from 'boardgame.io/multiplayer';
 import KlaverJasBoard from 'KlaverJasBoard';
 import KlaverJasClientFactory from 'KlaverJasClientFactory';
 import config from 'config';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 const LocalMultiPlayerGrid = styled.div`
   display: flex;
@@ -69,52 +70,56 @@ const AppContainer = styled.div`
   }
 `;
 
-const App = () => {
-  const urlParams = new URLSearchParams(window.location.search);
-
-  if (urlParams.has('practice')) {
-    const Client = KlaverJasClientFactory({});
-    return (
+const App = () => (
+  <Router>
+    <Switch>
+      <Route
+        path="/practice"
+        render={() => {
+          const Client = KlaverJasClientFactory({});
+          return (
+            <AppContainer>
+              <Client />
+            </AppContainer>
+          );
+        }}
+      />
+      <Route
+        path="/hoi"
+        render={() => {
+          const LocalKlaverJasClient = KlaverJasClientFactory({
+            multiplayer: Local()
+          });
+          return (
+            <AppContainer>
+              <LocalMultiPlayerGrid className="overflow-hidden">
+                <LocalKlaverJasClient playerID="0" />
+                <LocalKlaverJasClient playerID="1" />
+                <LocalKlaverJasClient playerID="2" />
+                <LocalKlaverJasClient playerID="3" />
+              </LocalMultiPlayerGrid>
+            </AppContainer>
+          );
+        }}
+      />
+    </Switch>
+    <Route>
       <AppContainer>
-        <Client />
+        {1 == 2 ? (
+          <AprilFirst />
+        ) : (
+          <Lobby
+            gameServer={config.gameServer}
+            lobbyServer={config.lobbyServer}
+            gameComponents={[{ game: KlaverJassen, board: KlaverJasBoard }]}
+            debug={false}
+            clientFactory={KlaverJasClientFactory}
+          />
+        )}
       </AppContainer>
-    );
-  }
-  if (urlParams.has('hoi')) {
-    const LocalKlaverJasClient = KlaverJasClientFactory({
-      multiplayer: Local()
-    });
-    return (
-      <AppContainer>
-        <LocalMultiPlayerGrid className="overflow-hidden">
-          <LocalKlaverJasClient playerID="0" />
-          <LocalKlaverJasClient playerID="1" />
-          <LocalKlaverJasClient playerID="2" />
-          <LocalKlaverJasClient playerID="3" />
-        </LocalMultiPlayerGrid>
-      </AppContainer>
-    );
-  }
-  if (urlParams.has('lobby')) {
-    return (
-      <AppContainer>
-        <Lobby
-          gameServer={config.gameServer}
-          lobbyServer={config.lobbyServer}
-          gameComponents={[{ game: KlaverJassen, board: KlaverJasBoard }]}
-          debug={false}
-          clientFactory={KlaverJasClientFactory}
-        />
-      </AppContainer>
-    );
-  }
-
-  return (
-    <AppContainer>
-      <AprilFirst />
-    </AppContainer>
-  );
-};
+    </Route>
+  </Router>
+);
 
 // export default KlaverJasClient;
 export default App;
