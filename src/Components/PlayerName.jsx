@@ -1,5 +1,5 @@
 import React from 'react';
-import { useGame } from 'KlaverJasBoard';
+import { useGame } from 'game/context';
 
 const PlayerName = ({ playerId }) => {
   const { gameMetadata = [] } = useGame();

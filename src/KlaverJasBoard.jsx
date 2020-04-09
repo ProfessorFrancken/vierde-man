@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Player from 'App/Player';
+import { GameProvider } from 'game/context';
 
 const SinglePlayer = styled.div`
   display: grid;
@@ -10,17 +11,6 @@ const SinglePlayer = styled.div`
   grid-template-areas: 'player-0 player-1 player-2 player-3';
 `;
 
-export const GameContext = React.createContext();
-GameContext.displayName = 'GameContext';
-
-export const useGame = () => {
-  const context = React.useContext(GameContext);
-  if (context === undefined) {
-    throw new Error(`useGame must be used within a GameProvider`);
-  }
-  return context;
-};
-
 const KlaverJasBoard = props => {
   const urlParams = new URLSearchParams(window.location.search);
   const { G, moves, ctx } = props;
@@ -29,14 +19,12 @@ const KlaverJasBoard = props => {
     props.playerID === null ? null : parseInt(props.playerID, 10) || 0;
 
   return (
-    <GameContext.Provider
-      value={{
-        game: G,
-        ctx: ctx,
-        moves: moves,
-        playerID: playerID,
-        gameMetadata: props.gameMetadata
-      }}
+    <GameProvider
+      game={G}
+      ctx={ctx}
+      moves={moves}
+      playerID={playerID}
+      gameMetadata={props.gameMetadata}
     >
       <div className="App overflow-hidden">
         <SinglePlayer>
@@ -50,7 +38,7 @@ const KlaverJasBoard = props => {
           />
         </SinglePlayer>
       </div>
-    </GameContext.Provider>
+    </GameProvider>
   );
 };
 
