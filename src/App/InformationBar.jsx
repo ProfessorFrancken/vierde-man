@@ -263,7 +263,7 @@ const InformationBar = props => {
         )}
         <small className="text-muted">
           <PlayerName playerId={props.currentPlayer} />
-          <span class="d-none d-sm-inline">
+          <span className="d-none d-sm-inline">
             is
             {props.phase === 'PlaceBids' && ' placing a bid'}
             {props.phase === 'PlayTricks' && ' selecting a card'}
