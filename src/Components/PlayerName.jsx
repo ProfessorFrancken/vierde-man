@@ -1,17 +1,12 @@
 import React from 'react';
-import { GameContext } from 'KlaverJasBoard';
+import { useGame } from 'KlaverJasBoard';
 
-const PlayerName = ({ playerId }) => (
-  <GameContext.Consumer>
-    {({ gameMetadata = [] }) => {
-      const player = gameMetadata.find(({ id }) => id === playerId);
-      return player ? (
-        <span>{player.name}</span>
-      ) : (
-        <span>Player {playerId}</span>
-      );
-    }}
-  </GameContext.Consumer>
-);
+const PlayerName = ({ playerId }) => {
+  const { gameMetadata = [] } = useGame();
+  const { name } = gameMetadata.find(({ id }) => id === playerId) || {
+    name: `Player ${playerId}`
+  };
+  return <span>{name}</span>;
+};
 
 export default PlayerName;

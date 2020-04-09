@@ -13,6 +13,14 @@ const SinglePlayer = styled.div`
 export const GameContext = React.createContext();
 GameContext.displayName = 'GameContext';
 
+export const useGame = () => {
+  const context = React.useContext(GameContext);
+  if (context === undefined) {
+    throw new Error(`useGame must be used within a GameProvider`);
+  }
+  return context;
+};
+
 const KlaverJasBoard = props => {
   const urlParams = new URLSearchParams(window.location.search);
   const { G, moves, ctx } = props;
