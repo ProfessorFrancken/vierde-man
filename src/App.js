@@ -7,14 +7,12 @@ import { Local } from 'boardgame.io/multiplayer';
 import KlaverJasBoard from 'KlaverJasBoard';
 import KlaverJasClientFactory from 'KlaverJasClientFactory';
 import config from 'config';
-import { ThemeProvider } from 'styled-components';
-import { GlobalStyles } from './global';
-import { theme } from './theme';
+import AppProviders from 'Context';
 import {
   BrowserRouter as Router,
   Route,
   Switch,
-  Redirect
+  Redirect,
 } from 'react-router-dom';
 
 const LocalMultiPlayerGrid = styled.div`
@@ -80,65 +78,61 @@ const AppContainer = styled.div`
 `;
 
 const App = () => (
-  <ThemeProvider theme={theme}>
-    <>
-      <GlobalStyles />
-
-      <Router>
-        <Switch>
-          <Route
-            path="/practice"
-            render={() => {
-              const Client = KlaverJasClientFactory({});
-              return (
-                <AppContainer>
-                  <Client />
-                </AppContainer>
-              );
-            }}
-          />
-          <Route
-            path="/hoi"
-            render={() => {
-              const LocalKlaverJasClient = KlaverJasClientFactory({
-                multiplayer: Local()
-              });
-              return (
-                <AppContainer>
-                  <LocalMultiPlayerGrid className="overflow-hidden">
-                    <LocalKlaverJasClient playerID="0" />
-                    <LocalKlaverJasClient playerID="1" />
-                    <LocalKlaverJasClient playerID="2" />
-                    <LocalKlaverJasClient playerID="3" />
-                  </LocalMultiPlayerGrid>
-                </AppContainer>
-              );
-            }}
-          />
-          <Route exact path="/lobby">
-            <AppContainer>
-              <Lobby
-                gameServer={config.gameServer}
-                lobbyServer={config.lobbyServer}
-                gameComponents={[{ game: KlaverJassen, board: KlaverJasBoard }]}
-                debug={false}
-                clientFactory={KlaverJasClientFactory}
-              />
-            </AppContainer>
-          </Route>
-          <Route>
-            {config.public === true ? (
-              <Redirect to="/lobby" />
-            ) : (
+  <AppProviders>
+    <Router>
+      <Switch>
+        <Route
+          path="/practice"
+          render={() => {
+            const Client = KlaverJasClientFactory({});
+            return (
               <AppContainer>
-                <AprilFirst />
+                <Client />
               </AppContainer>
-            )}
-          </Route>
-        </Switch>
-      </Router>
-    </>
-  </ThemeProvider>
+            );
+          }}
+        />
+        <Route
+          path="/hoi"
+          render={() => {
+            const LocalKlaverJasClient = KlaverJasClientFactory({
+              multiplayer: Local(),
+            });
+            return (
+              <AppContainer>
+                <LocalMultiPlayerGrid className="overflow-hidden">
+                  <LocalKlaverJasClient playerID="0" />
+                  <LocalKlaverJasClient playerID="1" />
+                  <LocalKlaverJasClient playerID="2" />
+                  <LocalKlaverJasClient playerID="3" />
+                </LocalMultiPlayerGrid>
+              </AppContainer>
+            );
+          }}
+        />
+        <Route exact path="/lobby">
+          <AppContainer>
+            <Lobby
+              gameServer={config.gameServer}
+              lobbyServer={config.lobbyServer}
+              gameComponents={[{ game: KlaverJassen, board: KlaverJasBoard }]}
+              debug={false}
+              clientFactory={KlaverJasClientFactory}
+            />
+          </AppContainer>
+        </Route>
+        <Route>
+          {config.public === true ? (
+            <Redirect to="/lobby" />
+          ) : (
+            <AppContainer>
+              <AprilFirst />
+            </AppContainer>
+          )}
+        </Route>
+      </Switch>
+    </Router>
+  </AppProviders>
 );
 
 // export default KlaverJasClient;
