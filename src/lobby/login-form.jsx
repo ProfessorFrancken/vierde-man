@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import Modal from 'Components/Modal';
+import { useAuth } from 'auth/context';
 
-const Login = (props) => {
-  const onEnter = props.onEnter;
-  const [playerName, setPlayerName] = useState(props.playerName || '');
+const Login = () => {
+  const { username, login } = useAuth();
+  const [playerName, setPlayerName] = useState(username || '');
   const [nameErrorMsg, setNameErrorMsg] = useState();
 
   const onClickEnter = () => {
     if (playerName === '') {
       return;
     }
-    onEnter(playerName.trim());
+    login(playerName.trim());
   };
 
   const onKeyPress = (event) => {
@@ -55,11 +55,6 @@ const Login = (props) => {
       </Modal.Dialog>
     </div>
   );
-};
-
-Login.propTypes = {
-  playerName: PropTypes.string,
-  onEnter: PropTypes.func.isRequired,
 };
 
 export default Login;
