@@ -14,7 +14,7 @@ import { Local } from 'boardgame.io/multiplayer';
 import { SocketIO } from 'boardgame.io/multiplayer';
 import { LobbyConnection } from './connection';
 
-import LobbyLoginForm from './login-form';
+import Login from './login-form';
 import Lobbies from './Lobbies';
 
 import {
@@ -219,94 +219,81 @@ const createConnection = ({
  * Returns:
  *   A React component that provides a UI to create, list, join, leave, play or spectate game instances.
  */
-class Lobby extends React.Component {
-  static propTypes = {
-    gameComponents: PropTypes.array.isRequired,
-    lobbyServer: PropTypes.string,
-    gameServer: PropTypes.string,
-    debug: PropTypes.bool,
-    clientFactory: PropTypes.func,
-    refreshInterval: PropTypes.number,
-  };
+const Lobby = (props) => {
+  const {
+    errorMsg,
+    gameComponents,
+    credentials,
+    runningGame,
+    username: playerName,
+  } = props;
 
-  render() {
-    const props = this.props;
-    const {
-      errorMsg,
-      gameComponents,
-      credentials,
-      runningGame,
-      username: playerName,
-    } = props;
-
-    const rooms = props.connection.rooms;
-    return (
-      <Router>
-        <Switch>
-          <Route path="/games/:gameId">
-            {runningGame ? (
-              <PlayGame
-                gameComponents={props.gameComponents}
-                clientFactory={props.clientFactory}
-                debug={props.debug}
-                server={props.gameServer}
-                runningGame={runningGame}
-                credentials={credentials}
-              />
-            ) : (
-              <Redirect to="/lobby" />
-            )}
-          </Route>
-          <Route exact path="/login">
-            {props.username === undefined ? (
-              <LobbyLoginForm
-                key={playerName}
-                playerName={playerName}
-                onEnter={props.login}
-              />
-            ) : (
-              <Redirect to="/lobby" />
-            )}
-          </Route>
-          <Route exact path="/lobby">
-            {runningGame ? (
-              <Redirect to={`games/${runningGame.gameId}`} />
-            ) : (
-              <div id="lobby-view" className="p-2 p-md-5">
-                {props.username === undefined && <Redirect to={`/login`} />}
-
-                {props.username !== undefined && (
-                  <Lobbies
-                    playerName={playerName}
-                    gameComponents={gameComponents}
-                    errorMsg={errorMsg}
-                    exitLobby={() => exitLobby(props)}
-                    createRoom={(gameName, numPlayers) =>
-                      createRoom(props, gameName, numPlayers)
-                    }
-                    joinRoom={(gameName, gameID, playerID) =>
-                      joinRoom(props, gameName, gameID, playerID)
-                    }
-                    leaveRoom={(gameName, gameID) =>
-                      leaveRoom(props, gameName, gameID)
-                    }
-                    startGame={(gameName, gameOpts) =>
-                      startGame(props, gameName, gameOpts)
-                    }
-                    rooms={rooms}
-                  />
-                )}
-              </div>
-            )}
-          </Route>
-          <Route>
+  const rooms = props.connection.rooms;
+  return (
+    <Router>
+      <Switch>
+        <Route path="/games/:gameId">
+          {runningGame ? (
+            <PlayGame
+              gameComponents={props.gameComponents}
+              clientFactory={props.clientFactory}
+              debug={props.debug}
+              server={props.gameServer}
+              runningGame={runningGame}
+              credentials={credentials}
+            />
+          ) : (
             <Redirect to="/lobby" />
-          </Route>
-        </Switch>
-      </Router>
-    );
-  }
-}
+          )}
+        </Route>
+        <Route exact path="/login">
+          {props.username === undefined ? <Login /> : <Redirect to="/lobby" />}
+        </Route>
+        <Route exact path="/lobby">
+          {props.username === undefined && <Redirect to={`/login`} />}
+          {runningGame ? (
+            <Redirect to={`games/${runningGame.gameId}`} />
+          ) : (
+            <div id="lobby-view" className="p-2 p-md-5">
+              {props.username !== undefined && (
+                <Lobbies
+                  playerName={playerName}
+                  gameComponents={gameComponents}
+                  errorMsg={errorMsg}
+                  exitLobby={() => exitLobby(props)}
+                  createRoom={(gameName, numPlayers) =>
+                    createRoom(props, gameName, numPlayers)
+                  }
+                  joinRoom={(gameName, gameID, playerID) =>
+                    joinRoom(props, gameName, gameID, playerID)
+                  }
+                  leaveRoom={(gameName, gameID) =>
+                    leaveRoom(props, gameName, gameID)
+                  }
+                  startGame={(gameName, gameOpts) =>
+                    startGame(props, gameName, gameOpts)
+                  }
+                  rooms={rooms}
+                />
+              )}
+            </div>
+          )}
+        </Route>
+        <Route>
+          <Redirect to="/lobby" />
+        </Route>
+      </Switch>
+    </Router>
+  );
+};
+Lobby.propTypes = {
+  gameComponents: PropTypes.array.isRequired,
+  lobbyServer: PropTypes.string,
+  gameServer: PropTypes.string,
+  debug: PropTypes.bool,
+  clientFactory: PropTypes.func,
+  refreshInterval: PropTypes.number,
+};
 
 // debug: false,
 // clientFactory: Client,
