@@ -6,8 +6,7 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import React from 'react';
-import Cookies from 'react-cookies';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Client } from 'boardgame.io/react';
 import { MCTSBot } from 'boardgame.io/ai';
@@ -15,22 +14,192 @@ import { Local } from 'boardgame.io/multiplayer';
 import { SocketIO } from 'boardgame.io/multiplayer';
 import { LobbyConnection } from './connection';
 
-import Modal from 'Components/Modal';
 import LobbyLoginForm from './login-form';
-import LobbyRoomInstance from './room-instance';
-import LobbyCreateRoomForm from './create-room-form';
+import Lobbies from './Lobbies';
 
 import {
   BrowserRouter as Router,
   Route,
   Switch,
-  Redirect
+  Redirect,
+  useParams,
 } from 'react-router-dom';
+import { useAuth } from 'auth/context';
+import { useLobby } from 'lobby/context';
+import { useInterval } from 'hooks';
 
-const LobbyPhases = {
-  ENTER: 'enter',
-  PLAY: 'play',
-  LIST: 'list'
+const exitLobby = async ({
+  connection,
+  rooms,
+  credentials = {},
+  username,
+  setErrorMsg,
+  logout,
+}) => {
+  try {
+    await connection.disconnect(rooms, credentials.credentials, username);
+    setErrorMsg('');
+    logout();
+  } catch (error) {
+    setErrorMsg(error.message);
+  }
+};
+
+const createRoom = async (
+  { connection, setErrorMsg },
+  gameName,
+  numPlayers
+) => {
+  try {
+    await connection.create(gameName, numPlayers);
+    await connection.refresh();
+  } catch (error) {
+    setErrorMsg(error.message);
+  }
+};
+
+const joinRoom = async (
+  { connection, username, joinGame, setErrorMsg },
+  gameName,
+  gameID,
+  playerID
+) => {
+  try {
+    const playerCredentials = await connection.join(
+      gameName,
+      gameID,
+      playerID,
+      username
+    );
+
+    joinGame(gameID, gameName, playerID, playerCredentials);
+    await connection.refresh();
+  } catch (error) {
+    setErrorMsg(error.message);
+  }
+};
+
+const leaveRoom = async (
+  { connection, credentials = {}, username, leaveGame, setErrorMsg },
+  gameName,
+  gameID
+) => {
+  try {
+    await connection.leave(gameName, gameID, credentials.credentials, username);
+    leaveGame(gameID);
+
+    await connection.refresh();
+  } catch (error) {
+    setErrorMsg(error.message);
+  }
+};
+
+const startGame = (
+  {
+    setRunningGame,
+    clientFactory,
+    debug,
+    gameComponents,
+    setErrorMsg,
+    gameServer,
+  },
+  gameName,
+  gameOpts
+) => {
+  const gameCode = gameComponents.find(
+    ({ game: { name } }) => name === gameName
+  );
+  if (!gameCode) {
+    setErrorMsg('game ' + gameName + ' not supported');
+    return;
+  }
+
+  let multiplayer = undefined;
+  if (gameOpts.numPlayers > 1) {
+    if (gameServer) {
+      multiplayer = SocketIO({ server: gameServer });
+    } else {
+      multiplayer = SocketIO();
+    }
+  }
+
+  if (gameOpts.numPlayers === 1) {
+    const maxPlayers = gameCode.game.maxPlayers;
+    let bots = {};
+    for (let i = 1; i < maxPlayers; i++) {
+      bots[i + ''] = MCTSBot;
+    }
+    multiplayer = Local({ bots });
+  }
+
+  const app = clientFactory({
+    game: gameCode.game,
+    board: gameCode.board,
+    debug: debug,
+    multiplayer,
+  });
+
+  const game = {
+    app: app,
+    gameId: gameOpts.gameID,
+  };
+  setRunningGame(game);
+};
+
+const PlayGame = ({
+  gameComponents,
+  debug,
+  clientFactory,
+  credentials = { playerId: undefined, credentials: undefined },
+  runningGame,
+  server,
+}) => {
+  const { gameId } = useParams();
+  return (
+    <runningGame.app
+      gameID={gameId}
+      playerID={credentials.playerId}
+      credentials={credentials.credentials}
+    />
+  );
+
+  // Due to the force update we currently can't return a new client instance
+  const gameCode = gameComponents.find(
+    ({ game: { name } }) => name === credentials.gameName
+  );
+  const multiplayer = SocketIO({ server });
+  const App = clientFactory({
+    game: gameCode.game,
+    board: gameCode.board,
+    debug: debug,
+    multiplayer,
+  });
+
+  return (
+    <App
+      gameID={credentials.gameId}
+      playerID={credentials.playerId}
+      credentials={credentials.credentials}
+    />
+  );
+};
+
+const createConnection = ({
+  name,
+  credentials,
+  gameComponents,
+  lobbyServer,
+  rooms,
+  setRooms,
+}) => {
+  return LobbyConnection({
+    server: lobbyServer,
+    gameComponents: gameComponents,
+    playerName: name,
+    playerCredentials: credentials ? credentials.credentials : undefined,
+    rooms,
+    setRooms,
+  });
 };
 
 /**
@@ -57,223 +226,43 @@ class Lobby extends React.Component {
     gameServer: PropTypes.string,
     debug: PropTypes.bool,
     clientFactory: PropTypes.func,
-    refreshInterval: PropTypes.number
-  };
-
-  static defaultProps = {
-    debug: false,
-    clientFactory: Client,
-    refreshInterval: 2000
-  };
-
-  state = {
-    phase: LobbyPhases.ENTER,
-    playerName: 'Visitor',
-    runningGame: null,
-    errorMsg: '',
-    credentialStore: {}
-  };
-
-  constructor(props) {
-    super(props);
-    this._createConnection(this.props);
-    setInterval(this._updateConnection, this.props.refreshInterval);
-  }
-
-  componentDidMount() {
-    let cookie = Cookies.load('lobbyState') || {};
-    if (cookie.phase && cookie.phase === LobbyPhases.PLAY) {
-      cookie.phase = LobbyPhases.LIST;
-    }
-    this.setState({
-      phase: cookie.phase || LobbyPhases.ENTER,
-      playerName: cookie.playerName || 'Visitor',
-      credentialStore: cookie.credentialStore || {}
-    });
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    let name = this.state.playerName;
-    let creds = this.state.credentialStore[name];
-    if (
-      prevState.phase !== this.state.phase ||
-      prevState.credentialStore[name] !== creds ||
-      prevState.playerName !== name
-    ) {
-      this._createConnection(this.props);
-      this._updateConnection();
-      let cookie = {
-        phase: this.state.phase,
-        playerName: name,
-        credentialStore: this.state.credentialStore
-      };
-      Cookies.save('lobbyState', cookie, { path: '/' });
-    }
-  }
-
-  _createConnection = props => {
-    const name = this.state.playerName;
-    this.connection = LobbyConnection({
-      server: props.lobbyServer,
-      gameComponents: props.gameComponents,
-      playerName: name,
-      playerCredentials: this.state.credentialStore[name]
-    });
-  };
-
-  _updateCredentials = (playerName, credentials) => {
-    this.setState(prevState => {
-      // clone store or componentDidUpdate will not be triggered
-      const store = Object.assign({}, prevState.credentialStore);
-      store[[playerName]] = credentials;
-      return { credentialStore: store };
-    });
-  };
-
-  _updateConnection = async () => {
-    await this.connection.refresh();
-    this.forceUpdate();
-  };
-
-  _enterLobby = playerName => {
-    this.setState({ playerName, phase: LobbyPhases.LIST });
-  };
-
-  _exitLobby = async () => {
-    await this.connection.disconnect();
-    this.setState({ phase: LobbyPhases.ENTER, errorMsg: '' });
-  };
-
-  _createRoom = async (gameName, numPlayers) => {
-    try {
-      await this.connection.create(gameName, numPlayers);
-      await this.connection.refresh();
-      // rerender
-      this.setState({});
-    } catch (error) {
-      this.setState({ errorMsg: error.message });
-    }
-  };
-
-  _joinRoom = async (gameName, gameID, playerID) => {
-    try {
-      await this.connection.join(gameName, gameID, playerID);
-      await this.connection.refresh();
-      this._updateCredentials(
-        this.connection.playerName,
-        this.connection.playerCredentials
-      );
-    } catch (error) {
-      this.setState({ errorMsg: error.message });
-    }
-  };
-
-  _leaveRoom = async (gameName, gameID) => {
-    try {
-      await this.connection.leave(gameName, gameID);
-      await this.connection.refresh();
-      this._updateCredentials(
-        this.connection.playerName,
-        this.connection.playerCredentials
-      );
-    } catch (error) {
-      this.setState({ errorMsg: error.message });
-    }
-  };
-
-  _startGame = (gameName, gameOpts) => {
-    console.log({ gameOpts, gameName });
-    const gameCode = this.connection._getGameComponents(gameName);
-    if (!gameCode) {
-      this.setState({
-        errorMsg: 'game ' + gameName + ' not supported'
-      });
-      return;
-    }
-
-    let multiplayer = undefined;
-    if (gameOpts.numPlayers > 1) {
-      if (this.props.gameServer) {
-        multiplayer = SocketIO({ server: this.props.gameServer });
-      } else {
-        multiplayer = SocketIO();
-      }
-    }
-
-    if (gameOpts.numPlayers === 1) {
-      const maxPlayers = gameCode.game.maxPlayers;
-      let bots = {};
-      for (let i = 1; i < maxPlayers; i++) {
-        bots[i + ''] = MCTSBot;
-      }
-      multiplayer = Local({ bots });
-    }
-
-    const app = this.props.clientFactory({
-      game: gameCode.game,
-      board: gameCode.board,
-      debug: this.props.debug,
-      multiplayer
-    });
-
-    const game = {
-      app: app,
-      gameID: gameOpts.gameID,
-      playerID: gameOpts.numPlayers > 1 ? gameOpts.playerID : '0',
-      credentials: this.connection.playerCredentials
-    };
-
-    this.setState({ phase: LobbyPhases.PLAY, runningGame: game });
-  };
-
-  _exitRoom = () => {
-    this.setState({ phase: LobbyPhases.LIST, runningGame: null });
-  };
-
-  _getPhaseVisibility = phase => {
-    return this.state.phase !== phase ? 'hidden' : 'phase';
-  };
-
-  renderRooms = (rooms, playerName) => {
-    return rooms.map(room => {
-      const { gameID, gameName, players } = room;
-      return (
-        <LobbyRoomInstance
-          key={'instance-' + gameID}
-          room={{ gameID, gameName, players: Object.values(players) }}
-          playerName={playerName}
-          onClickJoin={this._joinRoom}
-          onClickLeave={this._leaveRoom}
-          onClickPlay={this._startGame}
-        />
-      );
-    });
+    refreshInterval: PropTypes.number,
   };
 
   render() {
-    const { gameComponents } = this.props;
-    const { errorMsg, playerName, runningGame } = this.state;
+    const props = this.props;
+    const {
+      errorMsg,
+      gameComponents,
+      credentials,
+      runningGame,
+      username: playerName,
+    } = props;
 
+    const rooms = props.connection.rooms;
     return (
       <Router>
         <Switch>
-          <Route path="/games/:gameID">
+          <Route path="/games/:gameId">
             {runningGame ? (
-              <runningGame.app
-                gameID={runningGame.gameID}
-                playerID={runningGame.playerID}
-                credentials={runningGame.credentials}
+              <PlayGame
+                gameComponents={props.gameComponents}
+                clientFactory={props.clientFactory}
+                debug={props.debug}
+                server={props.gameServer}
+                runningGame={runningGame}
+                credentials={credentials}
               />
             ) : (
               <Redirect to="/lobby" />
             )}
           </Route>
           <Route exact path="/login">
-            {this.state.phase === LobbyPhases.ENTER ? (
+            {props.username === undefined ? (
               <LobbyLoginForm
                 key={playerName}
                 playerName={playerName}
-                onEnter={this._enterLobby}
+                onEnter={props.login}
               />
             ) : (
               <Redirect to="/lobby" />
@@ -281,89 +270,31 @@ class Lobby extends React.Component {
           </Route>
           <Route exact path="/lobby">
             {runningGame ? (
-              <Redirect to={`games/${runningGame.gameID}`} />
+              <Redirect to={`games/${runningGame.gameId}`} />
             ) : (
               <div id="lobby-view" className="p-2 p-md-5">
-                {this.state.phase === LobbyPhases.ENTER && (
-                  <Redirect to={`/login`} />
-                )}
+                {props.username === undefined && <Redirect to={`/login`} />}
 
-                {this.state.phase === LobbyPhases.LIST && (
-                  <div className="container">
-                    <Modal.Dialog>
-                      <Modal.Header>
-                        <div className="d-flex justify-content-between">
-                          <Modal.Title> Welcome, {playerName} </Modal.Title>
-                          <button
-                            className="btn btn-text text-muted bg-light"
-                            onClick={this._exitLobby}
-                          >
-                            Change username
-                          </button>
-                        </div>
-                      </Modal.Header>
-                      <Modal.Body>
-                        <div className="alert alert-primary">
-                          Want to chat while playing a boompje? Join the{' '}
-                          <a
-                            href="https://discord.gg/gHb2jUq"
-                            className="font-weight-bold"
-                          >
-                            unofficial Francken Discord
-                          </a>
-                          .
-                        </div>
-                        <div className="d-flex justify-content-between align-items-center">
-                          <p className="mb-0">
-                            Join a room, or open a new room.
-                          </p>
-                          <LobbyCreateRoomForm
-                            games={gameComponents}
-                            createGame={this._createRoom}
-                          />
-                        </div>
-                      </Modal.Body>
-                      <Modal.Table className="border-bottom table-responsive ">
-                        <table className="table mb-0">
-                          <thead>
-                            <tr>
-                              <th className="text-center" colSpan="2">
-                                Wij
-                              </th>
-                              <th colSpan="2" className="text-center bg-light">
-                                Zij
-                              </th>
-                              <th className="text-right">Actions</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {this.connection.rooms.map(room => {
-                              const { gameID, gameName, players } = room;
-                              return (
-                                <LobbyRoomInstance
-                                  key={'instance-' + gameID}
-                                  room={{
-                                    gameID,
-                                    gameName,
-                                    players: Object.values(players)
-                                  }}
-                                  playerName={playerName}
-                                  onClickJoin={this._joinRoom}
-                                  onClickLeave={this._leaveRoom}
-                                  onClickPlay={this._startGame}
-                                />
-                              );
-                            })}
-                          </tbody>
-                        </table>
-                      </Modal.Table>
-                      {errorMsg && (
-                        <Modal.Body>
-                          <div className="alert alert-danger">{errorMsg}</div>
-                        </Modal.Body>
-                      )}
-                    </Modal.Dialog>
-                  </div>
+                {props.username !== undefined && (
+                  <Lobbies
+                    playerName={playerName}
+                    gameComponents={gameComponents}
+                    errorMsg={errorMsg}
+                    exitLobby={() => exitLobby(props)}
+                    createRoom={(gameName, numPlayers) =>
+                      createRoom(props, gameName, numPlayers)
+                    }
+                    joinRoom={(gameName, gameID, playerID) =>
+                      joinRoom(props, gameName, gameID, playerID)
+                    }
+                    leaveRoom={(gameName, gameID) =>
+                      leaveRoom(props, gameName, gameID)
+                    }
+                    startGame={(gameName, gameOpts) =>
+                      startGame(props, gameName, gameOpts)
+                    }
+                    rooms={rooms}
+                  />
                 )}
               </div>
             )}
@@ -377,4 +308,52 @@ class Lobby extends React.Component {
   }
 }
 
-export default Lobby;
+// debug: false,
+// clientFactory: Client,
+// refreshInterval: 2000,
+const FunctionalLobby = ({
+  debug = false,
+  clientFactory = Client,
+  refreshInterval = 2000,
+  ...props
+}) => {
+  const [rooms, setRooms] = useState([]);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [runningGame, setRunningGame] = useState(undefined);
+  const { username, login } = useAuth();
+  const lobby = useLobby();
+
+  const connection = createConnection({
+    name: username,
+    credentials: lobby.credentials,
+    gameComponents: props.gameComponents,
+    lobbyServer: props.lobbyServer,
+    rooms,
+    setRooms,
+  });
+
+  useInterval(() => {
+    connection.refresh();
+  }, refreshInterval);
+
+  return (
+    <Lobby
+      {...lobby}
+      {...props}
+      debug={debug}
+      clientFactory={clientFactory}
+      refreshInterval={refreshInterval}
+      username={username}
+      login={login}
+      errorMsg={errorMsg}
+      setErrorMsg={setErrorMsg}
+      runningGame={runningGame}
+      setRunningGame={setRunningGame}
+      rooms={rooms}
+      setRooms={setRooms}
+      connection={connection}
+    />
+  );
+};
+
+export default FunctionalLobby;
