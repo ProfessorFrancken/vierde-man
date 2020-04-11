@@ -162,44 +162,6 @@ const PlayGame = ({
       credentials={credentials.credentials}
     />
   );
-
-  // Due to the force update we currently can't return a new client instance
-  const gameCode = gameComponents.find(
-    ({ game: { name } }) => name === credentials.gameName
-  );
-  const multiplayer = SocketIO({ server });
-  const App = clientFactory({
-    game: gameCode.game,
-    board: gameCode.board,
-    debug: debug,
-    multiplayer,
-  });
-
-  return (
-    <App
-      gameID={credentials.gameId}
-      playerID={credentials.playerId}
-      credentials={credentials.credentials}
-    />
-  );
-};
-
-const createConnection = ({
-  name,
-  credentials,
-  gameComponents,
-  lobbyServer,
-  rooms,
-  setRooms,
-}) => {
-  return LobbyConnection({
-    server: lobbyServer,
-    gameComponents: gameComponents,
-    playerName: name,
-    playerCredentials: credentials ? credentials.credentials : undefined,
-    rooms,
-    setRooms,
-  });
 };
 
 /**
