@@ -29,19 +29,16 @@ class _LobbyConnectionImpl {
       if (resp.status !== 200) {
         throw new Error('HTTP status ' + resp.status);
       }
+      const gameIsSupported = (gameName) =>
+        this.gameComponents.some(({ game: { name } }) => name === gameName);
 
       const games = await resp.json();
       const roomsPerGame = await games
-        .filter((gameName) =>
-          this.gameComponents.some(({ game: { name } }) => name === gameName)
-        )
+        .filter(gameIsSupported)
         .map(async (gameName) => {
           const gameResp = await fetch(this._baseUrl() + '/' + gameName);
           const gameJson = await gameResp.json();
-          return gameJson.rooms.map((room) => ({
-            ...room,
-            gameName,
-          }));
+          return gameJson.rooms.map((room) => ({ ...room, gameName }));
         });
 
       Promise.all(roomsPerGame).then((rooms) => {
