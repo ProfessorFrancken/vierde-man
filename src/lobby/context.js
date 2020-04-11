@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import useLocalStorageState from 'use-local-storage-state';
 import { useAuth } from 'auth/context';
 import { useError } from 'Context';
 import { SocketIO } from 'boardgame.io/multiplayer';
@@ -11,20 +12,21 @@ function LobbyProvider(props) {
   const { logout: authLogout, username } = useAuth();
   const playerName = username;
   const { setError } = useError();
+  const [credentials, setCredentials] = useLocalStorageState(
+    localStorageCredentialsKey,
+    {
+      playerCredentials: undefined,
+      playerId: undefined,
+      gameId: undefined,
+      gameName: undefined,
+    }
+  );
 
-  const [credentials, setCredentials] = useState(() => {
-    const storedCredentials = window.localStorage.getItem(
-      localStorageCredentialsKey
-    );
-
-    return JSON.parse(storedCredentials) || undefined;
-  });
   const [rooms, setRooms] = useState([]);
   const [runningGame, setRunningGame] = useState(undefined);
 
   const logout = () => {
     authLogout();
-    window.localStorage.removeItem(localStorageCredentialsKey);
     setCredentials(undefined);
   };
 
@@ -37,15 +39,6 @@ function LobbyProvider(props) {
         playerName
       );
 
-      window.localStorage.setItem(
-        localStorageCredentialsKey,
-        JSON.stringify({
-          playerCredentials,
-          playerId,
-          gameId,
-          gameName,
-        })
-      );
       setCredentials({
         playerCredentials,
         playerId,
@@ -67,15 +60,7 @@ function LobbyProvider(props) {
         credentials.playerCredentials,
         playerName
       );
-      window.localStorage.setItem(
-        localStorageCredentialsKey,
-        JSON.stringify({
-          playerCredentials: undefined,
-          playerId: undefined,
-          gameId: undefined,
-          gameName: undefined,
-        })
-      );
+
       setCredentials({
         playerCredentials: undefined,
         playerId: undefined,
