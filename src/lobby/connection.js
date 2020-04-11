@@ -25,26 +25,28 @@ class _LobbyConnectionImpl {
 
   async refresh() {
     try {
-      let rooms = [];
       const resp = await fetch(this._baseUrl());
       if (resp.status !== 200) {
         throw new Error('HTTP status ' + resp.status);
       }
-      const json = await resp.json();
-      for (let gameName of json) {
-        if (
-          !this.gameComponents.some(({ game: { name } }) => name === gameName)
-        ) {
-          continue;
-        }
-        const gameResp = await fetch(this._baseUrl() + '/' + gameName);
-        const gameJson = await gameResp.json();
-        for (let inst of gameJson.rooms) {
-          inst.gameName = gameName;
-        }
-        rooms = rooms.concat(gameJson.rooms);
-      }
-      this.setRooms(rooms);
+
+      const games = await resp.json();
+      const roomsPerGame = await games
+        .filter((gameName) =>
+          this.gameComponents.some(({ game: { name } }) => name === gameName)
+        )
+        .map(async (gameName) => {
+          const gameResp = await fetch(this._baseUrl() + '/' + gameName);
+          const gameJson = await gameResp.json();
+          return gameJson.rooms.map((room) => ({
+            ...room,
+            gameName,
+          }));
+        });
+
+      Promise.all(roomsPerGame).then((rooms) => {
+        this.setRooms(rooms.flat());
+      });
     } catch (error) {
       throw new Error('failed to retrieve list of games (' + error + ')');
     }
@@ -129,12 +131,15 @@ class _LobbyConnectionImpl {
       const comp = this.gameComponents.find(
         ({ game: { name } }) => name === gameName
       );
-      if (!comp) throw new Error('game not found');
+      if (!comp) {
+        throw new Error('game not found');
+      }
       if (
         numPlayers < comp.game.minPlayers ||
         numPlayers > comp.game.maxPlayers
-      )
+      ) {
         throw new Error('invalid number of players ' + numPlayers);
+      }
       const resp = await fetch(this._baseUrl() + '/' + gameName + '/create', {
         method: 'POST',
         body: JSON.stringify({
@@ -142,7 +147,9 @@ class _LobbyConnectionImpl {
         }),
         headers: { 'Content-Type': 'application/json' },
       });
-      if (resp.status !== 200) throw new Error('HTTP status ' + resp.status);
+      if (resp.status !== 200) {
+        throw new Error('HTTP status ' + resp.status);
+      }
     } catch (error) {
       throw new Error(
         'failed to create room for ' + gameName + ' (' + error + ')'

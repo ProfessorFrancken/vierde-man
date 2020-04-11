@@ -113,7 +113,7 @@ function LobbyProvider(props) {
   };
 
   const startGame = (
-    { clientFactory, debug, gameComponents, setErrorMsg, gameServer },
+    { clientFactory, debug, gameComponents, gameServer },
     gameName,
     gameOpts
   ) => {
@@ -121,14 +121,13 @@ function LobbyProvider(props) {
       ({ game: { name } }) => name === gameName
     );
     if (!gameCode) {
-      setErrorMsg('game ' + gameName + ' not supported');
+      setError('game ' + gameName + ' not supported');
       return;
     }
 
-    let multiplayer = undefined;
-    if (gameOpts.numPlayers > 1) {
-      multiplayer = gameServer ? SocketIO({ server: gameServer }) : SocketIO();
-    }
+    const multiplayer = gameServer
+      ? SocketIO({ server: gameServer })
+      : SocketIO();
 
     const app = clientFactory({
       game: gameCode.game,

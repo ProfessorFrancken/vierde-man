@@ -122,7 +122,6 @@ const Lobby = ({
                         clientFactory,
                         debug,
                         gameComponents,
-                        setErrorMsg,
                         gameServer,
                       },
                       gameName,
