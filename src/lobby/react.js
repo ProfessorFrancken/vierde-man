@@ -32,12 +32,12 @@ const exitLobby = async ({
   connection,
   rooms,
   credentials = {},
-  username,
+  playerName,
   setErrorMsg,
   logout,
 }) => {
   try {
-    await connection.disconnect(rooms, credentials.credentials, username);
+    await connection.disconnect(rooms, credentials.credentials, playerName);
     setErrorMsg('');
     logout();
   } catch (error) {
@@ -59,7 +59,7 @@ const createRoom = async (
 };
 
 const joinRoom = async (
-  { connection, username, joinGame, setErrorMsg },
+  { connection, playerName, joinGame, setErrorMsg },
   gameName,
   gameID,
   playerID
@@ -69,7 +69,7 @@ const joinRoom = async (
       gameName,
       gameID,
       playerID,
-      username
+      playerName
     );
 
     joinGame(gameID, gameName, playerID, playerCredentials);
@@ -80,12 +80,17 @@ const joinRoom = async (
 };
 
 const leaveRoom = async (
-  { connection, credentials = {}, username, leaveGame, setErrorMsg },
+  { connection, credentials = {}, playerName, leaveGame, setErrorMsg },
   gameName,
   gameID
 ) => {
   try {
-    await connection.leave(gameName, gameID, credentials.credentials, username);
+    await connection.leave(
+      gameName,
+      gameID,
+      credentials.credentials,
+      playerName
+    );
     leaveGame(gameID);
 
     await connection.refresh();
@@ -164,36 +169,33 @@ const PlayGame = ({
   );
 };
 
-/**
- * Lobby
- *
- * React lobby component.
- *
- * @param {Array}  gameComponents - An array of Board and Game objects for the supported games.
- * @param {string} lobbyServer - Address of the lobby server (for example 'localhost:8000').
- *                               If not set, defaults to the server that served the page.
- * @param {string} gameServer - Address of the game server (for example 'localhost:8001').
- *                              If not set, defaults to the server that served the page.
- * @param {function} clientFactory - Function that is used to create the game clients.
- * @param {number} refreshInterval - Interval between server updates (default: 2000ms).
- * @param {bool}   debug - Enable debug information (default: false).
- *
- * Returns:
- *   A React component that provides a UI to create, list, join, leave, play or spectate game instances.
- */
-const Lobby = (props) => {
-  const {
-    errorMsg,
-    gameComponents,
-    credentials,
-    runningGame,
-    username: playerName,
+// debug: false,
+// clientFactory: Client,
+// refreshInterval: 2000,
+const Lobby = ({
+  debug = false,
+  clientFactory = Client,
+  refreshInterval = 2000,
+  gameComponents,
+  gameServer,
+  lobbyServer,
+  ...props
+}) => {
+  const [rooms, setRooms] = useState([]);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [runningGame, setRunningGame] = useState(undefined);
+  const { username: playerName } = useAuth();
+  const { credentials, logout, joinGame, leaveGame } = useLobby();
+  const connection = LobbyConnection({
+    server: lobbyServer,
+    gameComponents: gameComponents,
     rooms,
-    clientFactory,
-    debug,
-    gameServer,
-  } = props;
+    setRooms,
+  });
 
+  useInterval(() => {
+    connection.refresh();
+  }, refreshInterval);
   return (
     <Router>
       <Switch>
@@ -225,18 +227,57 @@ const Lobby = (props) => {
                   playerName={playerName}
                   gameComponents={gameComponents}
                   errorMsg={errorMsg}
-                  exitLobby={() => exitLobby(props)}
+                  exitLobby={() =>
+                    exitLobby({
+                      connection,
+                      rooms,
+                      credentials,
+                      playerName,
+                      setErrorMsg,
+                      logout,
+                    })
+                  }
                   createRoom={(gameName, numPlayers) =>
-                    createRoom(props, gameName, numPlayers)
+                    createRoom(
+                      { connection, setErrorMsg },
+                      gameName,
+                      numPlayers
+                    )
                   }
                   joinRoom={(gameName, gameID, playerID) =>
-                    joinRoom(props, gameName, gameID, playerID)
+                    joinRoom(
+                      { connection, playerName, joinGame, setErrorMsg },
+                      gameName,
+                      gameID,
+                      playerID
+                    )
                   }
                   leaveRoom={(gameName, gameID) =>
-                    leaveRoom(props, gameName, gameID)
+                    leaveRoom(
+                      {
+                        connection,
+                        credentials,
+                        playerName,
+                        leaveGame,
+                        setErrorMsg,
+                      },
+                      gameName,
+                      gameID
+                    )
                   }
                   startGame={(gameName, gameOpts) =>
-                    startGame(props, gameName, gameOpts)
+                    startGame(
+                      {
+                        setRunningGame,
+                        clientFactory,
+                        debug,
+                        gameComponents,
+                        setErrorMsg,
+                        gameServer,
+                      },
+                      gameName,
+                      gameOpts
+                    )
                   }
                   rooms={rooms}
                 />
@@ -251,6 +292,7 @@ const Lobby = (props) => {
     </Router>
   );
 };
+
 Lobby.propTypes = {
   gameComponents: PropTypes.array.isRequired,
   lobbyServer: PropTypes.string,
@@ -260,52 +302,4 @@ Lobby.propTypes = {
   refreshInterval: PropTypes.number,
 };
 
-// debug: false,
-// clientFactory: Client,
-// refreshInterval: 2000,
-const FunctionalLobby = ({
-  debug = false,
-  clientFactory = Client,
-  refreshInterval = 2000,
-  ...props
-}) => {
-  const [rooms, setRooms] = useState([]);
-  const [errorMsg, setErrorMsg] = useState('');
-  const [runningGame, setRunningGame] = useState(undefined);
-  const { username } = useAuth();
-  const lobby = useLobby();
-  const connection = LobbyConnection({
-    server: props.lobbyServer,
-    gameComponents: props.gameComponents,
-    playerName: username,
-    playerCredentials: lobby.credentials
-      ? lobby.credentials.credentials
-      : undefined,
-    rooms,
-    setRooms,
-  });
-
-  useInterval(() => {
-    connection.refresh();
-  }, refreshInterval);
-
-  return (
-    <Lobby
-      {...lobby}
-      {...props}
-      debug={debug}
-      clientFactory={clientFactory}
-      refreshInterval={refreshInterval}
-      username={username}
-      errorMsg={errorMsg}
-      setErrorMsg={setErrorMsg}
-      runningGame={runningGame}
-      setRunningGame={setRunningGame}
-      rooms={rooms}
-      setRooms={setRooms}
-      connection={connection}
-    />
-  );
-};
-
-export default FunctionalLobby;
+export default Lobby;
