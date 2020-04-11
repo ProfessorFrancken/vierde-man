@@ -14,8 +14,8 @@ import { Local } from 'boardgame.io/multiplayer';
 import { SocketIO } from 'boardgame.io/multiplayer';
 import { LobbyConnection } from './connection';
 
-import Login from './login-form';
 import Lobbies from './Lobbies';
+import Login from 'lobby/login-form';
 
 import {
   BrowserRouter as Router,
@@ -226,19 +226,25 @@ const Lobby = (props) => {
     credentials,
     runningGame,
     username: playerName,
+    rooms,
+    clientFactory,
+    debug,
+    gameServer,
   } = props;
 
-  const rooms = props.connection.rooms;
   return (
     <Router>
       <Switch>
+        <Route exact path="/login">
+          <Login />
+        </Route>
         <Route path="/games/:gameId">
           {runningGame ? (
             <PlayGame
-              gameComponents={props.gameComponents}
-              clientFactory={props.clientFactory}
-              debug={props.debug}
-              server={props.gameServer}
+              gameComponents={gameComponents}
+              clientFactory={clientFactory}
+              debug={debug}
+              server={gameServer}
               runningGame={runningGame}
               credentials={credentials}
             />
@@ -246,16 +252,13 @@ const Lobby = (props) => {
             <Redirect to="/lobby" />
           )}
         </Route>
-        <Route exact path="/login">
-          {props.username === undefined ? <Login /> : <Redirect to="/lobby" />}
-        </Route>
         <Route exact path="/lobby">
-          {props.username === undefined && <Redirect to={`/login`} />}
+          {playerName === undefined && <Redirect to={`/login`} />}
           {runningGame ? (
             <Redirect to={`games/${runningGame.gameId}`} />
           ) : (
             <div id="lobby-view" className="p-2 p-md-5">
-              {props.username !== undefined && (
+              {playerName !== undefined && (
                 <Lobbies
                   playerName={playerName}
                   gameComponents={gameComponents}
@@ -307,14 +310,15 @@ const FunctionalLobby = ({
   const [rooms, setRooms] = useState([]);
   const [errorMsg, setErrorMsg] = useState('');
   const [runningGame, setRunningGame] = useState(undefined);
-  const { username, login } = useAuth();
+  const { username } = useAuth();
   const lobby = useLobby();
-
-  const connection = createConnection({
-    name: username,
-    credentials: lobby.credentials,
+  const connection = LobbyConnection({
+    server: props.lobbyServer,
     gameComponents: props.gameComponents,
-    lobbyServer: props.lobbyServer,
+    playerName: username,
+    playerCredentials: lobby.credentials
+      ? lobby.credentials.credentials
+      : undefined,
     rooms,
     setRooms,
   });
@@ -331,7 +335,6 @@ const FunctionalLobby = ({
       clientFactory={clientFactory}
       refreshInterval={refreshInterval}
       username={username}
-      login={login}
       errorMsg={errorMsg}
       setErrorMsg={setErrorMsg}
       runningGame={runningGame}

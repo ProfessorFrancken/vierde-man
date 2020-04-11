@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import Modal from 'Components/Modal';
 import { useAuth } from 'auth/context';
+import { Redirect } from 'react-router-dom';
 
 const Login = () => {
   const { username, login } = useAuth();
   const [playerName, setPlayerName] = useState(username || '');
   const [nameErrorMsg, setNameErrorMsg] = useState();
+
+  if (username !== undefined) {
+    return <Redirect to="/lobby" />;
+  }
 
   const onClickEnter = () => {
     if (playerName === '') {
