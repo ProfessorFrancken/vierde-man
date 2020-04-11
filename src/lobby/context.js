@@ -1,26 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuth } from 'auth/context';
-
-// provide actions:
-// leave room
-// join room
-// create room
-// start gameimport React from 'react'
+import { useError } from 'Context';
+import { SocketIO } from 'boardgame.io/multiplayer';
 
 const LobbyContext = React.createContext();
 
 const localStorageCredentialsKey = '__vierde_man_credentials__';
 
 function LobbyProvider(props) {
-  const { logout: authLogout } = useAuth();
+  const { logout: authLogout, username } = useAuth();
+  const playerName = username;
+  const { setError } = useError();
 
-  const [credentials, setCredentials] = React.useState(() => {
+  const [credentials, setCredentials] = useState(() => {
     const storedCredentials = window.localStorage.getItem(
       localStorageCredentialsKey
     );
 
     return JSON.parse(storedCredentials) || undefined;
   });
+  const [rooms, setRooms] = useState([]);
+  const [runningGame, setRunningGame] = useState(undefined);
 
   const logout = () => {
     authLogout();
@@ -28,39 +28,137 @@ function LobbyProvider(props) {
     setCredentials(undefined);
   };
 
-  const joinGame = (gameId, gameName, playerId, credentials) => {
-    window.localStorage.setItem(
-      localStorageCredentialsKey,
-      JSON.stringify({
-        credentials,
+  const joinRoom = async (connection, gameName, gameId, playerId) => {
+    try {
+      const playerCredentials = await connection.join(
+        gameName,
+        gameId,
+        playerId,
+        playerName
+      );
+
+      window.localStorage.setItem(
+        localStorageCredentialsKey,
+        JSON.stringify({
+          playerCredentials,
+          playerId,
+          gameId,
+          gameName,
+        })
+      );
+      setCredentials({
+        playerCredentials,
         playerId,
         gameId,
         gameName,
-      })
-    );
-    setCredentials({
-      credentials,
-      playerId,
-      gameId,
-      gameName,
-    });
+      });
+      await connection.refresh();
+    } catch (error) {
+      setError(error.message);
+    }
   };
-  const leaveGame = (gameId) => {
-    window.localStorage.setItem(
-      localStorageCredentialsKey,
-      JSON.stringify({
-        credentials: undefined,
+  const leaveGame = (gameId) => {};
+
+  const leaveRoom = async (connection, gameName, gameId) => {
+    try {
+      await connection.leave(
+        gameName,
+        gameId,
+        credentials.playerCredentials,
+        playerName
+      );
+      window.localStorage.setItem(
+        localStorageCredentialsKey,
+        JSON.stringify({
+          playerCredentials: undefined,
+          playerId: undefined,
+          gameId: undefined,
+          gameName: undefined,
+        })
+      );
+      setCredentials({
+        playerCredentials: undefined,
         playerId: undefined,
         gameId: undefined,
         gameName: undefined,
-      })
+      });
+
+      await connection.refresh();
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  const createRoom = async (connection, gameName, numPlayers) => {
+    try {
+      await connection.create(gameName, numPlayers);
+      await connection.refresh();
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  const exitLobby = async (connection) => {
+    try {
+      await connection.disconnect(
+        rooms,
+        credentials.playerCredentials,
+        playerName
+      );
+      setError('');
+      logout();
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  const startGame = (
+    { clientFactory, debug, gameComponents, setErrorMsg, gameServer },
+    gameName,
+    gameOpts
+  ) => {
+    const gameCode = gameComponents.find(
+      ({ game: { name } }) => name === gameName
     );
-    setCredentials(undefined);
+    if (!gameCode) {
+      setErrorMsg('game ' + gameName + ' not supported');
+      return;
+    }
+
+    let multiplayer = undefined;
+    if (gameOpts.numPlayers > 1) {
+      multiplayer = gameServer ? SocketIO({ server: gameServer }) : SocketIO();
+    }
+
+    const app = clientFactory({
+      game: gameCode.game,
+      board: gameCode.board,
+      debug: debug,
+      multiplayer,
+    });
+
+    const game = {
+      app: app,
+      gameId: gameOpts.gameID,
+    };
+    setRunningGame(game);
   };
 
   return (
     <LobbyContext.Provider
-      value={{ credentials, logout, joinGame, leaveGame }}
+      value={{
+        credentials,
+        logout,
+        joinRoom,
+        leaveGame,
+        leaveRoom,
+        createRoom,
+        exitLobby,
+        rooms,
+        setRooms,
+        startGame,
+        runningGame,
+      }}
       {...props}
     />
   );

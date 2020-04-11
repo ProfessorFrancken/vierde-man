@@ -6,12 +6,9 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Client } from 'boardgame.io/react';
-import { MCTSBot } from 'boardgame.io/ai';
-import { Local } from 'boardgame.io/multiplayer';
-import { SocketIO } from 'boardgame.io/multiplayer';
 import { LobbyConnection } from './connection';
 
 import Lobbies from './Lobbies';
@@ -24,138 +21,16 @@ import {
   Redirect,
   useParams,
 } from 'react-router-dom';
+import { useError } from 'Context';
 import { useAuth } from 'auth/context';
 import { useLobby } from 'lobby/context';
 import { useInterval } from 'hooks';
-
-const exitLobby = async ({
-  connection,
-  rooms,
-  credentials = {},
-  playerName,
-  setErrorMsg,
-  logout,
-}) => {
-  try {
-    await connection.disconnect(rooms, credentials.credentials, playerName);
-    setErrorMsg('');
-    logout();
-  } catch (error) {
-    setErrorMsg(error.message);
-  }
-};
-
-const createRoom = async (
-  { connection, setErrorMsg },
-  gameName,
-  numPlayers
-) => {
-  try {
-    await connection.create(gameName, numPlayers);
-    await connection.refresh();
-  } catch (error) {
-    setErrorMsg(error.message);
-  }
-};
-
-const joinRoom = async (
-  { connection, playerName, joinGame, setErrorMsg },
-  gameName,
-  gameID,
-  playerID
-) => {
-  try {
-    const playerCredentials = await connection.join(
-      gameName,
-      gameID,
-      playerID,
-      playerName
-    );
-
-    joinGame(gameID, gameName, playerID, playerCredentials);
-    await connection.refresh();
-  } catch (error) {
-    setErrorMsg(error.message);
-  }
-};
-
-const leaveRoom = async (
-  { connection, credentials = {}, playerName, leaveGame, setErrorMsg },
-  gameName,
-  gameID
-) => {
-  try {
-    await connection.leave(
-      gameName,
-      gameID,
-      credentials.credentials,
-      playerName
-    );
-    leaveGame(gameID);
-
-    await connection.refresh();
-  } catch (error) {
-    setErrorMsg(error.message);
-  }
-};
-
-const startGame = (
-  {
-    setRunningGame,
-    clientFactory,
-    debug,
-    gameComponents,
-    setErrorMsg,
-    gameServer,
-  },
-  gameName,
-  gameOpts
-) => {
-  const gameCode = gameComponents.find(
-    ({ game: { name } }) => name === gameName
-  );
-  if (!gameCode) {
-    setErrorMsg('game ' + gameName + ' not supported');
-    return;
-  }
-
-  let multiplayer = undefined;
-  if (gameOpts.numPlayers > 1) {
-    if (gameServer) {
-      multiplayer = SocketIO({ server: gameServer });
-    } else {
-      multiplayer = SocketIO();
-    }
-  }
-
-  if (gameOpts.numPlayers === 1) {
-    const maxPlayers = gameCode.game.maxPlayers;
-    let bots = {};
-    for (let i = 1; i < maxPlayers; i++) {
-      bots[i + ''] = MCTSBot;
-    }
-    multiplayer = Local({ bots });
-  }
-
-  const app = clientFactory({
-    game: gameCode.game,
-    board: gameCode.board,
-    debug: debug,
-    multiplayer,
-  });
-
-  const game = {
-    app: app,
-    gameId: gameOpts.gameID,
-  };
-  setRunningGame(game);
-};
 
 const PlayGame = ({
   gameComponents,
   debug,
   clientFactory,
-  credentials = { playerId: undefined, credentials: undefined },
+  credentials = { playerId: undefined, playerCredentials: undefined },
   runningGame,
   server,
 }) => {
@@ -164,14 +39,11 @@ const PlayGame = ({
     <runningGame.app
       gameID={gameId}
       playerID={credentials.playerId}
-      credentials={credentials.credentials}
+      credentials={credentials.playerCredentials}
     />
   );
 };
 
-// debug: false,
-// clientFactory: Client,
-// refreshInterval: 2000,
 const Lobby = ({
   debug = false,
   clientFactory = Client,
@@ -179,13 +51,20 @@ const Lobby = ({
   gameComponents,
   gameServer,
   lobbyServer,
-  ...props
 }) => {
-  const [rooms, setRooms] = useState([]);
-  const [errorMsg, setErrorMsg] = useState('');
-  const [runningGame, setRunningGame] = useState(undefined);
+  const { error: errorMsg, setError: setErrorMsg } = useError();
   const { username: playerName } = useAuth();
-  const { credentials, logout, joinGame, leaveGame } = useLobby();
+  const {
+    credentials,
+    joinRoom,
+    leaveRoom,
+    createRoom,
+    exitLobby,
+    rooms,
+    setRooms,
+    startGame,
+    runningGame,
+  } = useLobby();
   const connection = LobbyConnection({
     server: lobbyServer,
     gameComponents: gameComponents,
@@ -227,48 +106,19 @@ const Lobby = ({
                   playerName={playerName}
                   gameComponents={gameComponents}
                   errorMsg={errorMsg}
-                  exitLobby={() =>
-                    exitLobby({
-                      connection,
-                      rooms,
-                      credentials,
-                      playerName,
-                      setErrorMsg,
-                      logout,
-                    })
-                  }
+                  exitLobby={() => exitLobby(connection)}
                   createRoom={(gameName, numPlayers) =>
-                    createRoom(
-                      { connection, setErrorMsg },
-                      gameName,
-                      numPlayers
-                    )
+                    createRoom(connection, gameName, numPlayers)
                   }
                   joinRoom={(gameName, gameID, playerID) =>
-                    joinRoom(
-                      { connection, playerName, joinGame, setErrorMsg },
-                      gameName,
-                      gameID,
-                      playerID
-                    )
+                    joinRoom(connection, gameName, gameID, playerID)
                   }
                   leaveRoom={(gameName, gameID) =>
-                    leaveRoom(
-                      {
-                        connection,
-                        credentials,
-                        playerName,
-                        leaveGame,
-                        setErrorMsg,
-                      },
-                      gameName,
-                      gameID
-                    )
+                    leaveRoom(connection, gameName, gameID)
                   }
                   startGame={(gameName, gameOpts) =>
                     startGame(
                       {
-                        setRunningGame,
                         clientFactory,
                         debug,
                         gameComponents,
