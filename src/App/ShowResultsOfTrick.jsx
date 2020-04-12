@@ -58,33 +58,44 @@ const ShowResultsOfTrick = ({
   const points = PointsOfTrick(playedCards, trump);
 
   return (
-    <Modal.Dialog style={{ zIndex: 'var(--modal-z-index)' }}>
-      <Modal.Header className="border-bottom-0">
-        <Modal.Title>
-          <PlayerName playerId={winner} /> won the trick
-        </Modal.Title>
-        <ul className="list-unstyled mb-0 d-flex justify-content-between text-muted">
-          <li>
-            <strong>Points </strong>: <Prominent>{points.points}</Prominent>
-          </li>
-          {points.honor > 0 && (
+    <div
+      style={{
+        zIndex: 'var(--modal-z-index)',
+        position: 'absolute',
+        top: '0',
+      }}
+    >
+      <Modal.Dialog>
+        <Modal.Header className="border-bottom-0">
+          <Modal.Title>
+            <PlayerName playerId={winner} /> won the trick
+          </Modal.Title>
+          <ul className="list-unstyled mb-0 d-flex justify-content-between text-muted">
             <li>
-              <strong>Honor </strong>: <Prominent>{points.honor}</Prominent>
+              <strong>Points </strong>: <Prominent>{points.points}</Prominent>
             </li>
-          )}
-        </ul>
-      </Modal.Header>
-      <div className="progress" style={{ borderRadius: '0', height: '0.5rem' }}>
-        <animated.div
-          className="bg-primary"
-          role="progressbar"
-          style={springProps}
-          aria-valuenow={springProps.width}
-          aria-valuemin="0%"
-          aria-valuemax="100%"
-        ></animated.div>
-      </div>
-    </Modal.Dialog>
+            {points.honor > 0 && (
+              <li>
+                <strong>Honor </strong>: <Prominent>{points.honor}</Prominent>
+              </li>
+            )}
+          </ul>
+        </Modal.Header>
+        <div
+          className="progress"
+          style={{ borderRadius: '0', height: '0.5rem' }}
+        >
+          <animated.div
+            className="bg-primary"
+            role="progressbar"
+            style={springProps}
+            aria-valuenow={springProps.width}
+            aria-valuemin="0%"
+            aria-valuemax="100%"
+          ></animated.div>
+        </div>
+      </Modal.Dialog>
+    </div>
   );
 };
 

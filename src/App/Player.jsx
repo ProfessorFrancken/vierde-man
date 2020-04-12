@@ -66,6 +66,8 @@ ${({ currentPlayer, playerId }) =>
 `;
 
 const Action = styled.div`
+  position: relative;
+
   display: flex;
   justify-content: center;
   align-items: center;
