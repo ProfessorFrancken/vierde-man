@@ -19,11 +19,9 @@ const KlaverJasClientFactory = ({
     numPlayers: 4,
     multiplayer,
     loading: LoadingScreen,
-    enhancer: applyMiddleware(
-      logger,
-      playSoundsMiddleware,
-      loadedSoundsMiddleware
-    ),
+    enhancer: debug
+      ? applyMiddleware(logger, playSoundsMiddleware, loadedSoundsMiddleware)
+      : applyMiddleware(playSoundsMiddleware, loadedSoundsMiddleware),
   });
 
 export default KlaverJasClientFactory;
