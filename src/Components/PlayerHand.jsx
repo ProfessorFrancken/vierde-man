@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { playerIsAllowedToPlayCard } from 'GameLogic/Phases/PlayTricks';
 import Card from 'Components/Card';
 import styled, { css } from 'styled-components';
+import { rankOfCard } from 'GameLogic/Card';
+import _ from 'lodash';
 
 const CardContainer = styled.div`
   --fromMiddle: ${({ fromMiddle }) => fromMiddle};
@@ -66,6 +68,19 @@ const usePlayLastCard = (moves, cantPlay, hand, game, playerId) => {
   }, [moves, cantPlay, hand, game, playerId]);
 };
 
+const sortHandByRank = (hand) => {
+  const suitOrder = {
+    C: 1,
+    H: 2,
+    S: 3,
+    D: 4,
+  };
+  return _.sortBy(hand, ({ suit, face }) => [
+    suitOrder[suit],
+    rankOfCard({ face }, false),
+  ]);
+};
+
 // If player is active, and has only 1 card left, play card
 const PlayerHand = ({
   game,
@@ -74,10 +89,12 @@ const PlayerHand = ({
   visible,
   moves,
   positionOnTable,
-  active = false
+  active = false,
 }) => {
   const cantPlay = !active || !visible;
   usePlayLastCard(moves, cantPlay, hand, game, playerId);
+
+  const cards = sortHandByRank(hand);
 
   return (
     <Hand
@@ -85,7 +102,7 @@ const PlayerHand = ({
       positionOnTable={positionOnTable}
       active={active}
     >
-      {hand.map((card, idx) => {
+      {cards.map((card, idx) => {
         const disabled =
           cantPlay || !playerIsAllowedToPlayCard(game, playerId, card);
 
