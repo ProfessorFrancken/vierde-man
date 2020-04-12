@@ -31,7 +31,11 @@ const Lobbies = ({
         <Modal.Body>
           <div className="alert alert-primary">
             Want to chat while playing a boompje? Join the{' '}
-            <a href="https://discord.gg/gHb2jUq" className="font-weight-bold">
+            <a
+              href="https://discord.gg/gHb2jUq"
+              className="font-weight-bold"
+              target="_blank"
+            >
               unofficial Francken Discord
             </a>
             .
