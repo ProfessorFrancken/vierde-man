@@ -28,7 +28,6 @@ function LobbyProvider(props) {
   const joinRoom = async (connection, gameName, gameId, playerId) => {
     try {
       const playerCredentials = await connection.join(
-        gameName,
         gameId,
         playerId,
         playerName

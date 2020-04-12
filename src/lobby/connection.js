@@ -57,12 +57,17 @@ class _LobbyConnectionImpl {
     }
   }
 
-  async join(gameName, gameID, playerID, playerName) {
+  async join(gameID, playerID, playerName) {
     try {
       const roomToJoin = findRoom(this.rooms, gameID);
 
       const response = await fetch(
-        this._baseUrl() + '/' + gameName + '/' + roomToJoin.gameID + '/join',
+        this._baseUrl() +
+          '/' +
+          roomToJoin.gameName +
+          '/' +
+          roomToJoin.gameID +
+          '/join',
         {
           method: 'POST',
           body: JSON.stringify({
