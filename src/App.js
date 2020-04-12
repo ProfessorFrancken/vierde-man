@@ -44,35 +44,44 @@ const AppContainer = styled.div`
     --y-scale: 3%;
   }
 
-  @media (min-width: 400px) {
+  @media (min-width: 300px) {
     --cardScale: 1.4;
+  }
+
+  @media (min-width: 400px) {
+    --cardScale: 1.6;
+    --x-scale: 30%;
+  }
+
+  @media (min-width: 500px) {
+    --cardScale: 1.8;
   }
 
   // Small devices (landscape phones, 576px and up)
   @media (min-width: 576px) {
-    --cardScale: 1.6;
+    --cardScale: 1.8;
 
     --x-offset: 50%;
     --y-offset: 30%;
-    --x-scale: 25%;
+    --x-scale: 35%;
     --y-scale: 5%;
   }
 
   // Medium devices (tablets, 768px and up)
   @media (min-width: 768px) {
-    --cardScale: 1.8;
+    --cardScale: 2;
   }
 
   // Large devices (desktops, 992px and up)
   @media (min-width: 992px) {
-    --cardScale: 2;
+    --cardScale: 2.2;
   }
 
   // Extra large devices (large desktops, 1200px and up)
   @media (min-width: 1200px) {
     --cardScale: 2.4;
-    --x-scale: 35%;
-    --y-scale: 6%;
+    --x-scale: 40%;
+    --y-scale: 7%;
     --y-offset: 40%;
   }
 `;
