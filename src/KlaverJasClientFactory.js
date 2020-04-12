@@ -4,12 +4,13 @@ import logger from 'redux-logger';
 import { applyMiddleware } from 'redux';
 import { loadedSoundsMiddleware, playSoundsMiddleware } from 'Sound';
 import KlaverJasBoard from 'KlaverJasBoard';
+import LoadingScreen from 'App/LoadingScreen';
 
 const KlaverJasClientFactory = ({
   game = KlaverJassen,
   board = KlaverJasBoard,
   debug = false,
-  multiplayer = undefined
+  multiplayer = undefined,
 }) =>
   Client({
     game,
@@ -17,14 +18,12 @@ const KlaverJasClientFactory = ({
     board,
     numPlayers: 4,
     multiplayer,
-    loading: props => {
-      return 'Loading component';
-    },
+    loading: LoadingScreen,
     enhancer: applyMiddleware(
       logger,
       playSoundsMiddleware,
       loadedSoundsMiddleware
-    )
+    ),
   });
 
 export default KlaverJasClientFactory;
