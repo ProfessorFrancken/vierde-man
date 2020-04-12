@@ -138,9 +138,7 @@ const Player = ({
           {(phase === 'PlayTricks' || phase === 'ShowResultOfTrick') && (
             <PlayedCards
               cards={game.currentTrick.playedCards}
-              startingPlayer={PlayerToStartCurrentTrick(game, {
-                numPlayers: 4,
-              })}
+              startingPlayer={game.currentTrick.startingPlayer}
               playerId={playerId}
             />
           )}
