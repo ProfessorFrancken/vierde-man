@@ -6,6 +6,8 @@ import _ from 'lodash';
 import styled from 'styled-components';
 import Modal from 'Components/Modal';
 import PlayerName from 'Components/PlayerName';
+import { useSpring, animated } from 'react-spring';
+import { Spring } from 'react-spring/renderprops';
 
 const Prominent = ({ children }) => (
   <span>{children === 33 ? "'Vo" : children}</span>
@@ -19,39 +21,6 @@ const CardWrapper = styled.div`
     transform: rotate(0deg) !important;
   }
 `;
-
-const PlayedCards = ({ playedCards, winner }) => (
-  <ul className="list-unstyled d-flex justify-content-between mb-0 flex-wrap">
-    {_.map(playedCards, (card, idx) => (
-      <CardWrapper
-        className="mx-2 my-2"
-        winner={winner === card.playedBy}
-        key={card.playedBy}
-      >
-        <Card
-          card={card}
-          onClick={() => {}}
-          disabled={card.playedBy !== winner}
-        />
-      </CardWrapper>
-    ))}
-  </ul>
-);
-
-const CheckContinueAutomatically = ({ checked, onChange }) => (
-  <div className="form-group form-check text-muted mb-0">
-    <input
-      type="checkbox"
-      className="form-check-input"
-      id="continueAutomatically"
-      checked={checked}
-      onChange={onChange}
-    />
-    <label className="form-check-label" htmlFor="continueAutomatically">
-      Continue next trick automatically
-    </label>
-  </div>
-);
 
 export const Bid = ({ bid }) => {
   if (bid.bid === null) {
@@ -74,39 +43,23 @@ const ShowResultsOfTrick = ({
   playerId,
   currentPlayer,
   continueTrickAutomatically = {},
-  playersThatWantToContinue = []
+  playersThatWantToContinue = [],
 }) => {
+  const springProps = useSpring({
+    width: '100%',
+    from: { width: '0%' },
+    delay: 500,
+    config: { duration: 1000 },
+    onRest: () => {
+      moves.ContinueToNextTrick(playerId, true);
+    },
+  });
   const winner = WinnerOfTrick(playedCards, playedCards[startingPlayer], trump);
   const points = PointsOfTrick(playedCards, trump);
-  const [continueAutomatically, setContinueAutomatically] = useState(
-    continueTrickAutomatically[playerId] === true
-  );
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (
-        continueTrickAutomatically[playerId] &&
-        !playersThatWantToContinue.includes(playerId)
-      ) {
-        moves.ContinueToNextTrick(playerId, true);
-      }
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [playerId, playersThatWantToContinue, continueTrickAutomatically, moves]);
-
-  // The cards given are not in the order in which they were played,
-  // so we will have to manually order them based on the starting player
-  const playedCardsInOrder = _.concat(
-    ..._(playedCards)
-      .reject(card => card === undefined)
-      .partition(({ playedBy }) => playedBy < startingPlayer)
-      .reverse()
-      .values()
-  );
 
   return (
     <Modal.Dialog style={{ zIndex: 'var(--modal-z-index)' }}>
-      <Modal.Header>
+      <Modal.Header className="border-bottom-0">
         <Modal.Title>
           <PlayerName playerId={winner} /> won the trick
         </Modal.Title>
@@ -121,30 +74,16 @@ const ShowResultsOfTrick = ({
           )}
         </ul>
       </Modal.Header>
-      <Modal.Body className="bg-light">
-        <PlayedCards playedCards={playedCardsInOrder} winner={winner} />
-      </Modal.Body>
-      <Modal.Body className="border-top">
-        <CheckContinueAutomatically
-          checked={continueAutomatically}
-          onChange={() => setContinueAutomatically(!continueAutomatically)}
-        />
-      </Modal.Body>
-      <Modal.Footer>
-        {playersThatWantToContinue.includes(playerId) ? (
-          <Modal.Body className="p-4">Waiting for other players</Modal.Body>
-        ) : (
-          <Modal.Actions>
-            <Modal.Action
-              onClick={() =>
-                moves.ContinueToNextTrick(playerId, continueAutomatically)
-              }
-            >
-              Continue
-            </Modal.Action>
-          </Modal.Actions>
-        )}
-      </Modal.Footer>
+      <div className="progress" style={{ borderRadius: '0', height: '0.5rem' }}>
+        <animated.div
+          className="bg-primary"
+          role="progressbar"
+          style={springProps}
+          aria-valuenow={springProps.width}
+          aria-valuemin="0%"
+          aria-valuemax="100%"
+        ></animated.div>
+      </div>
     </Modal.Dialog>
   );
 };

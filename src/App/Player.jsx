@@ -18,7 +18,7 @@ const PlayerContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   border: thin solid #dddddd;
-  grid-area: ${props => 'player-' + props.id};
+  grid-area: ${(props) => 'player-' + props.id};
 `;
 
 const KlaverJasTable = styled.div`
@@ -77,7 +77,7 @@ const Action = styled.div`
   grid-column-end: p3;
 `;
 const PlayerHandArea = styled.div`
-  grid-area: ${props => 'p' + props.id};
+  grid-area: ${(props) => 'p' + props.id};
 `;
 
 const Player = ({
@@ -90,7 +90,7 @@ const Player = ({
   game,
   phase,
   currentPlayer,
-  practice = false
+  practice = false,
 }) => {
   const playerId = id;
 
@@ -123,15 +123,6 @@ const Player = ({
               active={playerId === currentPlayer}
             />
           )}
-          {phase === 'PlayTricks' && (
-            <PlayedCards
-              cards={game.currentTrick.playedCards}
-              startingPlayer={PlayerToStartCurrentTrick(game, {
-                numPlayers: 4
-              })}
-              playerId={playerId}
-            />
-          )}
 
           {phase === 'ShowResultOfTrick' && (
             <ShowResultsOfTrick
@@ -142,6 +133,15 @@ const Player = ({
               trump={game.bid.trump}
               continueTrickAutomatically={game.continueTrickAutomatically}
               playersThatWantToContinue={game.playersThatWantToContinue}
+            />
+          )}
+          {(phase === 'PlayTricks' || phase === 'ShowResultOfTrick') && (
+            <PlayedCards
+              cards={game.currentTrick.playedCards}
+              startingPlayer={PlayerToStartCurrentTrick(game, {
+                numPlayers: 4,
+              })}
+              playerId={playerId}
             />
           )}
           {phase === 'ShowResultOfHand' && (
@@ -160,7 +160,7 @@ const Player = ({
           {phase === null && <GameOver />}
         </Action>
 
-        {[0, 1, 2, 3].map(positionOnTable => {
+        {[0, 1, 2, 3].map((positionOnTable) => {
           const id = (playerId + positionOnTable) % 4;
           return (
             <PlayerHandArea id={positionOnTable} key={positionOnTable}>
