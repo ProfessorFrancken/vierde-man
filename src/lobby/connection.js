@@ -97,7 +97,7 @@ class _LobbyConnectionImpl {
     }
   }
 
-  async leave(gameName, gameID, credentials, playerName) {
+  async leave(gameID, credentials, playerName) {
     try {
       const room = findRoom(this.rooms, gameID);
       const playerRemovedFromGame = room.players
@@ -105,7 +105,7 @@ class _LobbyConnectionImpl {
         .map(
           async (player) =>
             await fetch(
-              this._baseUrl() + '/' + gameName + '/' + gameID + '/leave',
+              this._baseUrl() + '/' + room.gameName + '/' + gameID + '/leave',
               {
                 method: 'POST',
                 body: JSON.stringify({

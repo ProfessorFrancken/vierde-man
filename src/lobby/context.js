@@ -46,12 +46,7 @@ function LobbyProvider(props) {
   const leaveRoom = async (connection, gameName, gameId) => {
     try {
       const room = playerRooms.find((room) => room.gameId === gameId);
-      await connection.leave(
-        gameName,
-        gameId,
-        room.playerCredentials,
-        playerName
-      );
+      await connection.leave(gameId, room.playerCredentials, playerName);
 
       setPlayerRooms(playerRooms.filter((room) => room.gameId !== gameId));
     } catch (error) {
