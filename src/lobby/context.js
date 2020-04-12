@@ -6,36 +6,23 @@ import { SocketIO } from 'boardgame.io/multiplayer';
 
 const LobbyContext = React.createContext();
 
-const localStorageCredentialsKey = '__vierde_man_credentials__';
+const localStoragePlayerRoomsKey = '__vierde_man_player_rooms__';
 
 function LobbyProvider(props) {
   const { logout: authLogout, username } = useAuth();
   const playerName = username;
   const { setError } = useError();
-  const [credentials, setCredentials] = useLocalStorageState(
-    localStorageCredentialsKey,
-    {
-      playerCredentials: undefined,
-      playerRooms: [],
-      playerId: undefined,
-      gameId: undefined,
-      gameName: undefined,
-    }
+  const [playerRooms, setPlayerRooms] = useLocalStorageState(
+    localStoragePlayerRoomsKey,
+    []
   );
-  const playerRooms = credentials.playerRooms;
 
   const [rooms, setRooms] = useState([]);
   const [runningGame, setRunningGame] = useState(undefined);
 
   const logout = () => {
     authLogout();
-    setCredentials({
-      playerCredentials: undefined,
-      playerRooms: [],
-      playerId: undefined,
-      gameId: undefined,
-      gameName: undefined,
-    });
+    setPlayerRooms([]);
   };
 
   const joinRoom = async (connection, gameName, gameId, playerId) => {
@@ -47,16 +34,10 @@ function LobbyProvider(props) {
         playerName
       );
 
-      setCredentials({
-        playerCredentials,
-        playerRooms: [
-          ...playerRooms,
-          { playerId, gameId, gameName, playerCredentials },
-        ],
-        playerId,
-        gameId,
-        gameName,
-      });
+      setPlayerRooms([
+        ...playerRooms,
+        { playerId, gameId, gameName, playerCredentials },
+      ]);
     } catch (error) {
       setError(error.message);
     }
@@ -73,13 +54,7 @@ function LobbyProvider(props) {
         playerName
       );
 
-      setCredentials({
-        playerCredentials: undefined,
-        playerRooms: playerRooms.filter((room) => room.gameId !== gameId),
-        playerId: undefined,
-        gameId: undefined,
-        gameName: undefined,
-      });
+      setPlayerRooms(playerRooms.filter((room) => room.gameId !== gameId));
     } catch (error) {
       setError(error.message);
     }
@@ -137,7 +112,7 @@ function LobbyProvider(props) {
   return (
     <LobbyContext.Provider
       value={{
-        credentials,
+        playerRooms,
         logout,
         joinRoom,
         leaveGame,

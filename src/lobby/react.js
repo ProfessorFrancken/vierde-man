@@ -30,16 +30,14 @@ const PlayGame = ({
   gameComponents,
   debug,
   clientFactory,
-  credentials = { playerRooms: [] },
+  playerRooms = [],
   runningGame,
   server,
 }) => {
   const { gameId } = useParams();
 
   // NOTE: if no room is found, the user is a spectator
-  const room = credentials.playerRooms.find(
-    (room) => room.gameId === gameId
-  ) || {
+  const room = playerRooms.find((room) => room.gameId === gameId) || {
     playerId: undefined,
     playerCredentials: undefined,
   };
@@ -64,7 +62,7 @@ const Lobby = ({
   const { error } = useError();
   const { username: playerName } = useAuth();
   const {
-    credentials,
+    playerRooms = [],
     joinRoom,
     leaveRoom,
     createRoom,
@@ -102,7 +100,7 @@ const Lobby = ({
               debug={debug}
               server={gameServer}
               runningGame={runningGame}
-              credentials={credentials}
+              playerRooms={playerRooms}
             />
           ) : (
             <Redirect to="/lobby" />

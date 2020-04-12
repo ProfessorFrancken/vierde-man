@@ -8,7 +8,7 @@
 
 import { LobbyConnection } from './connection.js';
 
-describe('lobby', () => {
+xdescribe('lobby', () => {
   let lobby;
   let room1, room2;
   let jsonResult = [];

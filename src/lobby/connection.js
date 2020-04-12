@@ -6,11 +6,6 @@
  * https://opensource.org/licenses/MIT.
  */
 
-const findPlayersRoom = (rooms, playerName) =>
-  rooms.find((room) =>
-    room.players.some((player) => player.name === playerName)
-  );
-
 const findRoom = (rooms, gameID) => {
   const room = rooms.find((room) => room.gameID === gameID);
   if (!room) {
@@ -205,8 +200,8 @@ class _LobbyConnectionImpl {
  *
  * @param {string}   server - '<host>:<port>' of the server.
  * @param {Array}    gameComponents - A map of Board and Game objects for the supported games.
- * @param {string}   playerName - The name of the player.
- * @param {string}   playerCredentials - The credentials currently used by the player, if any.
+ * @param {Array}    rooms
+ * @param {function} setRooms
  *
  * Returns:
  *   A JS object that synchronizes the list of running game instances with the server and provides an API to create/join/start instances.
