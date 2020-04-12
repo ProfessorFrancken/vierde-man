@@ -11,6 +11,21 @@ const findPlayersRoom = (rooms, playerName) =>
     room.players.some((player) => player.name === playerName)
   );
 
+const findRoom = (rooms, gameID) => {
+  const room = rooms.find((room) => room.gameID === gameID);
+  if (!room) {
+    throw new Error('game instance ' + gameID + ' not found');
+  }
+  return room;
+};
+
+const handleResponse = (response) => {
+  if (response.status !== 200) {
+    throw new Error('HTTP status ' + response.status);
+  }
+  return response.json();
+};
+
 class _LobbyConnectionImpl {
   constructor({ server, gameComponents, rooms, setRooms }) {
     this.gameComponents = gameComponents;
@@ -29,17 +44,17 @@ class _LobbyConnectionImpl {
         this.gameComponents.some(({ game: { name } }) => name === gameName);
 
       const games = await fetch(this._baseUrl())
-        .then((r) => r.json())
+        .then(handleResponse)
         .then((games) => games.filter(gameIsSupported));
 
       const roomsPerGame = await games.map(async (gameName) => {
         const addGameNameToRoom = (room) => ({ ...room, gameName });
         return await fetch(this._baseUrl() + '/' + gameName)
-          .then((r) => r.json())
+          .then(handleResponse)
           .then(({ rooms }) => rooms.map(addGameNameToRoom));
       });
 
-      Promise.all(roomsPerGame).then((rooms) => {
+      await Promise.all(roomsPerGame).then((rooms) => {
         this.setRooms(rooms.flat());
       });
     } catch (error) {
@@ -55,12 +70,10 @@ class _LobbyConnectionImpl {
           'player has already joined ' + playersCurrentRoom.gameID
         );
       }
-      const roomToJoin = this.rooms.find((room) => room.gameID === gameID);
-      if (!roomToJoin) {
-        throw new Error('game instance ' + gameID + ' not found');
-      }
-      const resp = await fetch(
-        this._baseUrl() + '/' + gameName + '/' + gameID + '/join',
+      const roomToJoin = findRoom(this.rooms, gameID);
+
+      const response = await fetch(
+        this._baseUrl() + '/' + gameName + '/' + roomToJoin.gameID + '/join',
         {
           method: 'POST',
           body: JSON.stringify({
@@ -69,11 +82,22 @@ class _LobbyConnectionImpl {
           }),
           headers: { 'Content-Type': 'application/json' },
         }
-      );
-      if (resp.status !== 200) throw new Error('HTTP status ' + resp.status);
-      const json = await resp.json();
-      roomToJoin.players[Number.parseInt(playerID)].name = playerName;
-      return json.playerCredentials;
+      ).then(handleResponse);
+
+      const addPlayerToRoom = (room) => ({
+        ...room,
+        players:
+          room.gameID !== roomToJoin.gameID
+            ? room.players
+            : room.players.map((player) =>
+                player.id !== Number.parseInt(playerID, 10)
+                  ? player
+                  : { ...player, name: playerName }
+              ),
+      });
+      this.setRooms(this.rooms.map(addPlayerToRoom));
+
+      return response.playerCredentials;
     } catch (error) {
       throw new Error('failed to join room ' + gameID + ' (' + error + ')');
     }
@@ -81,44 +105,55 @@ class _LobbyConnectionImpl {
 
   async leave(gameName, gameID, credentials, playerName) {
     try {
-      let room = this.rooms.find((room) => room.gameID === gameID);
-      if (!room) {
-        throw new Error('game instance not found');
-      }
-      for (let player of room.players) {
-        if (player.name === playerName) {
-          const resp = await fetch(
-            this._baseUrl() + '/' + gameName + '/' + gameID + '/leave',
-            {
-              method: 'POST',
-              body: JSON.stringify({
-                playerID: player.id,
-                credentials,
-              }),
-              headers: { 'Content-Type': 'application/json' },
-            }
-          );
-          if (resp.status !== 200) {
-            throw new Error('HTTP status ' + resp.status);
-          }
+      const room = findRoom(this.rooms, gameID);
+      const playerRemovedFromGame = room.players
+        .filter(({ name }) => name === playerName)
+        .map(
+          async (player) =>
+            await fetch(
+              this._baseUrl() + '/' + gameName + '/' + gameID + '/leave',
+              {
+                method: 'POST',
+                body: JSON.stringify({
+                  playerID: player.id,
+                  credentials,
+                }),
+                headers: { 'Content-Type': 'application/json' },
+              }
+            )
+              .then(handleResponse)
+              .then(() => player.name)
+        );
 
-          // TODO Replace with setRooms ...
-          delete player.name;
-          return;
-        }
-      }
-      throw new Error('player not found in room');
+      await Promise.all(playerRemovedFromGame).then((players) => {
+        const removeRoomIfEmpty = (room) =>
+          room.gameID !== gameID ||
+          room.players.filter((player) => player.name).length > 0;
+
+        const removePlayerFromRoom = (room) => ({
+          ...room,
+          players:
+            room.gameID !== gameID
+              ? room.players
+              : room.players.map(({ name, ...player }) =>
+                  players.includes(name) ? player : { ...player, name }
+                ),
+        });
+
+        this.setRooms(
+          this.rooms.map(removePlayerFromRoom).filter(removeRoomIfEmpty)
+        );
+      });
     } catch (error) {
       throw new Error('failed to leave room ' + gameID + ' (' + error + ')');
     }
   }
 
   async disconnect(rooms, credentials, playerName) {
-    let room = findPlayersRoom(rooms, playerName);
+    const room = findPlayersRoom(rooms, playerName);
     if (room) {
       await this.leave(room.gameName, room.gameID, credentials, playerName);
     }
-    this.setRooms([]);
   }
 
   async create(gameName, numPlayers) {
@@ -135,16 +170,25 @@ class _LobbyConnectionImpl {
       ) {
         throw new Error('invalid number of players ' + numPlayers);
       }
-      const resp = await fetch(this._baseUrl() + '/' + gameName + '/create', {
-        method: 'POST',
-        body: JSON.stringify({
-          numPlayers: numPlayers,
-        }),
-        headers: { 'Content-Type': 'application/json' },
-      });
-      if (resp.status !== 200) {
-        throw new Error('HTTP status ' + resp.status);
-      }
+      const response = await fetch(
+        this._baseUrl() + '/' + gameName + '/create',
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            numPlayers: numPlayers,
+          }),
+          headers: { 'Content-Type': 'application/json' },
+        }
+      ).then(handleResponse);
+
+      this.setRooms([
+        ...this.rooms,
+        {
+          gameID: response.gameID,
+          players: [...Array(numPlayers).keys()].map((id) => ({ id })),
+          gameName,
+        },
+      ]);
     } catch (error) {
       throw new Error(
         'failed to create room for ' + gameName + ' (' + error + ')'

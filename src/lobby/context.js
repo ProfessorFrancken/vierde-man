@@ -45,7 +45,6 @@ function LobbyProvider(props) {
         gameId,
         gameName,
       });
-      await connection.refresh();
     } catch (error) {
       setError(error.message);
     }
@@ -67,8 +66,6 @@ function LobbyProvider(props) {
         gameId: undefined,
         gameName: undefined,
       });
-
-      await connection.refresh();
     } catch (error) {
       setError(error.message);
     }
@@ -77,7 +74,6 @@ function LobbyProvider(props) {
   const createRoom = async (connection, gameName, numPlayers) => {
     try {
       await connection.create(gameName, numPlayers);
-      await connection.refresh();
     } catch (error) {
       setError(error.message);
     }
