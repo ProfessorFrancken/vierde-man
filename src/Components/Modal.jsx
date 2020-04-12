@@ -1,5 +1,15 @@
 import React from 'react';
 import classNames from 'classnames';
+import styled from 'styled-components';
+
+const StyledDialog = styled.div`
+  @media (min-width: 250px) {
+    min-width: 200px;
+  }
+  @media (min-width: 400px) {
+    min-width: 350px;
+  }
+`;
 
 const Modal = ({ className, ...props }) => {
   return <div {...props} className={classNames(className)}></div>;
@@ -15,13 +25,13 @@ const Dialog = ({ children, className, ...props }) => {
   ];
 
   return (
-    <div
+    <StyledDialog
       {...props}
       style={{ zIndex: 'var(--modal-z-index)' }}
       className={classNames(componentClasses, className)}
     >
       {children}
-    </div>
+    </StyledDialog>
   );
 };
 const Header = ({ children, className, ...props }) => {
