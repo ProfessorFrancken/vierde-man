@@ -12,7 +12,6 @@ const Dialog = ({ children, className, ...props }) => {
     'text-left',
     'bg-white',
     'shadow',
-    'border'
   ];
 
   return (
@@ -26,7 +25,12 @@ const Dialog = ({ children, className, ...props }) => {
   );
 };
 const Header = ({ children, className, ...props }) => {
-  const componentClasses = ['p-3 border-bottom'];
+  const componentClasses = [
+    'p-3',
+    'border-bottom',
+    'border-left',
+    'border-right',
+  ];
   return (
     <div {...props} className={classNames(componentClasses, className)}>
       {children}
@@ -42,7 +46,7 @@ const Title = ({ children, className, ...props }) => {
   );
 };
 const Body = ({ children, className, ...props }) => {
-  const componentClasses = ['p-3'];
+  const componentClasses = ['p-3', 'border-left', 'border-right'];
   return (
     <div {...props} className={classNames(componentClasses, className)}>
       {children}
@@ -54,7 +58,14 @@ const Table = ({ className, ...props }) => {
 };
 
 const Footer = ({ children, className, ...props }) => {
-  const componentClasses = ['bg-light', 'text-muted', 'border-top'];
+  const componentClasses = [
+    'bg-light',
+    'text-muted',
+    'border-top',
+    'border-left',
+    'border-right',
+    'border-bottom',
+  ];
   return (
     <div {...props} className={classNames(componentClasses, className)}>
       {children}
@@ -87,7 +98,7 @@ const Action = ({
     'btn-block',
     'bg-light',
     'p-3',
-    'px-3'
+    'px-3',
   ];
   return (
     <button
