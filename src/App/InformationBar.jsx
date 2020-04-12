@@ -231,8 +231,8 @@ const InformationBar = (props) => {
   const node = useRef();
   useOnClickOutside(node, () => setOpen(false));
 
-  const wij = 33;
-  const zij = 10;
+  const wij = props.wij;
+  const zij = props.zij;
   const bid = props.bid;
   const rounds = props.rounds;
   const playerId = props.playerId;
@@ -262,7 +262,12 @@ const InformationBar = (props) => {
           </div>
         )}
         {props.phase === 'ShowResultOfTrick' ? (
-          <small className="text-muted">Waiting for next trick</small>
+          <>
+            <small className="text-muted d-sm-none">Waiting</small>
+            <small className="text-muted d-none d-sm-inline">
+              Waiting for next trick
+            </small>
+          </>
         ) : (
           <small className="text-muted">
             <PlayerName playerId={props.currentPlayer} />
