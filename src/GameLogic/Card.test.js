@@ -7,7 +7,7 @@ import {
   InitialDeck,
   SANS,
   SUITES,
-  FACES
+  FACES,
 } from 'GameLogic/Card';
 import _ from 'lodash';
 
@@ -20,7 +20,7 @@ describe('Determines the winner of a trick', () => {
         '0': { ...Card(SPADES, 'J'), playedBy: 0 },
         '1': { ...Card(HEARTS, '7'), playedBy: 1 },
         '2': { ...Card(CLUBS, '7'), playedBy: 2 },
-        '3': { ...Card(DIAMONDS, '9'), playedBy: 3 }
+        '3': { ...Card(DIAMONDS, '9'), playedBy: 3 },
       },
       Card(SPADES, 'J'),
       trump
@@ -35,7 +35,7 @@ describe('Determines the winner of a trick', () => {
         '0': { ...Card(CLUBS, '10'), playedBy: 0 },
         '1': { ...Card(CLUBS, 'A'), playedBy: 1 },
         '2': { ...Card(CLUBS, '9'), playedBy: 2 },
-        '3': { ...Card(CLUBS, 'J'), playedBy: 3 }
+        '3': { ...Card(CLUBS, 'J'), playedBy: 3 },
       },
       Card(CLUBS, '10'),
       CLUBS
@@ -51,7 +51,7 @@ describe('Determines the winner of a trick', () => {
         '0': { ...Card(HEARTS, 'J'), playedBy: 0 },
         '1': { ...Card(HEARTS, '7'), playedBy: 1 },
         '2': { ...Card(HEARTS, 'A'), playedBy: 2 },
-        '3': { ...Card(DIAMONDS, '9'), playedBy: 3 }
+        '3': { ...Card(DIAMONDS, '9'), playedBy: 3 },
       },
       Card(HEARTS, 'J'),
       trump
@@ -67,7 +67,7 @@ describe('Determines the winner of a trick', () => {
         '0': { ...Card(DIAMONDS, 'J'), playedBy: 0 },
         '1': { ...Card(DIAMONDS, 'A'), playedBy: 1 },
         '2': { ...Card(HEARTS, 'Q'), playedBy: 2 },
-        '3': { ...Card(HEARTS, 'J'), playedBy: 3 }
+        '3': { ...Card(HEARTS, 'J'), playedBy: 3 },
       },
       Card(HEARTS, 'J'),
       trump
@@ -83,7 +83,7 @@ describe('Determines the winner of a trick', () => {
         '0': { ...Card(DIAMONDS, 'J'), playedBy: 0 },
         '1': { ...Card(SPADES, 'A'), playedBy: 1 },
         '2': { ...Card(HEARTS, 'Q'), playedBy: 2 },
-        '3': { ...Card(HEARTS, 'J'), playedBy: 3 }
+        '3': { ...Card(HEARTS, 'J'), playedBy: 3 },
       },
       Card(HEARTS, 'J'),
       trump
@@ -99,7 +99,7 @@ describe('Determines the winner of a trick', () => {
         '0': { ...Card(DIAMONDS, 'J'), playedBy: 0 },
         '1': { ...Card(SPADES, 'A'), playedBy: 1 },
         '2': { ...Card(HEARTS, 'Q'), playedBy: 2 },
-        '3': { ...Card(SPADES, 'J'), playedBy: 3 }
+        '3': { ...Card(SPADES, 'J'), playedBy: 3 },
       },
       Card(DIAMONDS, 'J'),
       trump
@@ -115,7 +115,7 @@ describe('Determines the winner of a trick', () => {
         '0': { ...Card(DIAMONDS, 'J'), playedBy: 0 },
         '1': { ...Card(DIAMONDS, 'Q'), playedBy: 1 },
         '2': { ...Card(DIAMONDS, 'K'), playedBy: 2 },
-        '3': { ...Card(DIAMONDS, '10'), playedBy: 3 }
+        '3': { ...Card(DIAMONDS, '10'), playedBy: 3 },
       },
       Card(DIAMONDS, 'K'),
       trump
@@ -131,7 +131,7 @@ describe('Determines the winner of a trick', () => {
         '0': { ...Card(CLUBS, '10'), playedBy: 0 },
         '1': { ...Card(SPADES, 'J'), playedBy: 1 },
         '2': { ...Card(SPADES, '10'), playedBy: 2 },
-        '3': { ...Card(SPADES, 'K'), playedBy: 3 }
+        '3': { ...Card(SPADES, 'K'), playedBy: 3 },
       },
       Card(SPADES, '10'),
       trump
@@ -150,7 +150,7 @@ describe('Points of a trick', () => {
           '0': { ...Card(SPADES, 'J'), playedBy: 0 },
           '1': { ...Card(HEARTS, '7'), playedBy: 1 },
           '2': { ...Card(CLUBS, '7'), playedBy: 2 },
-          '3': { ...Card(DIAMONDS, '9'), playedBy: 3 }
+          '3': { ...Card(DIAMONDS, '9'), playedBy: 3 },
         },
         trump
       );
@@ -164,7 +164,7 @@ describe('Points of a trick', () => {
           '0': { ...Card(SPADES, '9'), playedBy: 0 },
           '1': { ...Card(HEARTS, '7'), playedBy: 1 },
           '2': { ...Card(CLUBS, '7'), playedBy: 2 },
-          '3': { ...Card(DIAMONDS, '9'), playedBy: 3 }
+          '3': { ...Card(DIAMONDS, '9'), playedBy: 3 },
         },
         trump
       );
@@ -178,7 +178,7 @@ describe('Points of a trick', () => {
           '0': { ...Card(SPADES, 'Q'), playedBy: 0 },
           '1': { ...Card(HEARTS, '7'), playedBy: 1 },
           '2': { ...Card(CLUBS, 'Q'), playedBy: 2 },
-          '3': { ...Card(DIAMONDS, '9'), playedBy: 3 }
+          '3': { ...Card(DIAMONDS, '9'), playedBy: 3 },
         },
         trump
       );
@@ -193,8 +193,8 @@ describe('Points of a trick', () => {
           Card(HEARTS, '7'),
           Card(HEARTS, '8'),
           Card(SPADES, '8'),
-          Card(DIAMONDS, '7')
-        ]
+          Card(DIAMONDS, '7'),
+        ],
       },
       {
         points: 21,
@@ -202,8 +202,8 @@ describe('Points of a trick', () => {
           Card(HEARTS, '10'),
           Card(HEARTS, 'A'),
           Card(SPADES, '8'),
-          Card(DIAMONDS, '7')
-        ]
+          Card(DIAMONDS, '7'),
+        ],
       },
       {
         points: 28,
@@ -211,19 +211,19 @@ describe('Points of a trick', () => {
           Card(HEARTS, '10'),
           Card(HEARTS, 'A'),
           Card(SPADES, 'Q'),
-          Card(DIAMONDS, 'K')
-        ]
-      }
+          Card(DIAMONDS, 'K'),
+        ],
+      },
     ];
 
-    hands.forEach(hand => {
+    hands.forEach((hand) => {
       it('gives the value of a trick', () => {
         const { points, honor } = PointsOfTrick(
           {
             '0': hand.cards[0],
             '1': hand.cards[1],
             '2': hand.cards[2],
-            '3': hand.cards[3]
+            '3': hand.cards[3],
           },
           trump
         );
@@ -239,7 +239,7 @@ describe('Points of a trick', () => {
             '0': Card(HEARTS, 'K'),
             '1': Card(HEARTS, 'Q'),
             '2': Card(CLUBS, '7'),
-            '3': Card(DIAMONDS, '9')
+            '3': Card(DIAMONDS, '9'),
           },
           trump
         );
@@ -251,7 +251,7 @@ describe('Points of a trick', () => {
             '0': Card(SPADES, 'K'),
             '1': Card(SPADES, 'Q'),
             '2': Card(CLUBS, '7'),
-            '3': Card(DIAMONDS, '9')
+            '3': Card(DIAMONDS, '9'),
           },
           trump
         );
@@ -266,7 +266,7 @@ describe('Points of a trick', () => {
           { cards: ['9', '10', 'J'], pointsOfFaces: 12 },
           { cards: ['10', 'J', 'Q'], pointsOfFaces: 15 },
           { cards: ['J', 'Q', 'K'], pointsOfFaces: 9 },
-          { cards: ['Q', 'K', 'A'], pointsOfFaces: 18 }
+          { cards: ['Q', 'K', 'A'], pointsOfFaces: 18 },
         ];
 
         combinations.forEach(({ cards, pointsOfFaces }) => {
@@ -275,7 +275,7 @@ describe('Points of a trick', () => {
               '0': Card(HEARTS, cards[0]),
               '1': Card(HEARTS, cards[1]),
               '2': Card(HEARTS, cards[2]),
-              '3': Card(DIAMONDS, '9')
+              '3': Card(DIAMONDS, '9'),
             },
             trump
           );
@@ -287,7 +287,7 @@ describe('Points of a trick', () => {
       it('gives honor for three consecutive cards of the same suit + stuk points', () => {
         const combinations = [
           { cards: ['J', 'Q', 'K'], pointsOfFaces: 27 },
-          { cards: ['Q', 'K', 'A'], pointsOfFaces: 18 }
+          { cards: ['Q', 'K', 'A'], pointsOfFaces: 18 },
         ];
 
         combinations.forEach(({ cards, pointsOfFaces }) => {
@@ -296,7 +296,7 @@ describe('Points of a trick', () => {
               '0': Card(SPADES, cards[0]),
               '1': Card(SPADES, cards[1]),
               '2': Card(SPADES, cards[2]),
-              '3': Card(DIAMONDS, '9')
+              '3': Card(DIAMONDS, '9'),
             },
             trump
           );
@@ -312,7 +312,7 @@ describe('Points of a trick', () => {
           { cards: ['8', '9', '10', 'J'], pointsOfFaces: 12 },
           { cards: ['9', '10', 'J', 'Q'], pointsOfFaces: 15 },
           { cards: ['10', 'J', 'Q', 'K'], pointsOfFaces: 19 },
-          { cards: ['J', 'Q', 'K', 'A'], pointsOfFaces: 20 }
+          { cards: ['J', 'Q', 'K', 'A'], pointsOfFaces: 20 },
         ];
 
         combinations.forEach(({ cards, pointsOfFaces }) => {
@@ -321,7 +321,7 @@ describe('Points of a trick', () => {
               '0': Card(HEARTS, cards[0]),
               '1': Card(HEARTS, cards[1]),
               '2': Card(HEARTS, cards[2]),
-              '3': Card(HEARTS, cards[3])
+              '3': Card(HEARTS, cards[3]),
             },
             trump
           );
@@ -333,7 +333,7 @@ describe('Points of a trick', () => {
       it('gives honor for four consecutive cards of the same suit + stuk', () => {
         const combinations = [
           { cards: ['10', 'J', 'Q', 'K'], pointsOfFaces: 37 },
-          { cards: ['J', 'Q', 'K', 'A'], pointsOfFaces: 38 }
+          { cards: ['J', 'Q', 'K', 'A'], pointsOfFaces: 38 },
         ];
 
         combinations.forEach(({ cards, pointsOfFaces }) => {
@@ -342,7 +342,7 @@ describe('Points of a trick', () => {
               '0': Card(SPADES, cards[0]),
               '1': Card(SPADES, cards[1]),
               '2': Card(SPADES, cards[2]),
-              '3': Card(SPADES, cards[3])
+              '3': Card(SPADES, cards[3]),
             },
             trump
           );
@@ -360,7 +360,7 @@ describe('Points of a trick', () => {
           { face: 'J', pointsOfFaces: 26 },
           { face: 'Q', pointsOfFaces: 12 },
           { face: 'K', pointsOfFaces: 16 },
-          { face: 'A', pointsOfFaces: 44 }
+          { face: 'A', pointsOfFaces: 44 },
         ];
 
         faces.forEach(({ face, pointsOfFaces }) => {
@@ -369,7 +369,7 @@ describe('Points of a trick', () => {
               '0': Card(SPADES, face),
               '1': Card(HEARTS, face),
               '2': Card(DIAMONDS, face),
-              '3': Card(CLUBS, face)
+              '3': Card(CLUBS, face),
             },
             trump
           );
@@ -391,15 +391,15 @@ describe('Points earned from playing a hand', () => {
       { winner: 0, points: 4 * 2, honor: 0 },
       { winner: 1, points: 0, honor: 0 },
       { winner: 1, points: 0, honor: 0 },
-      { winner: 1, points: 0, honor: 0 }
+      { winner: 1, points: 0, honor: 0 },
     ];
 
     const { wij, zij } = pointsFromHands({
       playedTricks: tricks,
       bid: {
         highestBidBy: 0,
-        bid: 100
-      }
+        bid: 100,
+      },
     });
 
     expect(wij).toEqual(120);
@@ -417,15 +417,15 @@ describe('Points earned from playing a hand', () => {
       { winner: 0, points: 4 * 2, honor: 0 },
       { winner: 0, points: 0, honor: 0 },
       { winner: 0, points: 0, honor: 0 },
-      { winner: 0, points: 0, honor: 0 }
+      { winner: 0, points: 0, honor: 0 },
     ];
 
     const { wij, zij } = pointsFromHands({
       playedTricks: tricks,
       bid: {
         highestBidBy: 0,
-        bid: 100
-      }
+        bid: 100,
+      },
     });
 
     expect(wij).toEqual(230);
@@ -441,15 +441,15 @@ describe('Points earned from playing a hand', () => {
       { winner: 0, points: 4 * 2, honor: 0 },
       { winner: 0, points: 0, honor: 0 },
       { winner: 0, points: 0, honor: 0 },
-      { winner: 0, points: 0, honor: 0 }
+      { winner: 0, points: 0, honor: 0 },
     ];
 
     const { wij, zij } = pointsFromHands({
       playedTricks: tricks,
       bid: {
         highestBidBy: 0,
-        bid: 120
-      }
+        bid: 120,
+      },
     });
 
     expect(wij).toEqual(0);
@@ -489,7 +489,7 @@ describe('checking if a hand contains a card', () => {
       Card(SPADES, 'J'),
       Card(HEARTS, '7'),
       Card(CLUBS, '7'),
-      Card(DIAMONDS, '9')
+      Card(DIAMONDS, '9'),
     ];
 
     expect(handContains(hand, Card(DIAMONDS, '9'))).toEqual(true);
@@ -500,7 +500,7 @@ describe('checking if a hand contains a card', () => {
       Card(SPADES, 'J'),
       Card(HEARTS, '7'),
       Card(CLUBS, '7'),
-      Card(DIAMONDS, '9')
+      Card(DIAMONDS, '9'),
     ];
 
     expect(handContains(hand, Card(DIAMONDS, '8'))).toEqual(false);

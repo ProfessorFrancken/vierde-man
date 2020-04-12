@@ -6,7 +6,7 @@ export const SUITES = {
   SPADES: 'S',
   CLUBS: 'C',
   DIAMONDS: 'D',
-  HEARTS: 'H'
+  HEARTS: 'H',
 };
 export const FACES = ['7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
 // prettier-ignore
@@ -20,12 +20,12 @@ const nonTrumpCardToValues = {
 
 export const rankOfTrumpCard = ({ face }) => {
   const rankOfCards = ['7', '8', 'Q', 'K', '10', 'A', '9', 'J'];
-  return rankOfCards.findIndex(x => x === face);
+  return rankOfCards.findIndex((x) => x === face);
 };
 
 export const rankOfCard = ({ face }) => {
   const rankOfCards = ['7', '8', '9', 'J', 'Q', 'K', '10', 'A'];
-  return rankOfCards.findIndex(x => x === face);
+  return rankOfCards.findIndex((x) => x === face);
 };
 
 export const InitialDeck = () =>
@@ -40,36 +40,36 @@ const HonorPointsOfTrick = (trick, trump) => {
 
   const cardsBySuit = _.mapValues(
     _.groupBy(trick, ({ suit }) => suit),
-    suit => _(suit).map(({ face }) => face)
+    (suit) => _(suit).map(({ face }) => face)
   );
 
-  const containsThreeConsecutiveCards = _.some(cardsBySuit, faces => {
+  const containsThreeConsecutiveCards = _.some(cardsBySuit, (faces) => {
     const possibleCombinations = [
       ['7', '8', '9'],
       ['8', '9', '10'],
       ['9', '10', 'J'],
       ['10', 'J', 'Q'],
       ['J', 'Q', 'K'],
-      ['Q', 'K', 'A']
+      ['Q', 'K', 'A'],
     ];
     return _(possibleCombinations).some(
-      facesFromCombination =>
+      (facesFromCombination) =>
         faces.includes(facesFromCombination[0]) &&
         faces.includes(facesFromCombination[1]) &&
         faces.includes(facesFromCombination[2])
     );
   });
 
-  const containsFourConsecutiveCards = _.some(cardsBySuit, faces => {
+  const containsFourConsecutiveCards = _.some(cardsBySuit, (faces) => {
     const possibleCombinations = [
       ['7', '8', '9', '10'],
       ['8', '9', '10', 'J'],
       ['9', '10', 'J', 'Q'],
       ['10', 'J', 'Q', 'K'],
-      ['J', 'Q', 'K', 'A']
+      ['J', 'Q', 'K', 'A'],
     ];
     return _(possibleCombinations).some(
-      facesFromCombination =>
+      (facesFromCombination) =>
         faces.includes(facesFromCombination[0]) &&
         faces.includes(facesFromCombination[1]) &&
         faces.includes(facesFromCombination[2]) &&
@@ -106,18 +106,18 @@ const HonorPointsOfTrick = (trick, trump) => {
 
 export const PointsOfTrick = (trick, trump) => {
   const pointsFromFaces = _.sum(
-    _.map(trick, card => valueOf(card.face, card.suit === trump))
+    _.map(trick, (card) => valueOf(card.face, card.suit === trump))
   );
   const pointsFromHonor = HonorPointsOfTrick(trick, trump);
 
   return {
     points: pointsFromFaces,
-    honor: pointsFromHonor
+    honor: pointsFromHonor,
   };
 };
 
 export const WinnerOfTrick = (trick, firstCard, trump) => {
-  const rankTrickByCardValue = _.mapValues(trick, card => {
+  const rankTrickByCardValue = _.mapValues(trick, (card) => {
     if (card.suit === trump) {
       // HACK: we know there are only 8 cards so adding 10 to trump cards
       // makes sure that trump cards always win over other cards
@@ -135,7 +135,7 @@ export const WinnerOfTrick = (trick, firstCard, trump) => {
   // Find the id of the player with the highest card
   const winner = _.maxBy(
     Object.keys(rankTrickByCardValue),
-    o => rankTrickByCardValue[o]
+    (o) => rankTrickByCardValue[o]
   );
 
   return trick[winner].playedBy;
@@ -156,13 +156,13 @@ export const pointsFromHands = ({ playedTricks, bid }) => {
       tricks,
       ({ points, honor }, trick) => ({
         points: points + trick.points,
-        honor: honor + trick.honor
+        honor: honor + trick.honor,
       }),
       {
         // Give extra points for winning the last trick
         points: includesLastTrick ? 10 : 0,
         // Give extra honor if the team earned a pitje
-        honor: tricks.length === 8 ? 100 : 0
+        honor: tricks.length === 8 ? 100 : 0,
       }
     );
 
@@ -184,7 +184,7 @@ export const pointsFromHands = ({ playedTricks, bid }) => {
   if (weWentWet) {
     return {
       wij: 0,
-      zij: wij + zij + wij_honor + zij_honor
+      zij: wij + zij + wij_honor + zij_honor,
     };
   }
 
@@ -193,7 +193,7 @@ export const pointsFromHands = ({ playedTricks, bid }) => {
   if (theyWentWet) {
     return {
       wij: wij + zij + wij_honor + zij_honor,
-      zij: 0
+      zij: 0,
     };
   }
 
@@ -203,6 +203,6 @@ export const pointsFromHands = ({ playedTricks, bid }) => {
 
   return {
     wij: wij + wij_honor,
-    zij: zij + zij_honor
+    zij: zij + zij_honor,
   };
 };
