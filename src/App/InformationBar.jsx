@@ -10,7 +10,7 @@ import {
   faBars,
   faTimes,
   faComments,
-  faCogs
+  faCogs,
 } from '@fortawesome/free-solid-svg-icons';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { useOnClickOutside } from 'hooks';
@@ -62,7 +62,7 @@ const PlayedCards = ({ lastTrick }) => {
 
   const playedCards = _.concat(
     ..._(lastTrick.cards)
-      .reject(card => card === undefined)
+      .reject((card) => card === undefined)
       .partition(({ playedBy }) => playedBy < startingPlayer)
       .reverse()
       .values()
@@ -226,7 +226,7 @@ const Burger = ({ open, setOpen }) => {
   );
 };
 
-const InformationBar = props => {
+const InformationBar = (props) => {
   const [open, setOpen] = useState(false);
   const node = useRef();
   useOnClickOutside(node, () => setOpen(false));
@@ -261,14 +261,19 @@ const InformationBar = props => {
             <Bid bid={{ bid: bid.bid, suit: bid.trump }} />
           </div>
         )}
-        <small className="text-muted">
-          <PlayerName playerId={props.currentPlayer} />
-          <span className="d-none d-sm-inline">
-            is
-            {props.phase === 'PlaceBids' && ' placing a bid'}
-            {props.phase === 'PlayTricks' && ' selecting a card'}
-          </span>
-        </small>
+        {props.phase === 'ShowResultOfTrick' ? (
+          <small className="text-muted">Waiting for next trick</small>
+        ) : (
+          <small className="text-muted">
+            <PlayerName playerId={props.currentPlayer} />
+            <span className="d-none d-sm-inline">
+              {' '}
+              is
+              {props.phase === 'PlaceBids' && ' placing a bid'}
+              {props.phase === 'PlayTricks' && ' selecting a card'}
+            </span>
+          </small>
+        )}
         {bid.trump !== undefined && [1, 3].includes(bid.highestBidBy) && (
           <div className="ml-2">
             <Bid bid={{ bid: bid.bid, suit: bid.trump }} />
