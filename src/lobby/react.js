@@ -6,7 +6,7 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Client } from 'boardgame.io/react';
 import { LobbyConnection } from './connection';
@@ -52,7 +52,7 @@ const Lobby = ({
   gameServer,
   lobbyServer,
 }) => {
-  const { error: errorMsg, setError: setErrorMsg } = useError();
+  const { error } = useError();
   const { username: playerName } = useAuth();
   const {
     credentials,
@@ -71,6 +71,10 @@ const Lobby = ({
     rooms,
     setRooms,
   });
+
+  useEffect(() => {
+    connection.refresh();
+  }, [lobbyServer, gameComponents]);
 
   useInterval(() => {
     connection.refresh();
@@ -105,7 +109,7 @@ const Lobby = ({
                 <Lobbies
                   playerName={playerName}
                   gameComponents={gameComponents}
-                  errorMsg={errorMsg}
+                  errorMsg={error}
                   exitLobby={() => exitLobby(connection)}
                   createRoom={(gameName, numPlayers) =>
                     createRoom(connection, gameName, numPlayers)
