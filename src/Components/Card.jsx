@@ -37,7 +37,7 @@ const CardLi = styled.li.attrs(props => ({
     !props.flippedToBack &&
     css`
       :hover {
-        transform: rotate(${props => props.rotate}deg) translate(0, -20%);
+        transform: rotate(${(props) => props.rotate}deg) translate(0, -30%);
         cursor: pointer;
       }
     `}

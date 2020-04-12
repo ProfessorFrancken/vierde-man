@@ -19,14 +19,6 @@ const CardContainer = styled.div`
     rotate(calc(var(--fromMiddle) * var(--rotation)));
   transform-origin: bottom right;
   z-index: var(--hand-card-z-index);
-
-  ${({ disabled }) =>
-    !disabled &&
-    css`
-      :hover {
-        z-index: var(--hand-card-hover-z-index);
-      }
-    `}
 `;
 
 const Hand = styled.ul`
