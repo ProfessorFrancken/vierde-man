@@ -269,7 +269,7 @@ const InformationBar = (props) => {
             </small>
           </>
         ) : (
-          <small className="text-muted">
+          <small className="text-muted d-flex align-items-center">
             <PlayerName playerId={props.currentPlayer} />
             <span className="d-none d-sm-inline">
               {' '}
