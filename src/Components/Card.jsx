@@ -10,29 +10,29 @@ const suitIcon = {
   [HEARTS]: '♥',
   [CLUBS]: '♣',
   [DIAMONDS]: '♦',
-  APRIL: '🐸'
+  APRIL: '🐸',
 };
 const suitColor = {
   [SPADES]: 'var(--black-suit-color)',
   [HEARTS]: 'var(--red-suit-color)',
   [CLUBS]: 'var(--black-suit-color)',
   [DIAMONDS]: 'var(--red-suit-color)',
-  APRIL: '#8f8500'
+  APRIL: '#8f8500',
 };
-const CardLi = styled.li.attrs(props => ({
-  cardScale: props.cardScale || 2.0
+const CardLi = styled.li.attrs((props) => ({
+  cardScale: props.cardScale || 2.0,
 }))`
   border-width: 2px !important;
   transition: transform 0.3s ease-out;
-  transform: rotate(${props => props.rotate}deg);
+  transform: rotate(${(props) => props.rotate}deg);
   background-color: var(${({ disabled }) =>
     disabled ? '--disabled-card-background-color' : '--card-background-color'});
 
   width: calc(var(--cardScale) * 58px);
   height: calc(var(--cardScale) * 88px);
-  color: ${props => suitColor[props.suit]} !important;
+  color: ${(props) => suitColor[props.suit]} !important;
 
-  ${props =>
+  ${(props) =>
     !props.disabled &&
     !props.flippedToBack &&
     css`
@@ -44,7 +44,7 @@ const CardLi = styled.li.attrs(props => ({
 
   &:before,
   &:after {
-    content: '${props => props.face}  ${props => suitIcon[props.suit]}';
+    content: '${(props) => props.face}  ${(props) => suitIcon[props.suit]}';
     position: absolute;
     width: 12px;
     text-align: center;
@@ -67,7 +67,7 @@ const CardLi = styled.li.attrs(props => ({
   background-size: 70%, cover;
   background-blend-mode: unset;
 
-  ${props =>
+  ${(props) =>
     props.flippedToBack &&
     css`
       background: no-repeat center center url(${() => francken}),
@@ -88,13 +88,13 @@ const CardLi = styled.li.attrs(props => ({
     `}
 `;
 
-const Card = props => {
+const Card = (props) => {
   const {
     onlyShowCorners = false,
     disabled = false,
     visible = true,
     card,
-    onClick
+    onClick,
   } = props;
   const { face, suit } = card;
 
