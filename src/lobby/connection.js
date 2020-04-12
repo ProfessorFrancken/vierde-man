@@ -64,12 +64,6 @@ class _LobbyConnectionImpl {
 
   async join(gameName, gameID, playerID, playerName) {
     try {
-      const playersCurrentRoom = findPlayersRoom(this.rooms, playerName);
-      if (playersCurrentRoom) {
-        throw new Error(
-          'player has already joined ' + playersCurrentRoom.gameID
-        );
-      }
       const roomToJoin = findRoom(this.rooms, gameID);
 
       const response = await fetch(
