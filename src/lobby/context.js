@@ -16,18 +16,26 @@ function LobbyProvider(props) {
     localStorageCredentialsKey,
     {
       playerCredentials: undefined,
+      playerRooms: [],
       playerId: undefined,
       gameId: undefined,
       gameName: undefined,
     }
   );
+  const playerRooms = credentials.playerRooms;
 
   const [rooms, setRooms] = useState([]);
   const [runningGame, setRunningGame] = useState(undefined);
 
   const logout = () => {
     authLogout();
-    setCredentials(undefined);
+    setCredentials({
+      playerCredentials: undefined,
+      playerRooms: [],
+      playerId: undefined,
+      gameId: undefined,
+      gameName: undefined,
+    });
   };
 
   const joinRoom = async (connection, gameName, gameId, playerId) => {
@@ -41,6 +49,10 @@ function LobbyProvider(props) {
 
       setCredentials({
         playerCredentials,
+        playerRooms: [
+          ...playerRooms,
+          { playerId, gameId, gameName, playerCredentials },
+        ],
         playerId,
         gameId,
         gameName,
@@ -53,15 +65,17 @@ function LobbyProvider(props) {
 
   const leaveRoom = async (connection, gameName, gameId) => {
     try {
+      const room = playerRooms.find((room) => room.gameId === gameId);
       await connection.leave(
         gameName,
         gameId,
-        credentials.playerCredentials,
+        room.playerCredentials,
         playerName
       );
 
       setCredentials({
         playerCredentials: undefined,
+        playerRooms: playerRooms.filter((room) => room.gameId !== gameId),
         playerId: undefined,
         gameId: undefined,
         gameName: undefined,
@@ -81,11 +95,7 @@ function LobbyProvider(props) {
 
   const exitLobby = async (connection) => {
     try {
-      await connection.disconnect(
-        rooms,
-        credentials.playerCredentials,
-        playerName
-      );
+      await connection.disconnect(rooms, playerRooms, playerName);
       setError('');
       logout();
     } catch (error) {

@@ -30,16 +30,25 @@ const PlayGame = ({
   gameComponents,
   debug,
   clientFactory,
-  credentials = { playerId: undefined, playerCredentials: undefined },
+  credentials = { playerRooms: [] },
   runningGame,
   server,
 }) => {
   const { gameId } = useParams();
+
+  // NOTE: if no room is found, the user is a spectator
+  const room = credentials.playerRooms.find(
+    (room) => room.gameId === gameId
+  ) || {
+    playerId: undefined,
+    playerCredentials: undefined,
+  };
+
   return (
     <runningGame.app
       gameID={gameId}
-      playerID={credentials.playerId}
-      credentials={credentials.playerCredentials}
+      playerID={room.playerId}
+      credentials={room.playerCredentials}
     />
   );
 };

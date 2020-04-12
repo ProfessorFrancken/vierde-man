@@ -149,11 +149,18 @@ class _LobbyConnectionImpl {
     }
   }
 
-  async disconnect(rooms, credentials, playerName) {
-    const room = findPlayersRoom(rooms, playerName);
-    if (room) {
-      await this.leave(room.gameName, room.gameID, credentials, playerName);
-    }
+  async disconnect(rooms, playerRooms, playerName) {
+    return Promise.all(
+      playerRooms.map(
+        async (room) =>
+          await this.leave(
+            room.gameName,
+            room.gameId,
+            room.playerCredentials,
+            playerName
+          )
+      )
+    );
   }
 
   async create(gameName, numPlayers) {
