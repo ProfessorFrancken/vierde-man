@@ -7,7 +7,6 @@ import styled from 'styled-components';
 import Modal from 'Components/Modal';
 import PlayerName from 'Components/PlayerName';
 import { useSpring, animated } from 'react-spring';
-import { Spring } from 'react-spring/renderprops';
 
 const Prominent = ({ children }) => (
   <span>{children === 33 ? "'Vo" : children}</span>
@@ -51,7 +50,9 @@ const ShowResultsOfTrick = ({
     delay: 500,
     config: { duration: 1000 },
     onRest: () => {
-      moves.ContinueToNextTrick(playerId, true);
+      if (!playersThatWantToContinue.includes(playerId)) {
+        moves.ContinueToNextTrick(playerId, true);
+      }
     },
   });
   const winner = WinnerOfTrick(playedCards, playedCards[startingPlayer], trump);
