@@ -28,6 +28,12 @@ const LocalMultiPlayerGrid = styled.div`
 `;
 
 const AppContainer = styled.div`
+  --primary: ${({ theme }) => theme.primary};
+
+  .text-primary {
+    color: var(--primary) !important;
+  }
+
   --x-offset: 50%;
   --y-offset: 30%;
   --x-scale: 25%;
