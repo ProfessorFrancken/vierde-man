@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { SuitStringToComponent } from 'Components/Suits';
 import _ from 'lodash';
 import Modal from 'Components/Modal';
+import { useSpring, animated } from 'react-spring';
 
 const Prominent = ({ children }) => (
   <span>{children === 33 ? "'Vo" : children}</span>
@@ -130,15 +131,17 @@ const ShowResultsOfHand = ({
   const [continueAutomatically, setContinueAutomatically] = useState(
     continueTrickAutomatically[playerId] === true
   );
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (continueTrickAutomatically[playerId]) {
+  const springProps = useSpring({
+    width: '100%',
+    from: { width: '0%' },
+    delay: 500,
+    config: { duration: 5000 },
+    onRest: () => {
+      if (!playersThatWantToPlayNextHand.includes(playerId)) {
         moves.PlayNextHand(playerId, true);
       }
-    }, 5000);
-    return () => clearTimeout(timer);
-  }, [playerId, continueTrickAutomatically, moves]);
+    },
+  });
 
   const round = game.rounds[game.rounds.length - 1];
 
@@ -156,7 +159,7 @@ const ShowResultsOfHand = ({
           onChange={() => setContinueAutomatically(!continueAutomatically)}
         />
       </Modal.Body>
-      <Modal.Footer>
+      <Modal.Footer className="border-0">
         {playersThatWantToPlayNextHand.includes(playerId) ? (
           <Modal.Body className="p-4">Waiting for other players</Modal.Body>
         ) : (
@@ -172,6 +175,21 @@ const ShowResultsOfHand = ({
           </Modal.Actions>
         )}
       </Modal.Footer>
+      {!playersThatWantToPlayNextHand.includes(playerId) && (
+        <div
+          className="progress"
+          style={{ borderRadius: '0', height: '0.5rem' }}
+        >
+          <animated.div
+            className="bg-primary"
+            role="progressbar"
+            style={springProps}
+            aria-valuenow={springProps.width}
+            aria-valuemin="0%"
+            aria-valuemax="100%"
+          ></animated.div>
+        </div>
+      )}
     </Modal.Dialog>
   );
 };
