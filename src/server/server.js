@@ -1,12 +1,16 @@
 import { FlatFile, Server } from 'boardgame.io/dist/server';
 import { KlaverJassen } from './../GameLogic/Game';
+import { StorageCache } from 'bgio-storage-cache';
+
+const db = new FlatFile({
+  dir: './storage/klaverjas',
+  logging: true,
+});
+const dbWithCaching = new StorageCache(db, { cacheSize: 200 });
 
 const server = Server({
   games: [KlaverJassen],
-  db: new FlatFile({
-    dir: './storage/klaverjas',
-    logging: true,
-  }),
+  db: dbWithCaching,
 });
 
 const PORT = process.env.PORT || 8000;
