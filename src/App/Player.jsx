@@ -15,28 +15,39 @@ const PlayerNameIndicator = styled.div`
   top: 50%;
   left: 50%;
   z-index: var(--player-name-indicator-z-index);
-  min-width: 150px;
   background-color: var(--light);
 
   ${({ positionOnTable }) =>
     positionOnTable === 0 &&
     css`
-      transform: translate(-50%, 0);
+      min-width: 150px;
+      transform: translate(-50%, 25%);
     `}
   ${({ positionOnTable }) =>
     positionOnTable === 1 &&
     css`
+      writing-mode: vertical-lr;
+      min-height: 150px;
       transform: translate(-50%, -50%);
+      @media (min-width: 992px) {
+        transform: translate(-100%, -50%);
+      }
     `}
   ${({ positionOnTable }) =>
     positionOnTable === 2 &&
     css`
-      transform: translate(-50%, -100%);
+      min-width: 150px;
+      transform: translate(-50%, -125%);
     `}
   ${({ positionOnTable }) =>
     positionOnTable === 3 &&
     css`
-      transform: translate(-50%, -50%);
+      writing-mode: vertical-lr;
+      min-height: 150px;
+      transform: translate(-50%, -50%) rotate(180deg);
+      @media (min-width: 992px) {
+        transform: translate(-0%, -50%) rotate(180deg);
+      }
     `}
   ${({ active }) =>
     active &&
