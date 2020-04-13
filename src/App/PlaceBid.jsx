@@ -98,12 +98,17 @@ const PlaceBidForm = ({ allowedBids, trump, changeTrump, bid, changeBid }) => {
   );
 };
 
-export const Bid = ({ bid }) => {
+export const Bid = ({ bid, inverted = false }) => {
   if (bid.bid === null) {
     return <span>Pass</span>;
   }
 
-  return (
+  return inverted ? (
+    <span className="">
+      <SuitStringToComponent suit={bid.suit} />
+      <strong className="ml-2">{bid.bid}</strong>
+    </span>
+  ) : (
     <span className="">
       <strong className="mr-2">{bid.bid}</strong>
       <SuitStringToComponent suit={bid.suit} />

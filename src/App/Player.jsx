@@ -8,6 +8,7 @@ import PlayedCards from 'App/PlayedCards';
 import GameOver from 'App/GameOver';
 import InformationBar from 'App/InformationBar';
 import PlayerName from 'Components/PlayerName';
+import { Bid } from 'App/PlaceBid';
 
 const PlayerNameIndicator = styled.div`
   position: absolute;
@@ -219,6 +220,16 @@ const Player = ({
                 positionOnTable={positionOnTable}
                 active={id === currentPlayer}
               >
+                <PlayerName playerId={id} />
+                {phase === 'PlayTricks' && id === game.bid.highestBidBy && (
+                  <span>
+                    <span className="mx-2">-</span>{' '}
+                    <Bid
+                      bid={{ bid: game.bid.bid, suit: game.bid.trump }}
+                      inverted
+                    />
+                  </span>
+                )}
               </PlayerNameIndicator>
               <PlayerHand
                 game={game}
