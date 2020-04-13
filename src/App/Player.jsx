@@ -65,42 +65,14 @@ const PlayerContainer = styled.div`
   align-items: flex-start;
   flex-direction: column;
   justify-content: space-between;
-  border: thin solid #dddddd;
   grid-area: ${(props) => 'player-' + props.id};
 `;
 
 const KlaverJasTable = styled.div`
-  border: solid 0.5em #fdb76582;
-
   width: 100%;
   max-width: 100%;
   height: 100%;
   max-height: 100%;
-
-  @media (min-width: 768px) {
-      border-width: 1em;
-   }
-
-${({ currentPlayer, playerId }) =>
-  currentPlayer === playerId % 4 &&
-  css`
-    border-bottom-color: var(--active-border-color);
-  `}
-${({ currentPlayer, playerId }) =>
-  currentPlayer === (playerId + 1) % 4 &&
-  css`
-    border-left-color: var(--active-border-color);
-  `}
-${({ currentPlayer, playerId }) =>
-  currentPlayer === (playerId + 2) % 4 &&
-  css`
-    border-top-color: var(--active-border-color);
-  `}
-${({ currentPlayer, playerId }) =>
-  currentPlayer === (playerId + 3) % 4 &&
-  css`
-    border-right-color: var(--active-border-color);
-  `}
 
   display: grid;
 
