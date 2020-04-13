@@ -192,15 +192,16 @@ const Player = ({
                 active={id === currentPlayer}
               >
                 <PlayerName playerId={id} />
-                {phase === 'PlayTricks' && id === game.bid.highestBidBy && (
-                  <span>
-                    <span className="mx-2">-</span>{' '}
-                    <Bid
-                      bid={{ bid: game.bid.bid, suit: game.bid.trump }}
-                      inverted
-                    />
-                  </span>
-                )}
+                {(phase === 'PlayTricks' || phase === 'ShowResultOfTrick') &&
+                  id === game.bid.highestBidBy && (
+                    <span>
+                      <span className="mx-2">-</span>{' '}
+                      <Bid
+                        bid={{ bid: game.bid.bid, suit: game.bid.trump }}
+                        inverted
+                      />
+                    </span>
+                  )}
               </PlayerNameIndicator>
               <PlayerHand
                 game={game}
