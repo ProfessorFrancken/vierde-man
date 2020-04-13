@@ -7,6 +7,9 @@ const StyledDialog = styled.div`
     min-width: 200px;
   }
   @media (min-width: 400px) {
+    min-width: 250px;
+  }
+  @media (min-width: 500px) {
     min-width: 350px;
   }
 `;
