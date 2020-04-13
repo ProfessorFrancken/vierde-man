@@ -1,6 +1,5 @@
 import React from 'react';
 import PlaceBid from 'App/PlaceBid';
-import { PlayerToStartCurrentTrick } from 'GameLogic/Phases/PlayTricks';
 import styled, { css } from 'styled-components';
 import PlayerHand from 'Components/PlayerHand';
 import ShowResultsOfTrick from 'App/ShowResultsOfTrick';
@@ -220,7 +219,6 @@ const Player = ({
                 positionOnTable={positionOnTable}
                 active={id === currentPlayer}
               >
-                <PlayerName playerId={playerId} />
               </PlayerNameIndicator>
               <PlayerHand
                 game={game}
