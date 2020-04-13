@@ -1,12 +1,12 @@
 import { FlatFile, Server } from 'boardgame.io/dist/server';
-import { KlaverJassen } from './GameLogic/Game';
+import { KlaverJassen } from './../GameLogic/Game';
 
 const server = Server({
   games: [KlaverJassen],
   db: new FlatFile({
     dir: './storage/klaverjas',
-    logging: true
-  })
+    logging: true,
+  }),
 });
 
 const PORT = process.env.PORT || 8000;

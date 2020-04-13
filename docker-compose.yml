@@ -55,7 +55,7 @@ services:
     volumes:
       - ./:/var/www/vierdeman
     working_dir: /var/www/vierdeman
-    command: node -r esm src/server.js
+    command: node -r esm src/server/server.js
     networks:
       - default
       - traefik
