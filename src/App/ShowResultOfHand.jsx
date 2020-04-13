@@ -125,7 +125,7 @@ const ShowResultsOfHand = ({
   trump,
   playerId,
   continueTrickAutomatically = {},
-  playersThatWantToPlayNextHand = []
+  playersThatWantToPlayNextHand = [],
 }) => {
   const [continueAutomatically, setContinueAutomatically] = useState(
     continueTrickAutomatically[playerId] === true
@@ -162,6 +162,7 @@ const ShowResultsOfHand = ({
         ) : (
           <Modal.Actions>
             <Modal.Action
+              primary
               onClick={() =>
                 moves.PlayNextHand(playerId, continueAutomatically)
               }
