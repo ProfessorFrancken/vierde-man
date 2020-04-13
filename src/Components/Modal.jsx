@@ -97,6 +97,7 @@ const Action = ({
   onClick,
   type = 'submit',
   className,
+  primary = false,
   ...props
 }) => {
   const componentClasses = [
@@ -104,11 +105,11 @@ const Action = ({
     'btn',
     'btn-sm',
     'btn-text',
-    'text-primary',
     'btn-block',
-    'bg-light',
     'p-3',
     'px-3',
+    'rounded-0',
+    ...(primary ? ['text-white', 'bg-primary'] : ['text-primary', 'bg-light']),
   ];
   return (
     <button

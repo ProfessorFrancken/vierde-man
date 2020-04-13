@@ -33,6 +33,16 @@ const AppContainer = styled.div`
   .text-primary {
     color: var(--primary) !important;
   }
+  .bg-primary {
+    background-color: var(--primary) !important;
+  }
+
+  .btn.bg-primary {
+    :hover,
+    :focus {
+      background-color: ${({ theme }) => theme.primaryLight} !important;
+    }
+  }
 
   --x-offset: 50%;
   --y-offset: 30%;

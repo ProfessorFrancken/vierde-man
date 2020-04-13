@@ -16,7 +16,7 @@ const PreviousBids = ({ bidsToShow }) => {
         style={{
           maxHeight: '7rem',
           overflowY: 'scroll',
-          scrollbarWidth: 'none'
+          scrollbarWidth: 'none',
         }}
       >
         {bidsToShow.map((bid, idx) => (
@@ -42,7 +42,7 @@ const PlaceBidForm = ({ allowedBids, trump, changeTrump, bid, changeBid }) => {
     [SPADES]: '♠ Spades',
     [HEARTS]: '♥ Hearts',
     [CLUBS]: '♣ Clubs',
-    [DIAMONDS]: '♦ Diamonds'
+    [DIAMONDS]: '♦ Diamonds',
   };
   const suitColor = {
     [SANS]: 'var(--black-suit-color)',
@@ -50,7 +50,7 @@ const PlaceBidForm = ({ allowedBids, trump, changeTrump, bid, changeBid }) => {
     [HEARTS]: 'var(--red-suit-color)',
     [CLUBS]: 'var(--black-suit-color)',
     [DIAMONDS]: 'var(--red-suit-color)',
-    APRIL: '#8f8500'
+    APRIL: '#8f8500',
   };
 
   return (
@@ -67,7 +67,7 @@ const PlaceBidForm = ({ allowedBids, trump, changeTrump, bid, changeBid }) => {
             onChange={changeTrump}
             value={trump}
           >
-            {trumpOptions.map(trump => (
+            {trumpOptions.map((trump) => (
               <option
                 key={trump}
                 value={trump}
@@ -86,7 +86,7 @@ const PlaceBidForm = ({ allowedBids, trump, changeTrump, bid, changeBid }) => {
             onChange={changeBid}
             value={bid}
           >
-            {allowedBids.map(bid => (
+            {allowedBids.map((bid) => (
               <option key={bid} value={bid}>
                 {bid}
               </option>
@@ -127,11 +127,11 @@ const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer, active }) => {
     }
   }
 
-  const changeTrump = e => {
+  const changeTrump = (e) => {
     setTrump(e.target.value);
   };
 
-  const changeBid = e => {
+  const changeBid = (e) => {
     setBid(parseInt(e.target.value, 10));
   };
 
@@ -171,7 +171,7 @@ const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer, active }) => {
             </Modal.Action>
             {allowedBids.length > 0 && (
               <Modal.Action
-                className="text-primary"
+                primary
                 onClick={() => placeBid({ suit: trump, bid })}
               >
                 Submit bid
