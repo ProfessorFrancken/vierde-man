@@ -15,8 +15,8 @@ const PlayerNameIndicator = styled.div`
   top: 50%;
   left: 50%;
   z-index: var(--player-name-indicator-z-index);
-border: solid white 2px;
-  background-color: var(--light);
+  border: solid #eee 3px;
+  background-color: #fafafa;
 
   ${({ positionOnTable }) =>
     positionOnTable === 0 &&
@@ -53,7 +53,8 @@ border: solid white 2px;
   ${({ active }) =>
     active &&
     css`
-      border-color: ${({ theme }) => theme.primary};
+      background-color: ${({ theme }) => theme.secondary};
+      color: white;
     `}
 `;
 
