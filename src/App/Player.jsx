@@ -186,9 +186,7 @@ const Player = ({
           return (
             <PlayerHandArea id={positionOnTable} key={positionOnTable}>
               <PlayerNameIndicator
-                className={`p-4 shadow rounded font-weight-bold text-center ${
-                  positionOnTable === 0 && 'd-none d-md-block'
-                }`}
+                className={`p-4 shadow rounded font-weight-bold text-center`}
                 positionOnTable={positionOnTable}
                 active={id === currentPlayer}
               >
