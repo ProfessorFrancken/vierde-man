@@ -63,6 +63,7 @@ const Lobby = ({
   const { username: playerName } = useAuth();
   const {
     playerRooms = [],
+    refresh,
     joinRoom,
     leaveRoom,
     createRoom,
@@ -80,11 +81,11 @@ const Lobby = ({
   });
 
   useEffect(() => {
-    connection.refresh();
+    refresh(connection);
   }, [lobbyServer, gameComponents]);
 
   useInterval(() => {
-    connection.refresh();
+    refresh(connection);
   }, refreshInterval);
   return (
     <Router>

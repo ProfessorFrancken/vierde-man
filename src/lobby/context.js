@@ -25,6 +25,14 @@ function LobbyProvider(props) {
     setPlayerRooms([]);
   };
 
+  const refresh = async (connection) => {
+    try {
+      await connection.refresh();
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
   const joinRoom = async (connection, gameName, gameId, playerId) => {
     try {
       const playerCredentials = await connection.join(
@@ -108,6 +116,7 @@ function LobbyProvider(props) {
       value={{
         playerRooms,
         logout,
+        refresh,
         joinRoom,
         leaveGame,
         leaveRoom,
