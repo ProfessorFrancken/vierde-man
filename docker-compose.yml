@@ -33,7 +33,7 @@ services:
     volumes:
       - ./:/var/www/vierdeman
     working_dir: /var/www/vierdeman
-    command: npm run start
+    command: npm run serve
     networks:
       - default
       - traefik
