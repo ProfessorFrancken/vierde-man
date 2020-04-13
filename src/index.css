@@ -32,6 +32,7 @@ body {
   --card-stack-z-index: 0;
   --card-stack-hover-card-z-index: 10;
 
+  --player-name-indicator-z-index: 2;
   --card-container-z-index: 0;
   --hand-card-z-index: 0;
   --hand-card-hover-z-index: 10;

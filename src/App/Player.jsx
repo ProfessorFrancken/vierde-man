@@ -8,6 +8,43 @@ import ShowResultsOfHand from 'App/ShowResultOfHand';
 import PlayedCards from 'App/PlayedCards';
 import GameOver from 'App/GameOver';
 import InformationBar from 'App/InformationBar';
+import PlayerName from 'Components/PlayerName';
+
+const PlayerNameIndicator = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: var(--player-name-indicator-z-index);
+  min-width: 150px;
+  background-color: var(--light);
+
+  ${({ positionOnTable }) =>
+    positionOnTable === 0 &&
+    css`
+      transform: translate(-50%, 0);
+    `}
+  ${({ positionOnTable }) =>
+    positionOnTable === 1 &&
+    css`
+      transform: translate(-50%, -50%);
+    `}
+  ${({ positionOnTable }) =>
+    positionOnTable === 2 &&
+    css`
+      transform: translate(-50%, -100%);
+    `}
+  ${({ positionOnTable }) =>
+    positionOnTable === 3 &&
+    css`
+      transform: translate(-50%, -50%);
+    `}
+  ${({ active }) =>
+    active &&
+    css`
+      background-color: ${({ theme }) => theme.primary};
+      color: white;
+    `}
+`;
 
 const PlayerContainer = styled.div`
   width: 100vw;
@@ -80,6 +117,7 @@ const Action = styled.div`
 `;
 const PlayerHandArea = styled.div`
   grid-area: ${(props) => 'p' + props.id};
+  position: relative;
 `;
 
 const Player = ({
@@ -164,6 +202,15 @@ const Player = ({
           const id = (playerId + positionOnTable) % 4;
           return (
             <PlayerHandArea id={positionOnTable} key={positionOnTable}>
+              <PlayerNameIndicator
+                className={`p-4 shadow rounded font-weight-bold text-center ${
+                  positionOnTable === 0 && 'd-none d-md-block'
+                }`}
+                positionOnTable={positionOnTable}
+                active={id === currentPlayer}
+              >
+                <PlayerName playerId={playerId} />
+              </PlayerNameIndicator>
               <PlayerHand
                 game={game}
                 hand={game.hands[id]}
