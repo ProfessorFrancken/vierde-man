@@ -106,7 +106,6 @@ const Menu = ({ rounds, playedTricks, wij, zij, open, setOpen, playerId }) => {
         <FontAwesomeIcon icon={faTimes} onClick={() => setOpen(false)} />
         <h4 className="h6 mb-0 text-white">Vierde man?</h4>
       </div>
-
       <div className="list-unstyled p-3 bg-white border-bottom text-center text-muted">
         Round {rounds.length + 1} / 16
       </div>
@@ -252,40 +251,10 @@ const InformationBar = (props) => {
           playerId={playerId}
         />
       </div>
-      <div className="mx-2 p-2">
+      <div className="mr-auto p-2">
         Wij: <Prominent>{wij}</Prominent>
       </div>
-      <div className="d-flex justify-content-center text-center mx-auto p-2">
-        {bid.trump !== undefined && [0, 2].includes(bid.highestBidBy) && (
-          <div className="mr-2">
-            <Bid bid={{ bid: bid.bid, suit: bid.trump }} />
-          </div>
-        )}
-        {props.phase === 'ShowResultOfTrick' ? (
-          <>
-            <small className="text-muted d-sm-none">Waiting</small>
-            <small className="text-muted d-none d-sm-inline">
-              Waiting for next trick
-            </small>
-          </>
-        ) : (
-          <small className="text-muted d-flex align-items-center">
-            <PlayerName playerId={props.currentPlayer} />
-            <span className="d-none d-sm-inline">
-              {' '}
-              is
-              {props.phase === 'PlaceBids' && ' placing a bid'}
-              {props.phase === 'PlayTricks' && ' selecting a card'}
-            </span>
-          </small>
-        )}
-        {bid.trump !== undefined && [1, 3].includes(bid.highestBidBy) && (
-          <div className="ml-2">
-            <Bid bid={{ bid: bid.bid, suit: bid.trump }} />
-          </div>
-        )}
-      </div>
-      <div className="mx-2 p-2">
+      <div className="ml-auto 2 p-2">
         Zij: <Prominent>{zij}</Prominent>
       </div>
       <div
