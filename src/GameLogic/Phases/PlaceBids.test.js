@@ -19,9 +19,9 @@ describe('bidding phase', () => {
       bids: [],
       highestBidBy: undefined,
       bid: undefined,
-      trump: undefined
+      trump: undefined,
     },
-    bids: []
+    bids: [],
   };
 
   describe('rotating the dealer', () => {
@@ -36,7 +36,7 @@ describe('bidding phase', () => {
         { suit: SANS, bid: 70, bidBy: 0 },
         { suit: null, bid: null, bidBy: 1 },
         { suit: null, bid: null, bidBy: 2 },
-        { suit: null, bid: null, bidBy: 3 }
+        { suit: null, bid: null, bidBy: 3 },
       ]);
     });
 
@@ -51,7 +51,7 @@ describe('bidding phase', () => {
         { suit: SANS, bid: 70, bidBy: 1 },
         { suit: null, bid: null, bidBy: 2 },
         { suit: null, bid: null, bidBy: 3 },
-        { suit: null, bid: null, bidBy: 0 }
+        { suit: null, bid: null, bidBy: 0 },
       ]);
     });
 
@@ -66,7 +66,7 @@ describe('bidding phase', () => {
         { suit: SANS, bid: 70, bidBy: 2 },
         { suit: null, bid: null, bidBy: 3 },
         { suit: null, bid: null, bidBy: 0 },
-        { suit: null, bid: null, bidBy: 1 }
+        { suit: null, bid: null, bidBy: 1 },
       ]);
     });
 
@@ -81,7 +81,7 @@ describe('bidding phase', () => {
         { suit: SANS, bid: 70, bidBy: 3 },
         { suit: null, bid: null, bidBy: 0 },
         { suit: null, bid: null, bidBy: 1 },
-        { suit: null, bid: null, bidBy: 2 }
+        { suit: null, bid: null, bidBy: 2 },
       ]);
     });
   });
@@ -151,7 +151,7 @@ describe('bidding phase', () => {
       { suit: DIAMONDS, bid: 162, bidBy: 0 },
       { suit: null, bid: null, bidBy: 1 },
       { suit: null, bid: null, bidBy: 2 },
-      { suit: null, bid: null, bidBy: 3 }
+      { suit: null, bid: null, bidBy: 3 },
     ]);
   });
 
@@ -161,7 +161,7 @@ describe('bidding phase', () => {
     const G = {
       ..._.cloneDeep(initialGame),
       dealer: 2,
-      bids: [{ suit: HEARTS, bid: 102, bidBy: 3 }]
+      bids: [{ suit: HEARTS, bid: 102, bidBy: 3 }],
     };
     const result = PlaceBid(
       G,
@@ -178,7 +178,7 @@ describe('bidding phase', () => {
       const G = {
         ..._.cloneDeep(initialGame),
         dealer: 2,
-        bids: [{ suit: HEARTS, bid: 82, bidBy: 3 }]
+        bids: [{ suit: HEARTS, bid: 82, bidBy: 3 }],
       };
       const result = PlaceBid(G, { currentPlayer: 0 }, { suit: SANS, bid: 80 });
       expect(result).toEqual(undefined);
@@ -189,7 +189,7 @@ describe('bidding phase', () => {
       const G = {
         ..._.cloneDeep(initialGame),
         dealer: 2,
-        bids: [{ suit: HEARTS, bid: 82, bidBy: 3 }]
+        bids: [{ suit: HEARTS, bid: 82, bidBy: 3 }],
       };
       const result = PlaceBid(
         G,
@@ -207,7 +207,7 @@ describe('bidding phase', () => {
       const G = {
         ..._.cloneDeep(initialGame),
         dealer: 2,
-        bids: [{ suit: DIAMONDS, bid: 82, bidBy: 3 }]
+        bids: [{ suit: DIAMONDS, bid: 82, bidBy: 3 }],
       };
       const result = PlaceBid(G, { currentPlayer: 0 }, { suit: SANS, bid: 80 });
       expect(result).toEqual(undefined);
@@ -218,7 +218,7 @@ describe('bidding phase', () => {
       const G = {
         ..._.cloneDeep(initialGame),
         dealer: 2,
-        bids: [{ suit: DIAMONDS, bid: 92, bidBy: 3 }]
+        bids: [{ suit: DIAMONDS, bid: 92, bidBy: 3 }],
       };
       const result = PlaceBid(G, { currentPlayer: 0 }, { suit: SANS, bid: 80 });
       expect(result).toEqual(INVALID_MOVE);
@@ -230,7 +230,7 @@ describe('bidding phase', () => {
       const G = {
         ..._.cloneDeep(initialGame),
         dealer: 2,
-        bids: [{ suit: SANS, bid: 80, bidBy: 3 }]
+        bids: [{ suit: SANS, bid: 80, bidBy: 3 }],
       };
       const result = PlaceBid(G, { currentPlayer: 0 }, { suit: SANS, bid: 80 });
       expect(result).toEqual(INVALID_MOVE);
@@ -243,8 +243,8 @@ describe('bidding phase', () => {
         dealer: 2,
         bids: [
           { suit: CLUBS, bid: 132, bidBy: 2 },
-          { suit: SANS, bid: 130, bidBy: 3 }
-        ]
+          { suit: SANS, bid: 130, bidBy: 3 },
+        ],
       };
       const result = PlaceBid(
         G,
@@ -261,8 +261,8 @@ describe('bidding phase', () => {
         dealer: 2,
         bids: [
           { suit: SANS, bid: 100, bidBy: 2 },
-          { suit: SANS, bid: 130, bidBy: 3 }
-        ]
+          { suit: SANS, bid: 130, bidBy: 3 },
+        ],
       };
       const result = PlaceBid(
         G,

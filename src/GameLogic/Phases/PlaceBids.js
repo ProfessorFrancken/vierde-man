@@ -17,7 +17,7 @@ export const allowedBidsOnTrump = (bids, trump) =>
   (trump === SANS
     ? [70, 80, 90, 100, 110, 120, 130, 'pit']
     : [82, 92, 102, 112, 122, 132, 142, 152, 162, 'pit']
-  ).filter(bid => canPlaceBid(bids, { bid, suit: trump }));
+  ).filter((bid) => canPlaceBid(bids, { bid, suit: trump }));
 
 export const DealCards = (G, ctx, deck) => {
   const stacks = _.chunk(deck, 8);
@@ -26,12 +26,12 @@ export const DealCards = (G, ctx, deck) => {
     0: stacks[0],
     1: stacks[1],
     2: stacks[2],
-    3: stacks[3]
+    3: stacks[3],
   };
 };
 
 const isSans = ({ suit }) => suit === SANS;
-const isAValidBid = bid =>
+const isAValidBid = (bid) =>
   bid !== undefined && (bid.bid >= 82 || (isSans(bid) && bid.bid >= 70));
 export const canPlaceBid = (placedBids, bid) => {
   if (bidIsPass(bid)) {
@@ -46,13 +46,13 @@ export const canPlaceBid = (placedBids, bid) => {
   if (
     _.some(
       placedBids,
-      placedBid => bid.suit === placedBid.suit && bid.bid === placedBid.bid
+      (placedBid) => bid.suit === placedBid.suit && bid.bid === placedBid.bid
     )
   ) {
     return false;
   }
 
-  const highestBid = _.maxBy(placedBids, bid =>
+  const highestBid = _.maxBy(placedBids, (bid) =>
     bid !== undefined && !bidIsPass(bid) ? bid.bid : 0
   );
 
@@ -108,7 +108,7 @@ const StartPlacingBids = (G, ctx) => {
     bids: [],
     highestBidBy: undefined,
     bid: undefined,
-    trump: undefined
+    trump: undefined,
   };
 
   G.bids = [];
@@ -160,7 +160,8 @@ export const PlaceBids = {
     moveLimit: 1,
     order: {
       first: ({ dealer }, { numPlayers }) => (dealer + 1) % numPlayers,
-      next: (G, { playOrderPos, numPlayers }) => (playOrderPos + 1) % numPlayers
-    }
-  }
+      next: (G, { playOrderPos, numPlayers }) =>
+        (playOrderPos + 1) % numPlayers,
+    },
+  },
 };
