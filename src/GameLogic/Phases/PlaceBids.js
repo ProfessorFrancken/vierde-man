@@ -127,15 +127,19 @@ const ThreePlayersHavePassed = ({ bids }, { currentPlayer }) => {
   );
 };
 
-const determineBid = ({ bids }) => {
-  const highestBid = _.maxBy(bids, bid =>
-    bid !== undefined && !bidIsPass(bid) ? bid.bid : 0
+export const determineBid = ({ bids }) => {
+  const highestBid = _.maxBy(bids, (bid) =>
+    bid !== undefined && !bidIsPass(bid)
+      ? isSans(bid)
+        ? bid.bid
+        : bid.bid - 3
+      : 0
   );
 
   return {
     highestBidBy: highestBid.bidBy,
     trump: highestBid.suit,
-    bid: highestBid.bid
+    bid: highestBid.bid,
   };
 };
 

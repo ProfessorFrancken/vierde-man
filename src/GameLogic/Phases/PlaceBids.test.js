@@ -1,6 +1,11 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 import { SUITES, PASS, SANS } from 'GameLogic/Card';
-import { PlaceBid, Pass, canPlaceBid } from 'GameLogic/Phases/PlaceBids';
+import {
+  PlaceBid,
+  Pass,
+  canPlaceBid,
+  determineBid,
+} from 'GameLogic/Phases/PlaceBids';
 import _ from 'lodash';
 const { SPADES, HEARTS, CLUBS, DIAMONDS } = SUITES;
 
@@ -266,6 +271,19 @@ describe('bidding phase', () => {
       );
       expect(result).toEqual(INVALID_MOVE);
       expect(G.bids.length).toEqual(2);
+    });
+
+    it('correctly determines the highest bid', () => {
+      const bids = [
+        { suit: CLUBS, bid: 132, bidBy: 2 },
+        { suit: SANS, bid: 130, bidBy: 3 },
+        { suit: null, bid: null, bidBy: 0 },
+        { suit: null, bid: null, bidBy: 1 },
+        { suit: null, bid: null, bidBy: 3 },
+      ];
+
+      const highestBid = determineBid({ bids });
+      expect(highestBid).toEqual({ trump: SANS, bid: 130, highestBidBy: 3 });
     });
   });
 
