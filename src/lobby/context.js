@@ -25,59 +25,45 @@ function LobbyProvider(props) {
     setPlayerRooms([]);
   };
 
-  const refresh = async (connection) => {
+  const catchErrors = (fn) => async (...args) => {
     try {
-      await connection.refresh();
+      await fn(...args);
     } catch (error) {
       setError(error.message);
     }
   };
 
-  const joinRoom = async (connection, gameName, gameId, playerId) => {
-    try {
-      const playerCredentials = await connection.join(
-        gameId,
-        playerId,
-        playerName
-      );
+  const refresh = (connection) => connection.refresh();
 
-      setPlayerRooms([
-        ...playerRooms,
-        { playerId, gameId, gameName, playerCredentials },
-      ]);
-    } catch (error) {
-      setError(error.message);
-    }
+  const joinRoom = async (connection, gameName, gameId, playerId) => {
+    const playerCredentials = await connection.join(
+      gameId,
+      playerId,
+      playerName
+    );
+
+    setPlayerRooms([
+      ...playerRooms,
+      { playerId, gameId, gameName, playerCredentials },
+    ]);
   };
   const leaveGame = (gameId) => {};
 
   const leaveRoom = async (connection, gameName, gameId) => {
-    try {
-      const room = playerRooms.find((room) => room.gameId === gameId);
-      await connection.leave(gameId, room.playerCredentials, playerName);
+    const room = playerRooms.find((room) => room.gameId === gameId);
+    await connection.leave(gameId, room.playerCredentials, playerName);
 
-      setPlayerRooms(playerRooms.filter((room) => room.gameId !== gameId));
-    } catch (error) {
-      setError(error.message);
-    }
+    setPlayerRooms(playerRooms.filter((room) => room.gameId !== gameId));
   };
 
   const createRoom = async (connection, gameName, numPlayers) => {
-    try {
-      await connection.create(gameName, numPlayers);
-    } catch (error) {
-      setError(error.message);
-    }
+    await connection.create(gameName, numPlayers);
   };
 
   const exitLobby = async (connection) => {
-    try {
-      await connection.disconnect(rooms, playerRooms, playerName);
-      setError('');
-      logout();
-    } catch (error) {
-      setError(error.message);
-    }
+    await connection.disconnect(rooms, playerRooms, playerName);
+    setError('');
+    logout();
   };
 
   const startGame = (
@@ -116,12 +102,12 @@ function LobbyProvider(props) {
       value={{
         playerRooms,
         logout,
-        refresh,
-        joinRoom,
-        leaveGame,
-        leaveRoom,
-        createRoom,
-        exitLobby,
+        refresh: catchErrors(refresh),
+        joinRoom: catchErrors(joinRoom),
+        leaveGame: catchErrors(leaveGame),
+        leaveRoom: catchErrors(leaveRoom),
+        createRoom: catchErrors(createRoom),
+        exitLobby: catchErrors(exitLobby),
         rooms,
         setRooms,
         startGame,
