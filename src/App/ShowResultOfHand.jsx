@@ -21,7 +21,7 @@ export const Bid = ({ bid }) => {
   );
 };
 
-const ResultTable = ({ round, bid }) => {
+const ResultTable = ({ round, bid, wij, zij }) => {
   const [tricksByWij, tricksByZij] = _.partition(
     round.playedTricks,
     ({ winner }) => [0, 2].includes(winner)
@@ -34,42 +34,38 @@ const ResultTable = ({ round, bid }) => {
       <thead>
         <tr>
           <th></th>
-          <th>Wij</th>
-          <th>Zij</th>
+          <th className="text-left">Wij</th>
+          <th className="text-left">Zij</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>Points</td>
-          <td>
+          <td className="text-right">Points</td>
+          <td className="text-left">
             <Prominent>
               {_(tricksByWij)
                 .map(({ points }) => points)
-                .sum() + [0, 2].includes(lastTrick.winner)
-                ? 10
-                : 0}
+                .sum() + ([0, 2].includes(lastTrick.winner) ? 10 : 0)}
             </Prominent>
           </td>
-          <td>
+          <td className="text-left">
             <Prominent>
               {_(tricksByZij)
                 .map(({ points }) => points)
-                .sum() + [1, 3].includes(lastTrick.winner)
-                ? 10
-                : 0}
+                .sum() + ([1, 3].includes(lastTrick.winner) ? 10 : 0)}
             </Prominent>
           </td>
         </tr>
         <tr>
-          <td>Honor</td>
-          <td>
+          <td className="text-right">Honor</td>
+          <td className="text-left">
             <Prominent>
               {_(tricksByWij)
                 .map(({ honor }) => honor)
                 .sum()}
             </Prominent>
           </td>
-          <td>
+          <td className="text-left">
             <Prominent>
               {_(tricksByZij)
                 .map(({ honor }) => honor)
@@ -78,40 +74,38 @@ const ResultTable = ({ round, bid }) => {
           </td>
         </tr>
         <tr>
-          <td>Bid</td>
-          <td>{[0, 2].includes(bid.highestBidBy) && <Bid bid={bid} />}</td>
-          <td>{[1, 3].includes(bid.highestBidBy) && <Bid bid={bid} />}</td>
+          <td className="text-right">Bid</td>
+          <td className="text-left">
+            {[0, 2].includes(bid.highestBidBy) && <Bid bid={bid} />}
+          </td>
+          <td className="text-left">
+            {[1, 3].includes(bid.highestBidBy) && <Bid bid={bid} />}
+          </td>
         </tr>
       </tbody>
       <tfoot>
         <tr>
-          <th>Total</th>
-          <td>
+          <th className="text-right">This round</th>
+          <td className="text-left">
             <Prominent>{round.wij}</Prominent>
           </td>
-          <td>
+          <td className="text-left">
             <Prominent>{round.zij}</Prominent>
+          </td>
+        </tr>
+        <tr>
+          <th className="text-right">Total</th>
+          <td className="text-left">
+            <Prominent>{wij}</Prominent>
+          </td>
+          <td className="text-left">
+            <Prominent>{zij}</Prominent>
           </td>
         </tr>
       </tfoot>
     </table>
   );
 };
-
-const CheckContinueAutomatically = ({ checked, onChange }) => (
-  <div className="form-group form-check text-muted mb-0">
-    <input
-      type="checkbox"
-      className="form-check-input"
-      id="continueAutomatically"
-      checked={checked}
-      onChange={onChange}
-    />
-    <label className="form-check-label" htmlFor="continueAutomatically">
-      Continue next trick automatically
-    </label>
-  </div>
-);
 
 const ShowResultsOfHand = ({
   game,
@@ -123,9 +117,6 @@ const ShowResultsOfHand = ({
   continueTrickAutomatically = {},
   playersThatWantToPlayNextHand = [],
 }) => {
-  const [continueAutomatically, setContinueAutomatically] = useState(
-    continueTrickAutomatically[playerId] === true
-  );
   const springProps = useSpring({
     width: '100%',
     from: { width: '0%' },
@@ -143,27 +134,26 @@ const ShowResultsOfHand = ({
   return (
     <Modal.Dialog style={{ zIndex: 'var(--modal-z-index)' }}>
       <Modal.Header>
-        <Modal.Title>Finished hand</Modal.Title>
+        <Modal.Title className="mb-0">Finished hand</Modal.Title>
       </Modal.Header>
-      <Modal.Table>
-        <ResultTable round={round} bid={game.bid} />
-      </Modal.Table>
-      <Modal.Body className="border-top">
-        <CheckContinueAutomatically
-          checked={continueAutomatically}
-          onChange={() => setContinueAutomatically(!continueAutomatically)}
+      <Modal.Table className="border-bottom">
+        <ResultTable
+          round={round}
+          bid={game.bid}
+          wij={game.wij}
+          zij={game.zij}
         />
-      </Modal.Body>
+      </Modal.Table>
       <Modal.Footer className="border-0">
         {playersThatWantToPlayNextHand.includes(playerId) ? (
-          <Modal.Body className="p-4">Waiting for other players</Modal.Body>
+          <Modal.Body className="p-4 text-center">
+            Waiting for other players
+          </Modal.Body>
         ) : (
           <Modal.Actions>
             <Modal.Action
               primary
-              onClick={() =>
-                moves.PlayNextHand(playerId, continueAutomatically)
-              }
+              onClick={() => moves.PlayNextHand(playerId, true)}
             >
               Play next hand
             </Modal.Action>
