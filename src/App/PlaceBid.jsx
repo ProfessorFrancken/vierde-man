@@ -7,31 +7,37 @@ import PlayerName from 'Components/PlayerName';
 
 const { SPADES, HEARTS, CLUBS, DIAMONDS } = SUITES;
 
-const PreviousBids = ({ bidsToShow }) => {
+const PreviousBids = ({ bids }) => {
   return (
-    <>
-      <h4 className="h6">Previous bids</h4>
-      <ul
-        className="list-unstyled text-muted my-2"
+    <div>
+      <h4 className="h6 text-muted">Previous bids</h4>
+      <div
+        className="text-muted my-2"
         style={{
-          maxHeight: '7rem',
+          height: '9rem',
           overflowY: 'scroll',
           scrollbarWidth: 'none',
         }}
       >
-        {bidsToShow.map((bid, idx) => (
-          <li
-            className="d-flex justify-content-between my-2"
-            key={`${bid.bidBy}-${idx}`}
-          >
-            <strong>
-              <PlayerName playerId={bid.bidBy} />
-            </strong>
-            <Bid bid={bid} />
-          </li>
-        ))}
-      </ul>
-    </>
+        <ul className="list-unstyled">
+          {[...bids].reverse().map((bid, idx) => (
+            <li
+              className="d-flex justify-content-between my-2"
+              key={`${bid.bidBy}-${idx}`}
+            >
+              <span>
+                <span className="text-muted">{bids.length - idx}</span>{' '}
+                <span className="mx-1 text-muted">-</span>{' '}
+                <strong>
+                  <PlayerName playerId={bid.bidBy} />
+                </strong>
+              </span>
+              <Bid bid={bid} />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
   );
 };
 
@@ -55,7 +61,7 @@ const PlaceBidForm = ({ allowedBids, trump, changeTrump, bid, changeBid }) => {
 
   return (
     <>
-      <h4 className="h6">Place bid</h4>
+      <h4 className="h6 text-muted">Place bid</h4>
 
       <div className="d-flex justify-content-between flex-md-row flex-column">
         <div className="form-group flex-grow-1 mr-md-2">
@@ -140,18 +146,11 @@ const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer, active }) => {
     setBid(parseInt(e.target.value, 10));
   };
 
-  const bidsToShow = [...currentBids].reverse();
-
   return (
     <Modal.Dialog>
-      <Modal.Header>
-        <Modal.Title>Bidding round</Modal.Title>
-      </Modal.Header>
-      {bidsToShow.length > 0 && (
-        <Modal.Body className="bg-light">
-          <PreviousBids bidsToShow={bidsToShow} />
-        </Modal.Body>
-      )}
+      <Modal.Body className="bg-light">
+        <PreviousBids bids={currentBids} />
+      </Modal.Body>
       {allowedBids.length > 0 && (
         <Modal.Body className="border-top">
           <PlaceBidForm
@@ -165,7 +164,7 @@ const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer, active }) => {
       )}
       <Modal.Footer className="border-0">
         {!active && (
-          <Modal.Body className="p-4">
+          <Modal.Body className="p-3">
             Waiting for <PlayerName playerId={currentPlayer} /> to place a bid
           </Modal.Body>
         )}
