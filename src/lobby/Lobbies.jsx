@@ -19,7 +19,7 @@ const Lobbies = ({
       <Modal.Dialog>
         <Modal.Header>
           <div className="d-flex justify-content-between">
-            <Modal.Title> Welcome, {playerName} </Modal.Title>
+            <Modal.Title>{playerName}, hoi</Modal.Title>
             <button
               className="btn btn-text text-muted bg-light"
               onClick={exitLobby}
