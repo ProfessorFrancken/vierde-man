@@ -35,6 +35,7 @@ const Lobbies = ({
               href="https://discord.gg/gHb2jUq"
               className="font-weight-bold"
               target="_blank"
+              rel="noopener noreferrer"
             >
               unofficial Francken Discord
             </a>

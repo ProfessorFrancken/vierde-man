@@ -1,15 +1,13 @@
 import React from 'react';
 import PlaceBid from 'App/PlaceBid';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import PlayerHand from 'Components/PlayerHand';
 import ShowResultsOfTrick from 'App/ShowResultsOfTrick';
 import ShowResultsOfHand from 'App/ShowResultOfHand';
 import PlayedCards from 'App/PlayedCards';
 import GameOver from 'App/GameOver';
 import InformationBar from 'App/InformationBar';
-import PlayerName from 'Components/PlayerName';
 import PlayerNameIndicator from 'Components/PlayerNameIndicator';
-import { Bid } from 'App/PlaceBid';
 
 const PlayerContainer = styled.div`
   width: 100vw;

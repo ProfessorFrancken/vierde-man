@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { playerIsAllowedToPlayCard } from 'GameLogic/Phases/PlayTricks';
 import Card from 'Components/Card';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { rankOfCard } from 'GameLogic/Card';
 import _ from 'lodash';
 

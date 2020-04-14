@@ -1,12 +1,5 @@
 import React from 'react';
-import PlaceBid from 'App/PlaceBid';
 import styled, { css } from 'styled-components';
-import PlayerHand from 'Components/PlayerHand';
-import ShowResultsOfTrick from 'App/ShowResultsOfTrick';
-import ShowResultsOfHand from 'App/ShowResultOfHand';
-import PlayedCards from 'App/PlayedCards';
-import GameOver from 'App/GameOver';
-import InformationBar from 'App/InformationBar';
 import PlayerName from 'Components/PlayerName';
 import { Bid } from 'App/PlaceBid';
 
@@ -55,35 +48,6 @@ const StyledPlayerName = styled.div`
       color: white;
     `}
 `;
-
-// {(phase === 'PlaceBids') &&
-//  id === game.bid.highestBidBy && (
-//      <span>
-//        <span className="mx-2">-</span>{' '}
-//        <Bid
-//          bid={{ bid: game.bid.bid, suit: game.bid.trump }}
-//          inverted
-//        />
-//      </span>
-//  )}
-
-const PlayersBid = ({ game, playerId }) => {
-  const lastBidByPlayer = [...game.bids]
-    .filter(({ bidBy }) => bidBy === playerId)
-    .pop();
-  if (lastBidByPlayer === undefined) {
-    return null;
-  }
-
-  return (
-    <span>
-      <span className="bg-light text-dark p-2">
-        <Bid bid={lastBidByPlayer} />
-      </span>
-      <span className="m-2">-</span>
-    </span>
-  );
-};
 
 const PlayerNameIndicator = ({
   positionOnTable,

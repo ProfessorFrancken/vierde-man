@@ -1,9 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { SuitStringToComponent } from 'Components/Suits';
-import Card from 'Components/Card';
 import { WinnerOfTrick, PointsOfTrick } from 'GameLogic/Card';
-import _ from 'lodash';
-import styled from 'styled-components';
 import Modal from 'Components/Modal';
 import PlayerName from 'Components/PlayerName';
 import { useSpring, animated } from 'react-spring';
@@ -11,15 +8,6 @@ import { useSpring, animated } from 'react-spring';
 const Prominent = ({ children }) => (
   <span>{children === 33 ? "'Vo" : children}</span>
 );
-
-const CardWrapper = styled.div`
-  --cardScale: 1.5;
-
-  li {
-    box-shadow: none !important;
-    transform: rotate(0deg) !important;
-  }
-`;
 
 export const Bid = ({ bid }) => {
   if (bid.bid === null) {
@@ -90,9 +78,6 @@ const ShowResultsOfTrick = ({
             className="bg-primary"
             role="progressbar"
             style={springProps}
-            aria-valuenow={springProps.width}
-            aria-valuemin="0%"
-            aria-valuemax="100%"
           ></animated.div>
         </div>
       </Modal.Dialog>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { SuitStringToComponent } from 'Components/Suits';
 import _ from 'lodash';
 import Modal from 'Components/Modal';
@@ -169,9 +169,6 @@ const ShowResultsOfHand = ({
             className="bg-primary"
             role="progressbar"
             style={springProps}
-            aria-valuenow={springProps.width}
-            aria-valuemin="0%"
-            aria-valuemax="100%"
           ></animated.div>
         </div>
       )}

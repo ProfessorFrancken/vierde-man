@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import { Bid } from 'App/PlaceBid';
 import styled from 'styled-components';
 import PlayerName from 'Components/PlayerName';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -232,7 +231,6 @@ const InformationBar = (props) => {
 
   const wij = props.wij;
   const zij = props.zij;
-  const bid = props.bid;
   const rounds = props.rounds;
   const playerId = props.playerId;
   const playedTricks = props.playedTricks;
