@@ -164,7 +164,7 @@ const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer, active }) => {
       )}
       <Modal.Footer className="border-0">
         {!active && (
-          <Modal.Body className="p-3">
+          <Modal.Body className="p-3 text-center">
             Waiting for <PlayerName playerId={currentPlayer} /> to place a bid
           </Modal.Body>
         )}
