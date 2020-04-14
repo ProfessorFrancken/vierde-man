@@ -45,14 +45,18 @@ const ResultTable = ({ round, bid }) => {
             <Prominent>
               {_(tricksByWij)
                 .map(({ points }) => points)
-                .sum()}
+                .sum() + [0, 2].includes(lastTrick.winner)
+                ? 10
+                : 0}
             </Prominent>
           </td>
           <td>
             <Prominent>
               {_(tricksByZij)
                 .map(({ points }) => points)
-                .sum()}
+                .sum() + [1, 3].includes(lastTrick.winner)
+                ? 10
+                : 0}
             </Prominent>
           </td>
         </tr>
@@ -71,15 +75,6 @@ const ResultTable = ({ round, bid }) => {
                 .map(({ honor }) => honor)
                 .sum()}
             </Prominent>
-          </td>
-        </tr>
-        <tr>
-          <td>Last trick</td>
-          <td>
-            <span>{[0, 2].includes(lastTrick.winner) ? '10' : '0'}</span>
-          </td>
-          <td>
-            <span>{[1, 3].includes(lastTrick.winner) ? '10' : '0'}</span>
           </td>
         </tr>
         <tr>
