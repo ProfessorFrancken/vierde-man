@@ -36,6 +36,15 @@ const AppContainer = styled.div`
   .bg-primary {
     background-color: var(--primary) !important;
   }
+  .btn-primary {
+    background-color: var(--primary) !important;
+  }
+  .bg-primary-light {
+    background-color: ${({ theme }) => theme.primaryLight} !important;
+  }
+  .border-primary {
+    border-color: var(--primary) !important;
+  }
 
   .btn.bg-primary {
     :hover,

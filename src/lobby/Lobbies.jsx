@@ -52,12 +52,8 @@ const Lobbies = ({
           <table className="table mb-0">
             <thead>
               <tr>
-                <th className="text-center" colSpan="2">
-                  Wij
-                </th>
-                <th colSpan="2" className="text-center bg-light">
-                  Zij
-                </th>
+                <th className="text-center">Wij</th>
+                <th className="text-center bg-light">Zij</th>
                 <th className="text-right">Actions</th>
               </tr>
             </thead>
