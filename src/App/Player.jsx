@@ -8,55 +8,8 @@ import PlayedCards from 'App/PlayedCards';
 import GameOver from 'App/GameOver';
 import InformationBar from 'App/InformationBar';
 import PlayerName from 'Components/PlayerName';
+import PlayerNameIndicator from 'Components/PlayerNameIndicator';
 import { Bid } from 'App/PlaceBid';
-
-const PlayerNameIndicator = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  z-index: var(--player-name-indicator-z-index);
-  border: solid #eee 3px;
-  background-color: #fafafa;
-
-  ${({ positionOnTable }) =>
-    positionOnTable === 0 &&
-    css`
-      min-width: 150px;
-      transform: translate(-50%, 25%);
-    `}
-  ${({ positionOnTable }) =>
-    positionOnTable === 1 &&
-    css`
-      writing-mode: vertical-lr;
-      min-height: 150px;
-      transform: translate(-50%, -50%);
-      @media (min-width: 992px) {
-        transform: translate(-100%, -50%);
-      }
-    `}
-  ${({ positionOnTable }) =>
-    positionOnTable === 2 &&
-    css`
-      min-width: 150px;
-      transform: translate(-50%, -125%);
-    `}
-  ${({ positionOnTable }) =>
-    positionOnTable === 3 &&
-    css`
-      writing-mode: vertical-lr;
-      min-height: 150px;
-      transform: translate(-50%, -50%) rotate(180deg);
-      @media (min-width: 992px) {
-        transform: translate(-0%, -50%) rotate(180deg);
-      }
-    `}
-  ${({ active }) =>
-    active &&
-    css`
-      background-color: ${({ theme }) => theme.secondary};
-      color: white;
-    `}
-`;
 
 const PlayerContainer = styled.div`
   width: 100vw;
@@ -187,22 +140,12 @@ const Player = ({
           return (
             <PlayerHandArea id={positionOnTable} key={positionOnTable}>
               <PlayerNameIndicator
-                className={`p-4 shadow rounded font-weight-bold text-center`}
                 positionOnTable={positionOnTable}
-                active={id === currentPlayer}
-              >
-                <PlayerName playerId={id} />
-                {(phase === 'PlayTricks' || phase === 'ShowResultOfTrick') &&
-                  id === game.bid.highestBidBy && (
-                    <span>
-                      <span className="mx-2">-</span>{' '}
-                      <Bid
-                        bid={{ bid: game.bid.bid, suit: game.bid.trump }}
-                        inverted
-                      />
-                    </span>
-                  )}
-              </PlayerNameIndicator>
+                playerId={id}
+                currentPlayer={currentPlayer}
+                game={game}
+                phase={phase}
+              />
               <PlayerHand
                 game={game}
                 hand={game.hands[id]}
