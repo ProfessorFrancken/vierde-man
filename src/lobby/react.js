@@ -82,6 +82,7 @@ const Lobby = ({
 
   useEffect(() => {
     refresh(connection);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lobbyServer, gameComponents]);
 
   useInterval(() => {
