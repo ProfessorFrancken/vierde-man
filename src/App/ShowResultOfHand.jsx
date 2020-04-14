@@ -129,7 +129,7 @@ const ShowResultsOfHand = ({
   const springProps = useSpring({
     width: '100%',
     from: { width: '0%' },
-    delay: 500,
+    delay: 2500,
     config: { duration: 5000 },
     onRest: () => {
       if (!playersThatWantToPlayNextHand.includes(playerId)) {
