@@ -185,6 +185,8 @@ export const pointsFromHands = ({ playedTricks, bid }) => {
     return {
       wij: 0,
       zij: wij + zij + wij_honor + zij_honor,
+      wet: true,
+      pit: false,
     };
   }
 
@@ -194,6 +196,8 @@ export const pointsFromHands = ({ playedTricks, bid }) => {
     return {
       wij: wij + zij + wij_honor + zij_honor,
       zij: 0,
+      wet: true,
+      pit: false,
     };
   }
 
@@ -204,5 +208,7 @@ export const pointsFromHands = ({ playedTricks, bid }) => {
   return {
     wij: wij + wij_honor,
     zij: zij + zij_honor,
+    wet: false,
+    pit: tricksByWij.length === 0 || tricksByZij.length === 0,
   };
 };
