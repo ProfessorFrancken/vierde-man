@@ -27,6 +27,7 @@ export const KlaverJassen = {
   setup: ctx => {
     return {
       deck: InitialDeck(),
+      startedAt: Date.now(),
       rounds: [],
       playedTricks: [],
       bid: {

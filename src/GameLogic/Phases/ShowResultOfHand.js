@@ -45,7 +45,8 @@ export const ShowResultOfHand = {
       zij,
       dealer: G.dealer,
       playedTricks: [...G.playedTricks],
-      bids: [...G.bids]
+      bids: [...G.bids],
+      finishedAt: Date.now(),
     });
     G.wij = _.sum(_.map(G.rounds, ({ wij }) => wij));
     G.zij = _.sum(_.map(G.rounds, ({ zij }) => zij));
