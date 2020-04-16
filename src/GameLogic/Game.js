@@ -14,7 +14,7 @@ const SixTeenRoundsHaveBeenPlayed = (G, ctx) => {
     ? {
         winner: G.wij === G.zij ? 'Wij & Zij' : G.wij > G.zij ? 'wij' : 'zij',
         wij: G.wij,
-        zij: G.zij
+        zij: G.zij,
       }
     : false;
 };
@@ -24,16 +24,16 @@ export const KlaverJassen = {
   minPlayers: 4,
   maxPlayers: 4,
 
-  setup: ctx => {
+  setup: (ctx) => {
     return {
       deck: InitialDeck(),
-      startedAt: Date.now(),
+      createdAt: Date.now(),
       rounds: [],
       playedTricks: [],
       bid: {
         bid: undefined,
         highestBidBy: undefined,
-        trump: undefined
+        trump: undefined,
       },
       bids: [],
       currentTrick: {
@@ -42,8 +42,8 @@ export const KlaverJassen = {
           0: undefined,
           1: undefined,
           2: undefined,
-          3: undefined
-        }
+          3: undefined,
+        },
       },
       dealer: ctx.numPlayers - 1,
       wij: 0,
@@ -51,19 +51,19 @@ export const KlaverJassen = {
       // Player settings
       continueTrickAutomatically: {},
       playersThatWantToContinue: [],
-      playersThatWantToPlayNextHand: []
+      playersThatWantToPlayNextHand: [],
     };
   },
 
   turn: {
-    moveLimit: 1
+    moveLimit: 1,
   },
 
   phases: {
     PlaceBids,
     PlayTricks,
     ShowResultOfTrick,
-    ShowResultOfHand
+    ShowResultOfHand,
   },
   plugins: [Randomness],
 
@@ -73,5 +73,5 @@ export const KlaverJassen = {
 
   // Called at the end of the game.
   // `ctx.gameover` is available at this point.
-  onEnd: (G, ctx) => G
+  onEnd: (G, ctx) => G,
 };
