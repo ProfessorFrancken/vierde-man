@@ -180,7 +180,8 @@ export const pointsFromHands = ({ playedTricks, bid }) => {
   );
 
   const weWentWet =
-    [0, 2].includes(bid.highestBidBy) && bid.bid > wij + wij_honor / 2;
+    [0, 2].includes(bid.highestBidBy) &&
+    bid.bid > wij + (wij_honor - zij_honor) / 2;
   if (weWentWet) {
     return {
       wij: 0,
@@ -191,7 +192,8 @@ export const pointsFromHands = ({ playedTricks, bid }) => {
   }
 
   const theyWentWet =
-    [1, 3].includes(bid.highestBidBy) && bid.bid > zij + zij_honor / 2;
+    [1, 3].includes(bid.highestBidBy) &&
+    bid.bid > zij + (zij_honor - wij_honor) / 2;
   if (theyWentWet) {
     return {
       wij: wij + zij + wij_honor + zij_honor,

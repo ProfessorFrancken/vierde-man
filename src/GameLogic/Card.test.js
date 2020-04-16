@@ -481,6 +481,31 @@ describe('Points earned from playing a hand', () => {
     // Zij get all points including the last trick
     expect(zij).toEqual(160);
   });
+
+  it('The other teams honor counts half towards the bet', () => {
+    const tricks = [
+      { winner: 0, points: 4 * 11, honor: 0 },
+      { winner: 0, points: 4 * 10, honor: 0 },
+      { winner: 0, points: 4 * 4, honor: 0 },
+      { winner: 0, points: 4 * 3, honor: 0 },
+      { winner: 0, points: 4 * 2, honor: 0 },
+      { winner: 1, points: 0, honor: 30 },
+      { winner: 0, points: 0, honor: 0 },
+      { winner: 0, points: 0, honor: 0 },
+    ];
+
+    const { wij, zij } = pointsFromHands({
+      playedTricks: tricks,
+      bid: {
+        highestBidBy: 0,
+        bid: 130,
+      },
+    });
+
+    expect(wij).toEqual(0);
+    // Zij get all points including the last trick
+    expect(zij).toEqual(160);
+  });
 });
 
 describe('checking if a hand contains a card', () => {
