@@ -39,10 +39,12 @@ export const ShowResultOfHand = {
   onBegin: (G, ctx) => {
     G.playersThatWantToPlayNextHand = [];
 
-    const { wij, zij } = pointsFromHands(G);
+    const { wij, zij, wet, pit } = pointsFromHands(G);
     G.rounds.push({
       wij,
       zij,
+      wet,
+      pit,
       dealer: G.dealer,
       playedTricks: [...G.playedTricks],
       bids: [...G.bids],
@@ -58,6 +60,6 @@ export const ShowResultOfHand = {
   },
   turn: {
     moveLimit: 1,
-    activePlayers: ActivePlayers.ALL
-  }
+    activePlayers: ActivePlayers.ALL,
+  },
 };
