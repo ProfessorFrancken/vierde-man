@@ -6,17 +6,18 @@ import { useOnClickOutside } from 'hooks';
 import Menu from 'App/Header/Menu';
 
 const Prominent = ({ children }) => (
-  <small className="text-monospace text-muted">
-    {children === 33 ? "'Vo" : children}
-  </small>
+  <small className="text-monospace">{children === 33 ? "'Vo" : children}</small>
 );
 
-const Bar = styled.div``;
-
+const Bar = styled.div`
+  background-color: ${({ theme }) => theme.secondary};
+  color: ${({ theme }) => theme.secondaryWhite};
+  border-bottom: thin solid ${({ theme }) => theme.primary};
+`;
 const Burger = ({ open, setOpen }) => {
   return (
     <div
-      className="border-right p-2 px-3 h-100 d-flex align-items-center bg-light"
+      className="text-dark border-right p-2 px-3 h-100 d-flex align-items-center bg-light"
       onClick={() => setOpen(!open)}
     >
       <FontAwesomeIcon icon={open ? faTimes : faBars} fixedWidth />
@@ -36,7 +37,7 @@ const Header = (props) => {
   const playedTricks = props.playedTricks;
 
   return (
-    <Bar className="bg-white d-flex justify-content-between align-items-center w-100 shadow">
+    <Bar className="d-flex justify-content-between align-items-center w-100">
       <div ref={node} className="h-100">
         <Burger open={open} setOpen={setOpen} />
         <Menu
@@ -52,14 +53,8 @@ const Header = (props) => {
       <div className="mr-auto p-2">
         Wij: <Prominent>{wij}</Prominent>
       </div>
-      <div className="ml-auto 2 p-2">
+      <div className="ml-auto 2 p-2 mr-2">
         Zij: <Prominent>{zij}</Prominent>
-      </div>
-      <div
-        className="border-left p-2 px-3 h-100 d-flex align-items-center bg-light d-none"
-        onClick={() => alert('Sorry, this has not yet been implemented')}
-      >
-        <FontAwesomeIcon icon={faComments} />
       </div>
     </Bar>
   );
