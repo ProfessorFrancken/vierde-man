@@ -10,11 +10,11 @@ function GameProvider(props) {
   return (
     <GameContext.Provider
       value={{
-        game: props.G,
+        game: props.game,
         ctx: props.ctx,
         moves: props.moves,
         playerID: playerID,
-        gameMetadata: props.gameMetadata
+        gameMetadata: props.gameMetadata,
       }}
       {...props}
     />
