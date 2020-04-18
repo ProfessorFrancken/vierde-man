@@ -135,7 +135,9 @@ const ShowResultsOfHand = ({
     <Modal.Dialog style={{ zIndex: 'var(--modal-z-index)' }}>
       <Modal.Header>
         <Modal.Title className="mb-0 text-center">Finished hand</Modal.Title>
-        <div className="text-center text-muted">{game.rounds.length} / 16</div>
+        <div className="mt-2 text-center text-muted">
+          {game.rounds.length} / 16
+        </div>
       </Modal.Header>
       <Modal.Table className="border-bottom">
         <ResultTable
@@ -147,7 +149,7 @@ const ShowResultsOfHand = ({
       </Modal.Table>
       <Modal.Footer className="border-0">
         {playersThatWantToPlayNextHand.includes(playerId) ? (
-          <Modal.Body className="p-4 text-center">
+          <Modal.Body className="p-3 text-center">
             Waiting for other players
           </Modal.Body>
         ) : (
