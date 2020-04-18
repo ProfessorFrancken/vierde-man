@@ -30,7 +30,7 @@ router.get('/games/:name', async (ctx) => {
     rooms.push({
       gameID,
       phase: state.ctx.phase,
-      startedAt: G.startedAt,
+      createdAt: G.createdAt,
       roundsPlayed: G.rounds.length,
       wij: G.wij,
       zij: G.zij,

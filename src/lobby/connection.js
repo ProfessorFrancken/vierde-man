@@ -1,10 +1,4 @@
-/*
- * Copyright 2018 The boardgame.io Authors
- *
- * Use of this source code is governed by a MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
+import _ from 'lodash';
 
 const findRoom = (rooms, gameID) => {
   const room = rooms.find((room) => room.gameID === gameID);
@@ -50,7 +44,7 @@ class _LobbyConnectionImpl {
       });
 
       await Promise.all(roomsPerGame).then((rooms) => {
-        this.setRooms(rooms.flat());
+        this.setRooms(_.sortBy(rooms.flat(), ({ createdAt }) => -createdAt));
       });
     } catch (error) {
       throw new Error('failed to retrieve list of games (' + error + ')');
@@ -183,12 +177,18 @@ class _LobbyConnectionImpl {
       ).then(handleResponse);
 
       this.setRooms([
-        ...this.rooms,
         {
           gameID: response.gameID,
           players: [...Array(numPlayers).keys()].map((id) => ({ id })),
           gameName,
+          wij: 0,
+          zij: 0,
+          rounds: 0,
+          currentPlayer: 0,
+          createdAt: Date.now(),
+          phase: '',
         },
+        ...this.rooms,
       ]);
     } catch (error) {
       throw new Error(
