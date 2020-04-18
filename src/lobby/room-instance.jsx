@@ -2,6 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faRocket, faEye } from '@fortawesome/free-solid-svg-icons';
+import { fromUnixTime, formatDistanceToNow } from 'date-fns';
+
+const CurrentPlayerName = ({ room }) => {
+  console.log(room, room.playerId, room.players);
+  const playerId = parseInt(room.currentPlayer, 10);
+  const player = room.players.find(({ id }) => id === playerId);
+  return <span>{player.name || `Player ${playerId}`}</span>;
+};
 
 const LobbyRoom = (props) => {
   const room = props.room;
@@ -65,10 +73,28 @@ const LobbyRoom = (props) => {
             />
           ))}
       </td>
-      <td
-        key={`cell-buttons-${room.gameID}`}
-        className="text-right align-middle h-100"
-      >
+      <td className="align-middle">
+        <div className="d-flex flex-column justify-content-center align-items-center">
+          {room.turn > 1 && (
+            <>
+              <small className="text-center text-muted mb-2">
+                Played <span>{room.roundsPlayed} / 16 rounds</span>
+              </small>
+              <small className="text-center text-muted my-2">
+                Active player: <CurrentPlayerName room={room} />
+              </small>
+            </>
+          )}
+
+          {room.createdAt && (
+            <small className="text-center text-muted mt-2">
+              created {formatDistanceToNow(fromUnixTime(room.createdAt / 1000))}{' '}
+              ago
+            </small>
+          )}
+        </div>
+      </td>
+      <td className="text-right align-middle h-100">
         <div className="d-flex flex-column justify-content-center">
           {playerSeat && !freeSeat && (
             <div className="my-1">
@@ -104,7 +130,7 @@ const LobbyRoom = (props) => {
             </div>
           )}
 
-          {playerSeat && (
+          {room.turn <= 1 && playerSeat && (
             <div className="my-1">
               <button
                 className={`ml-1 btn btn-text bg-primary ${

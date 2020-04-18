@@ -184,6 +184,7 @@ class _LobbyConnectionImpl {
           wij: 0,
           zij: 0,
           rounds: 0,
+          turn: 1,
           currentPlayer: 0,
           createdAt: Date.now(),
           phase: '',
