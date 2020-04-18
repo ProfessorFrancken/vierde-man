@@ -134,7 +134,8 @@ const ShowResultsOfHand = ({
   return (
     <Modal.Dialog style={{ zIndex: 'var(--modal-z-index)' }}>
       <Modal.Header>
-        <Modal.Title className="mb-0">Finished hand</Modal.Title>
+        <Modal.Title className="mb-0 text-center">Finished hand</Modal.Title>
+        <div className="text-center text-muted">{game.rounds.length} / 16</div>
       </Modal.Header>
       <Modal.Table className="border-bottom">
         <ResultTable
