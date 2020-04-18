@@ -14,6 +14,7 @@ import {
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { useOnClickOutside } from 'hooks';
 import Card from 'Components/Card';
+import TreeTable from 'App/TreeTable';
 import _ from 'lodash';
 const CardWrapper = styled.div`
   --cardScale: 1.5;
@@ -105,62 +106,23 @@ const Menu = ({ rounds, playedTricks, wij, zij, open, setOpen, playerId }) => {
         <FontAwesomeIcon icon={faTimes} onClick={() => setOpen(false)} />
         <h4 className="h6 mb-0 text-white">Vierde man?</h4>
       </div>
-      <div className="list-unstyled p-3 bg-white border-bottom text-center text-muted">
-        Round {rounds.length + 1} / 16
-      </div>
-      <div className="list-unstyled p-3 bg-white border-bottom">
-        <div className="d-flex justify-content-between  font-weight-bold">
-          <h4 className="h6">Wij</h4>
-          <small>
-            <Prominent>{wij} </Prominent>
-          </small>
-        </div>
-        <ul
-          className="list-unstyled d-flex justify-content-between font-weight-light mb-0"
-          style={{ fontSize: '0.8rem' }}
-        >
-          <li>
-            <PlayerName playerId={0} />
-          </li>
-          <li>
-            <PlayerName playerId={2} />
-          </li>
-        </ul>
-      </div>
-      <div className="list-unstyled p-3 bg-white border-bottom">
-        <div className="d-flex justify-content-between  font-weight-bold">
-          <h4 className="h6">Zij</h4>
-          <small>
-            <Prominent>{zij} </Prominent>
-          </small>
-        </div>
-        <ul
-          className="list-unstyled d-flex justify-content-between font-weight-light mb-0"
-          style={{ fontSize: '0.8rem' }}
-        >
-          <li>
-            <PlayerName playerId={1} />
-          </li>
-          <li>
-            <PlayerName playerId={3} />
-          </li>
-        </ul>
+      <div className="d-flex justify-content-between align-items-center p-3 bg-white border-bottom text-center text-muted">
+        <small className="d-flex flex-column">
+          <strong>Wij</strong>
+          <Prominent>{wij} </Prominent>
+        </small>
+        <div>Round {rounds.length + 1} / 16</div>
+        <small className="d-flex flex-column">
+          <strong>Zij</strong>
+          <Prominent>{zij} </Prominent>
+        </small>
       </div>
       {playedTricks.length > 0 && (
         <div className="p-3 border-bottom">
           <PlayedCards lastTrick={playedTricks[playedTricks.length - 1]} />
         </div>
       )}
-      <button
-        className="btn bg-light border-bottom p-3 justify-self-end d-flex justify-content-start align-items-center"
-        onClick={() => alert('Sorry, this has not yet been implemented')}
-      >
-        <FontAwesomeIcon icon={faTree} fixedWidth className="text-dark" />
-        <div className="px-3 d-flex flex-column">
-          <h4 className="h6 mb-0 text-muted">View previous scores</h4>
-        </div>
-      </button>
-
+      <TreeTable rounds={rounds} />
       <a
         href="/lobby"
         className="bg-light border-top p-3 justify-self-end d-flex justify-content-start align-items-center mt-auto"
