@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import Modal from 'Components/Modal';
+import TreeTable from 'App/TreeTable';
+import { useGame } from 'game/context';
 
 const GameOver = () => {
   const [showHoi, setShowHoi] = useState(false);
-
-  console.log(showHoi);
+  const {
+    game: { rounds },
+  } = useGame();
 
   return (
     <Modal.Dialog>
@@ -12,14 +15,13 @@ const GameOver = () => {
         <Modal.Title>Game Over</Modal.Title>
         <p className="text-left text-muted mb-0">You have completed a tree.</p>
       </Modal.Header>
-      <Modal.Footer>
+      <TreeTable rounds={rounds} />
+      <Modal.Footer className="border-0">
         {showHoi ? (
-          <div className="btn btn-text text-muted bg-light btn-block m-0 p-3">
-            Hoi
-          </div>
+          <Modal.Body className="p-3 text-center">Hoi</Modal.Body>
         ) : (
           <Modal.Actions>
-            <Modal.Action onClick={() => setShowHoi(true)}>
+            <Modal.Action onClick={() => setShowHoi(true)} primary>
               Please press this button
             </Modal.Action>
           </Modal.Actions>
