@@ -6,7 +6,7 @@ import ShowResultsOfTrick from 'App/ShowResultsOfTrick';
 import ShowResultsOfHand from 'App/ShowResultOfHand';
 import PlayedCards from 'App/PlayedCards';
 import GameOver from 'App/GameOver';
-import InformationBar from 'App/InformationBar';
+import InformationBar from 'App/Header/index';
 import PlayerNameIndicator from 'Components/PlayerNameIndicator';
 
 const PlayerContainer = styled.div`
