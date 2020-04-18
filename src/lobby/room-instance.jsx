@@ -5,7 +5,6 @@ import { faTimes, faRocket, faEye } from '@fortawesome/free-solid-svg-icons';
 import { fromUnixTime, formatDistanceToNow } from 'date-fns';
 
 const CurrentPlayerName = ({ room }) => {
-  console.log(room, room.playerId, room.players);
   const playerId = parseInt(room.currentPlayer, 10);
   const player = room.players.find(({ id }) => id === playerId);
   return <span>{player.name || `Player ${playerId}`}</span>;
