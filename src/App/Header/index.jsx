@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faTimes, faComments } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useOnClickOutside } from 'hooks';
 import Menu from 'App/Header/Menu';
 
