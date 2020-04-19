@@ -1,11 +1,3 @@
-const findRoom = (rooms, gameID) => {
-  const room = rooms.find((room) => room.gameID === gameID);
-  if (!room) {
-    throw new Error('game instance ' + gameID + ' not found');
-  }
-  return room;
-};
-
 const handleResponse = (response) => {
   if (response.status !== 200) {
     throw new Error('HTTP status ' + response.status);
@@ -14,10 +6,8 @@ const handleResponse = (response) => {
 };
 
 class _LobbyConnectionImpl {
-  constructor({ server, gameComponents, rooms }) {
-    this.gameComponents = gameComponents;
+  constructor(server) {
     this.server = server;
-    this.rooms = rooms;
   }
 
   _baseUrl() {
@@ -46,10 +36,8 @@ class _LobbyConnectionImpl {
     }
   }
 
-  async join(gameID, playerID, playerName) {
+  async join(roomToJoin, gameID, playerID, playerName) {
     try {
-      const roomToJoin = findRoom(this.rooms, gameID);
-
       const response = await fetch(
         this._baseUrl() +
           '/' +
@@ -73,9 +61,8 @@ class _LobbyConnectionImpl {
     }
   }
 
-  async leave(gameID, credentials, playerName) {
+  async leave(room, gameID, credentials, playerName) {
     try {
-      const room = findRoom(this.rooms, gameID);
       const playerRemovedFromGame = room.players
         .filter(({ name }) => name === playerName)
         .map(
@@ -110,17 +97,15 @@ class _LobbyConnectionImpl {
     );
   }
 
-  async create(gameName, numPlayers) {
+  async create(gameComponent, numPlayers) {
+    const gameName = gameComponent.game.name;
     try {
-      const comp = this.gameComponents.find(
-        ({ game: { name } }) => name === gameName
-      );
-      if (!comp) {
+      if (!gameComponent) {
         throw new Error('game not found');
       }
       if (
-        numPlayers < comp.game.minPlayers ||
-        numPlayers > comp.game.maxPlayers
+        numPlayers < gameComponent.game.minPlayers ||
+        numPlayers > gameComponent.game.maxPlayers
       ) {
         throw new Error('invalid number of players ' + numPlayers);
       }
@@ -130,6 +115,9 @@ class _LobbyConnectionImpl {
           method: 'POST',
           body: JSON.stringify({
             numPlayers: numPlayers,
+            setupData: {
+              roomName: 'T.F.V. Ole',
+            },
           }),
           headers: { 'Content-Type': 'application/json' },
         }

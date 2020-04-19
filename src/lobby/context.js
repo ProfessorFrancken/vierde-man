@@ -11,6 +11,14 @@ const LobbyContext = React.createContext();
 
 const localStoragePlayerRoomsKey = '__vierde_man_player_rooms__';
 
+const findRoom = (rooms, gameID) => {
+  const room = rooms.find((room) => room.gameID === gameID);
+  if (!room) {
+    throw new Error('game instance ' + gameID + ' not found');
+  }
+  return room;
+};
+
 function LobbyProvider({
   gameServer,
   lobbyServer,
@@ -30,11 +38,7 @@ function LobbyProvider({
   const [rooms, setRooms] = useState([]);
   const [runningGame, setRunningGame] = useState(undefined);
 
-  const connection = LobbyConnection({
-    server: lobbyServer,
-    gameComponents: gameComponents,
-    rooms,
-  });
+  const connection = LobbyConnection(lobbyServer);
 
   const logout = () => {
     authLogout();
@@ -51,6 +55,7 @@ function LobbyProvider({
 
   const joinRoom = async (gameName, gameId, playerId) => {
     const playerCredentials = await connection.join(
+      findRoom(rooms, gameId),
       gameId,
       playerId,
       playerName
@@ -80,6 +85,7 @@ function LobbyProvider({
   const leaveRoom = async (gameName, gameId) => {
     const room = playerRooms.find((room) => room.gameId === gameId);
     const playerNames = await connection.leave(
+      findRoom(rooms, gameId),
       gameId,
       room.playerCredentials,
       playerName
@@ -106,9 +112,12 @@ function LobbyProvider({
   };
 
   const createRoom = async (gameName, numPlayers) => {
-    const room = await connection.create(gameName, numPlayers);
+    const gameComponent = gameComponents.find(
+      ({ game: { name } }) => name === gameName
+    );
 
-    console.log('Created the room', { room });
+    const room = await connection.create(gameComponent, numPlayers);
+
     setRooms([room, ...rooms]);
   };
 
