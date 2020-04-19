@@ -1,11 +1,3 @@
-/*
- * Copyright 2018 The boardgame.io Authors.
- *
- * Use of this source code is governed by a MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
- */
-
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Lobbies from './Lobbies';
@@ -24,7 +16,6 @@ import { useInterval } from 'hooks';
 
 const PlayGame = () => {
   const { playerRooms = [], runningGame } = useLobby();
-
   const { gameId } = useParams();
 
   if (!runningGame) {
@@ -71,28 +62,27 @@ const LobbiesContainer = ({ refreshInterval = 2000 }) => {
     refresh();
   }, refreshInterval);
 
+  if (playerName === undefined) {
+    return <Redirect to="/login" />;
+  }
+
+  if (runningGame) {
+    return <Redirect to={`games/${runningGame.gameId}`} />;
+  }
+
   return (
-    <div>
-      {playerName === undefined && <Redirect to={`/login`} />}
-      {runningGame ? (
-        <Redirect to={`games/${runningGame.gameId}`} />
-      ) : (
-        <div id="lobby-view" className="p-2 p-md-5">
-          {playerName !== undefined && (
-            <Lobbies
-              playerName={playerName}
-              gameComponents={gameComponents}
-              errorMsg={error}
-              exitLobby={exitLobby}
-              createRoom={createRoom}
-              joinRoom={joinRoom}
-              leaveRoom={leaveRoom}
-              startGame={startGame}
-              rooms={rooms}
-            />
-          )}
-        </div>
-      )}
+    <div id="lobby-view" className="p-2 p-md-5">
+      <Lobbies
+        playerName={playerName}
+        gameComponents={gameComponents}
+        errorMsg={error}
+        exitLobby={exitLobby}
+        createRoom={createRoom}
+        joinRoom={joinRoom}
+        leaveRoom={leaveRoom}
+        startGame={startGame}
+        rooms={rooms}
+      />
     </div>
   );
 };
