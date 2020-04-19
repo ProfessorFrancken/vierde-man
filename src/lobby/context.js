@@ -3,6 +3,7 @@ import useLocalStorageState from 'use-local-storage-state';
 import { useAuth } from 'auth/context';
 import { useError } from 'Context';
 import { SocketIO } from 'boardgame.io/multiplayer';
+import { LobbyConnection } from './connection';
 
 const LobbyContext = React.createContext();
 
@@ -27,6 +28,15 @@ function LobbyProvider({
   const [rooms, setRooms] = useState([]);
   const [runningGame, setRunningGame] = useState(undefined);
 
+  const connection = LobbyConnection({
+    server: lobbyServer,
+    gameComponents: gameComponents,
+    rooms,
+    setRooms,
+  });
+
+  const refresh = () => connection.refresh();
+
   const logout = () => {
     authLogout();
     setPlayerRooms([]);
@@ -40,9 +50,7 @@ function LobbyProvider({
     }
   };
 
-  const refresh = (connection) => connection.refresh();
-
-  const joinRoom = async (connection, gameName, gameId, playerId) => {
+  const joinRoom = async (gameName, gameId, playerId) => {
     const playerCredentials = await connection.join(
       gameId,
       playerId,
@@ -56,28 +64,24 @@ function LobbyProvider({
   };
   const leaveGame = (gameId) => {};
 
-  const leaveRoom = async (connection, gameName, gameId) => {
+  const leaveRoom = async (gameName, gameId) => {
     const room = playerRooms.find((room) => room.gameId === gameId);
     await connection.leave(gameId, room.playerCredentials, playerName);
 
     setPlayerRooms(playerRooms.filter((room) => room.gameId !== gameId));
   };
 
-  const createRoom = async (connection, gameName, numPlayers) => {
+  const createRoom = async (gameName, numPlayers) => {
     await connection.create(gameName, numPlayers);
   };
 
-  const exitLobby = async (connection) => {
+  const exitLobby = async () => {
     await connection.disconnect(rooms, playerRooms, playerName);
     setError('');
     logout();
   };
 
-  const startGame = (
-    { clientFactory, debug, gameComponents, gameServer },
-    gameName,
-    gameOpts
-  ) => {
+  const startGame = (gameName, gameOpts) => {
     const gameCode = gameComponents.find(
       ({ game: { name } }) => name === gameName
     );
@@ -121,7 +125,6 @@ function LobbyProvider({
         createRoom: catchErrors(createRoom),
         exitLobby: catchErrors(exitLobby),
         rooms,
-        setRooms,
         startGame,
         runningGame,
       }}

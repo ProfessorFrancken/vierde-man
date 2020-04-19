@@ -8,7 +8,6 @@
 
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { LobbyConnection } from './connection';
 import Lobbies from './Lobbies';
 import Login from 'lobby/login-form';
 import {
@@ -48,7 +47,7 @@ const PlayGame = ({
   );
 };
 
-const Lobby = ({ refreshInterval = 200000 }) => {
+const Lobby = ({ refreshInterval = 2000 }) => {
   const { error } = useError();
   const { username: playerName } = useAuth();
   const {
@@ -64,25 +63,19 @@ const Lobby = ({ refreshInterval = 200000 }) => {
     createRoom,
     exitLobby,
     rooms,
-    setRooms,
     startGame,
     runningGame,
   } = useLobby();
-  const connection = LobbyConnection({
-    server: lobbyServer,
-    gameComponents: gameComponents,
-    rooms,
-    setRooms,
-  });
 
   useEffect(() => {
-    refresh(connection);
+    refresh();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lobbyServer, gameComponents]);
 
   useInterval(() => {
-    refresh(connection);
+    refresh();
   }, refreshInterval);
+
   return (
     <Router>
       <Switch>
@@ -114,28 +107,11 @@ const Lobby = ({ refreshInterval = 200000 }) => {
                   playerName={playerName}
                   gameComponents={gameComponents}
                   errorMsg={error}
-                  exitLobby={() => exitLobby(connection)}
-                  createRoom={(gameName, numPlayers) =>
-                    createRoom(connection, gameName, numPlayers)
-                  }
-                  joinRoom={(gameName, gameID, playerID) =>
-                    joinRoom(connection, gameName, gameID, playerID)
-                  }
-                  leaveRoom={(gameName, gameID) =>
-                    leaveRoom(connection, gameName, gameID)
-                  }
-                  startGame={(gameName, gameOpts) =>
-                    startGame(
-                      {
-                        clientFactory,
-                        debug,
-                        gameComponents,
-                        gameServer,
-                      },
-                      gameName,
-                      gameOpts
-                    )
-                  }
+                  exitLobby={exitLobby}
+                  createRoom={createRoom}
+                  joinRoom={joinRoom}
+                  leaveRoom={leaveRoom}
+                  startGame={startGame}
                   rooms={rooms}
                 />
               )}
@@ -151,11 +127,6 @@ const Lobby = ({ refreshInterval = 200000 }) => {
 };
 
 Lobby.propTypes = {
-  gameComponents: PropTypes.array.isRequired,
-  lobbyServer: PropTypes.string,
-  gameServer: PropTypes.string,
-  debug: PropTypes.bool,
-  clientFactory: PropTypes.func,
   refreshInterval: PropTypes.number,
 };
 
