@@ -3,24 +3,27 @@ import useLocalStorageState from 'use-local-storage-state';
 
 const AuthContext = React.createContext();
 
-const localStorageKey = '__vierde_man_username__';
+const localStorageKey = '__vierde_man_auth__';
 
 function AuthProvider(props) {
-  const [username, setUsername] = useLocalStorageState(
-    localStorageKey,
-    undefined
-  );
+  const [auth, setAuth] = useLocalStorageState(localStorageKey, {
+    username: undefined,
+    token: undefined,
+  });
 
   // Currently the login acts like a register because we only have guest users
   const login = (username) => {
-    setUsername(username);
+    setAuth({ username, token: undefined });
   };
   const logout = () => {
-    setUsername(undefined);
+    setAuth({ username: undefined, token: undefined });
   };
 
   return (
-    <AuthContext.Provider value={{ username, login, logout }} {...props} />
+    <AuthContext.Provider
+      value={{ username: auth.username, login, logout }}
+      {...props}
+    />
   );
 }
 
