@@ -141,12 +141,7 @@ class _LobbyConnectionImpl {
     return Promise.all(
       playerRooms.map(
         async (room) =>
-          await this.leave(
-            room.gameName,
-            room.gameId,
-            room.playerCredentials,
-            playerName
-          )
+          await this.leave(room.gameId, room.playerCredentials, playerName)
       )
     );
   }
