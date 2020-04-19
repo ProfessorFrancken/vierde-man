@@ -3,7 +3,7 @@ import useLocalStorageState from 'use-local-storage-state';
 import { useAuth } from 'auth/context';
 import { useError } from 'Context';
 import { SocketIO } from 'boardgame.io/multiplayer';
-import { LobbyConnection } from './connection';
+import LobbyConnection from './connection';
 import { useInterval } from 'hooks';
 import _ from 'lodash';
 
@@ -38,7 +38,7 @@ function LobbyProvider({
   const [rooms, setRooms] = useState([]);
   const [runningGame, setRunningGame] = useState(undefined);
 
-  const connection = LobbyConnection(lobbyServer);
+  const connection = new LobbyConnection(lobbyServer);
 
   const logout = () => {
     authLogout();
@@ -122,7 +122,16 @@ function LobbyProvider({
   };
 
   const exitLobby = async () => {
-    await connection.disconnect(rooms, playerRooms, playerName);
+    await Promise.all(
+      playerRooms.map((room) =>
+        connection.leave(
+          findRoom(rooms, room.gameId),
+          room.gameId,
+          room.playerCredentials,
+          playerName
+        )
+      )
+    );
     setError('');
     logout();
   };

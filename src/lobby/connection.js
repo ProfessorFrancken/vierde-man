@@ -5,7 +5,7 @@ const handleResponse = (response) => {
   return response.json();
 };
 
-class _LobbyConnectionImpl {
+class LobbyConnection {
   constructor(server) {
     this.server = server;
   }
@@ -88,15 +88,6 @@ class _LobbyConnectionImpl {
     }
   }
 
-  async disconnect(rooms, playerRooms, playerName) {
-    return Promise.all(
-      playerRooms.map(
-        async (room) =>
-          await this.leave(room.gameId, room.playerCredentials, playerName)
-      )
-    );
-  }
-
   async create(gameComponent, numPlayers) {
     const gameName = gameComponent.game.name;
     try {
@@ -145,18 +136,4 @@ class _LobbyConnectionImpl {
   }
 }
 
-/**
- * LobbyConnection
- *
- * Lobby model.
- *
- * @param {string}   server - '<host>:<port>' of the server.
- * @param {Array}    gameComponents - A map of Board and Game objects for the supported games.
- * @param {Array}    rooms
- *
- * Returns:
- *   A JS object that synchronizes the list of running game instances with the server and provides an API to create/join/start instances.
- */
-export function LobbyConnection(opts) {
-  return new _LobbyConnectionImpl(opts);
-}
+export default LobbyConnection;
