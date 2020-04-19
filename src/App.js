@@ -111,66 +111,50 @@ const AppContainer = styled.div`
 
 const App = () => (
   <AppProviders>
-    <Router>
-      <Switch>
-        <Route
-          path="/practice"
-          render={() => {
-            const Client = KlaverJasClientFactory({});
-            return (
-              <AppContainer>
-                <Client />
-              </AppContainer>
-            );
-          }}
-        />
-        <Route
-          path="/hoi"
-          render={() => {
-            const LocalKlaverJasClient = KlaverJasClientFactory({
-              multiplayer: Local(),
-            });
-            return (
-              <AppContainer>
+    <AppContainer>
+      <Router>
+        <Switch>
+          <Route
+            path="/practice"
+            render={() => {
+              const Client = KlaverJasClientFactory({});
+              return <Client />;
+            }}
+          />
+          <Route
+            path="/hoi"
+            render={() => {
+              const LocalKlaverJasClient = KlaverJasClientFactory({
+                multiplayer: Local(),
+              });
+              return (
                 <LocalMultiPlayerGrid className="overflow-hidden">
                   <LocalKlaverJasClient playerID="0" />
                   <LocalKlaverJasClient playerID="1" />
                   <LocalKlaverJasClient playerID="2" />
                   <LocalKlaverJasClient playerID="3" />
                 </LocalMultiPlayerGrid>
-              </AppContainer>
-            );
-          }}
-        />
-        <Route exact path="/login">
-          <AppContainer>
+              );
+            }}
+          />
+          <Route exact path="/login">
             <Login />
-          </AppContainer>
-        </Route>
-        <Route path="/games/:gameId">
-          <AppContainer>
+          </Route>
+          <Route path="/games/:gameId">
             <PlayGame />
-          </AppContainer>
-        </Route>
-        <Route exact path="/lobby">
-          <AppContainer>
+          </Route>
+          <Route exact path="/lobby">
             <LobbiesContainer />
-          </AppContainer>
-        </Route>
-        <Route>
-          <Redirect to="/lobby" />
-        </Route>
-        <Route>
-          {config.public === true ? (
+          </Route>
+          <Route>
             <Redirect to="/lobby" />
-          ) : (
-            <AppContainer>
-              <AprilFirst />
-            </AppContainer>
-          )}
-        </Route>
-      </Switch>
-    </Router>
+          </Route>
+          <Route>
+            {config.public === true ? <Redirect to="/lobby" /> : <AprilFirst />}
+          </Route>
+        </Switch>
+      </Router>
+    </AppContainer>
   </AppProviders>
 );
 
