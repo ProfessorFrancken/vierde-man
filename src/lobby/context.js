@@ -81,7 +81,7 @@ function LobbyProvider({
     logout();
   };
 
-  const startGame = (gameName, gameOpts) => {
+  const startGame = (gameName, { gameID }) => {
     const gameCode = gameComponents.find(
       ({ game: { name } }) => name === gameName
     );
@@ -103,7 +103,7 @@ function LobbyProvider({
 
     const game = {
       app: app,
-      gameId: gameOpts.gameID,
+      gameId: gameID,
     };
     setRunningGame(game);
   };
