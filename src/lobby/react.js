@@ -2,13 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Lobbies from './Lobbies';
 import Login from 'lobby/login-form';
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect,
-  useParams,
-} from 'react-router-dom';
+import { Redirect, useParams } from 'react-router-dom';
 import { useError } from 'Context';
 import { useAuth } from 'auth/context';
 import { useLobby } from 'lobby/context';
@@ -91,29 +85,4 @@ LobbiesContainer.propTypes = {
   refreshInterval: PropTypes.number,
 };
 
-const Lobby = ({ refreshInterval = 2000 }) => {
-  return (
-    <Router>
-      <Switch>
-        <Route exact path="/login">
-          <Login />
-        </Route>
-        <Route path="/games/:gameId">
-          <PlayGame />
-        </Route>
-        <Route exact path="/lobby">
-          <LobbiesContainer refreshInterval={refreshInterval} />
-        </Route>
-        <Route>
-          <Redirect to="/lobby" />
-        </Route>
-      </Switch>
-    </Router>
-  );
-};
-
-Lobby.propTypes = {
-  refreshInterval: PropTypes.number,
-};
-
-export default Lobby;
+export { Login, PlayGame, LobbiesContainer };

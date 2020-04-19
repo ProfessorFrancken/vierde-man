@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import AprilFirst from 'App/AprilFirst';
-import Lobby from 'lobby/react';
+import { Login, PlayGame, LobbiesContainer } from 'lobby/react';
 import { Local } from 'boardgame.io/multiplayer';
 import KlaverJasClientFactory from 'KlaverJasClientFactory';
 import config from 'config';
@@ -142,10 +142,23 @@ const App = () => (
             );
           }}
         />
+        <Route exact path="/login">
+          <AppContainer>
+            <Login />
+          </AppContainer>
+        </Route>
+        <Route path="/games/:gameId">
+          <AppContainer>
+            <PlayGame />
+          </AppContainer>
+        </Route>
         <Route exact path="/lobby">
           <AppContainer>
-            <Lobby />
+            <LobbiesContainer />
           </AppContainer>
+        </Route>
+        <Route>
+          <Redirect to="/lobby" />
         </Route>
         <Route>
           {config.public === true ? (
