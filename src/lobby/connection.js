@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 const findRoom = (rooms, gameID) => {
   const room = rooms.find((room) => room.gameID === gameID);
   if (!room) {
@@ -16,21 +14,20 @@ const handleResponse = (response) => {
 };
 
 class _LobbyConnectionImpl {
-  constructor({ server, gameComponents, rooms, setRooms }) {
+  constructor({ server, gameComponents, rooms }) {
     this.gameComponents = gameComponents;
     this.server = server;
     this.rooms = rooms;
-    this.setRooms = setRooms;
   }
 
   _baseUrl() {
     return `${this.server || ''}/games`;
   }
 
-  async refresh() {
+  async refresh(gameComponents) {
     try {
       const gameIsSupported = (gameName) =>
-        this.gameComponents.some(({ game: { name } }) => name === gameName);
+        gameComponents.some(({ game: { name } }) => name === gameName);
 
       const games = await fetch(this._baseUrl())
         .then(handleResponse)
@@ -43,9 +40,7 @@ class _LobbyConnectionImpl {
           .then(({ rooms }) => rooms.map(addGameNameToRoom));
       });
 
-      await Promise.all(roomsPerGame).then((rooms) => {
-        this.setRooms(_.sortBy(rooms.flat(), ({ createdAt }) => -createdAt));
-      });
+      return await Promise.all(roomsPerGame);
     } catch (error) {
       throw new Error('failed to retrieve list of games (' + error + ')');
     }
@@ -71,19 +66,6 @@ class _LobbyConnectionImpl {
           headers: { 'Content-Type': 'application/json' },
         }
       ).then(handleResponse);
-
-      const addPlayerToRoom = (room) => ({
-        ...room,
-        players:
-          room.gameID !== roomToJoin.gameID
-            ? room.players
-            : room.players.map((player) =>
-                player.id !== Number.parseInt(playerID, 10)
-                  ? player
-                  : { ...player, name: playerName }
-              ),
-      });
-      this.setRooms(this.rooms.map(addPlayerToRoom));
 
       return response.playerCredentials;
     } catch (error) {
@@ -113,25 +95,7 @@ class _LobbyConnectionImpl {
               .then(() => player.name)
         );
 
-      await Promise.all(playerRemovedFromGame).then((players) => {
-        const removeRoomIfEmpty = (room) =>
-          room.gameID !== gameID ||
-          room.players.filter((player) => player.name).length > 0;
-
-        const removePlayerFromRoom = (room) => ({
-          ...room,
-          players:
-            room.gameID !== gameID
-              ? room.players
-              : room.players.map(({ name, ...player }) =>
-                  players.includes(name) ? player : { ...player, name }
-                ),
-        });
-
-        this.setRooms(
-          this.rooms.map(removePlayerFromRoom).filter(removeRoomIfEmpty)
-        );
-      });
+      return await Promise.all(playerRemovedFromGame);
     } catch (error) {
       throw new Error('failed to leave room ' + gameID + ' (' + error + ')');
     }
@@ -171,21 +135,20 @@ class _LobbyConnectionImpl {
         }
       ).then(handleResponse);
 
-      this.setRooms([
-        {
-          gameID: response.gameID,
-          players: [...Array(numPlayers).keys()].map((id) => ({ id })),
-          gameName,
-          wij: 0,
-          zij: 0,
-          rounds: 0,
-          turn: 1,
-          currentPlayer: 0,
-          createdAt: Date.now(),
-          phase: '',
-        },
-        ...this.rooms,
-      ]);
+      const room = {
+        gameID: response.gameID,
+        players: [...Array(numPlayers).keys()].map((id) => ({ id })),
+        gameName,
+        wij: 0,
+        zij: 0,
+        rounds: 0,
+        turn: 1,
+        currentPlayer: 0,
+        createdAt: Date.now(),
+        phase: '',
+      };
+
+      return room;
     } catch (error) {
       throw new Error(
         'failed to create room for ' + gameName + ' (' + error + ')'
@@ -202,7 +165,6 @@ class _LobbyConnectionImpl {
  * @param {string}   server - '<host>:<port>' of the server.
  * @param {Array}    gameComponents - A map of Board and Game objects for the supported games.
  * @param {Array}    rooms
- * @param {function} setRooms
  *
  * Returns:
  *   A JS object that synchronizes the list of running game instances with the server and provides an API to create/join/start instances.

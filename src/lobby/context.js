@@ -5,6 +5,7 @@ import { useError } from 'Context';
 import { SocketIO } from 'boardgame.io/multiplayer';
 import { LobbyConnection } from './connection';
 import { useInterval } from 'hooks';
+import _ from 'lodash';
 
 const LobbyContext = React.createContext();
 
@@ -33,7 +34,6 @@ function LobbyProvider({
     server: lobbyServer,
     gameComponents: gameComponents,
     rooms,
-    setRooms,
   });
 
   const logout = () => {
@@ -56,6 +56,20 @@ function LobbyProvider({
       playerName
     );
 
+    const addPlayerToRoom = (room) => ({
+      ...room,
+      players:
+        room.gameID !== gameId
+          ? room.players
+          : room.players.map((player) =>
+              player.id === Number.parseInt(playerId, 10)
+                ? { ...player, name: playerName }
+                : player
+            ),
+    });
+
+    setRooms(rooms.map(addPlayerToRoom));
+
     setPlayerRooms([
       ...playerRooms,
       { playerId, gameId, gameName, playerCredentials },
@@ -65,13 +79,37 @@ function LobbyProvider({
 
   const leaveRoom = async (gameName, gameId) => {
     const room = playerRooms.find((room) => room.gameId === gameId);
-    await connection.leave(gameId, room.playerCredentials, playerName);
+    const playerNames = await connection.leave(
+      gameId,
+      room.playerCredentials,
+      playerName
+    );
 
+    const removeRoomIfEmpty = (room) =>
+      room.gameID !== gameId ||
+      room.players.filter((player) => player.name).length > 0;
+
+    const removePlayerFromRoom = (players) => (room) => ({
+      ...room,
+      players:
+        room.gameID !== gameId
+          ? room.players
+          : room.players.map(({ name, ...player }) =>
+              players.includes(name) ? player : { ...player, name }
+            ),
+    });
+
+    setRooms(
+      rooms.map(removePlayerFromRoom(playerNames)).filter(removeRoomIfEmpty)
+    );
     setPlayerRooms(playerRooms.filter((room) => room.gameId !== gameId));
   };
 
   const createRoom = async (gameName, numPlayers) => {
-    await connection.create(gameName, numPlayers);
+    const room = await connection.create(gameName, numPlayers);
+
+    console.log('Created the room', { room });
+    setRooms([room, ...rooms]);
   };
 
   const exitLobby = async () => {
@@ -107,15 +145,17 @@ function LobbyProvider({
     setRunningGame(game);
   };
 
+  const refresh = catchErrors(async () => {
+    const roomsPerGame = await connection.refresh(gameComponents);
+
+    setRooms(_.sortBy(roomsPerGame.flat(), ({ createdAt }) => -createdAt));
+  });
+
   const useRefreshLobby = (refreshInterval) => {
     useEffect(() => {
-      catchErrors(connection.refresh());
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [lobbyServer, gameComponents]);
-
-    useInterval(() => {
-      catchErrors(connection.refresh());
-    }, refreshInterval);
+      refresh();
+    }, []);
+    useInterval(refresh, refreshInterval);
   };
 
   return (
