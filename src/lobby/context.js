@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import useLocalStorageState from 'use-local-storage-state';
 import { useAuth } from 'auth/context';
 import { useError } from 'Context';
 import { SocketIO } from 'boardgame.io/multiplayer';
 import { LobbyConnection } from './connection';
+import { useInterval } from 'hooks';
 
 const LobbyContext = React.createContext();
 
@@ -34,8 +35,6 @@ function LobbyProvider({
     rooms,
     setRooms,
   });
-
-  const refresh = () => connection.refresh();
 
   const logout = () => {
     authLogout();
@@ -108,17 +107,23 @@ function LobbyProvider({
     setRunningGame(game);
   };
 
+  const useRefreshLobby = (refreshInterval) => {
+    useEffect(() => {
+      catchErrors(connection.refresh());
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [lobbyServer, gameComponents]);
+
+    useInterval(() => {
+      catchErrors(connection.refresh());
+    }, refreshInterval);
+  };
+
   return (
     <LobbyContext.Provider
       value={{
-        clientFactory,
-        debug,
+        useRefreshLobby,
         gameComponents,
         lobbyServer,
-        gameServer,
-        playerRooms,
-        logout,
-        refresh: catchErrors(refresh),
         joinRoom: catchErrors(joinRoom),
         leaveGame: catchErrors(leaveGame),
         leaveRoom: catchErrors(leaveRoom),
@@ -126,6 +131,7 @@ function LobbyProvider({
         exitLobby: catchErrors(exitLobby),
         rooms,
         startGame,
+        playerRooms,
         runningGame,
       }}
       {...props}

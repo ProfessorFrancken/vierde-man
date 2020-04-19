@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Lobbies from './Lobbies';
 import Login from 'lobby/login-form';
@@ -6,7 +6,6 @@ import { Redirect, useParams } from 'react-router-dom';
 import { useError } from 'Context';
 import { useAuth } from 'auth/context';
 import { useLobby } from 'lobby/context';
-import { useInterval } from 'hooks';
 
 const PlayGame = () => {
   const { playerRooms = [], runningGame } = useLobby();
@@ -35,9 +34,8 @@ const LobbiesContainer = ({ refreshInterval = 2000 }) => {
   const { error } = useError();
   const { username: playerName } = useAuth();
   const {
+    useRefreshLobby,
     gameComponents,
-    lobbyServer,
-    refresh,
     joinRoom,
     leaveRoom,
     createRoom,
@@ -47,14 +45,7 @@ const LobbiesContainer = ({ refreshInterval = 2000 }) => {
     runningGame,
   } = useLobby();
 
-  useEffect(() => {
-    refresh();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lobbyServer, gameComponents]);
-
-  useInterval(() => {
-    refresh();
-  }, refreshInterval);
+  useRefreshLobby(refreshInterval);
 
   if (playerName === undefined) {
     return <Redirect to="/login" />;
