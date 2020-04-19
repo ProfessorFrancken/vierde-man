@@ -1,9 +1,13 @@
 import React from 'react';
+import config from 'config';
 import { AuthProvider } from 'auth/context';
 import { LobbyProvider } from 'lobby/context';
 import { ThemeProvider } from 'styled-components';
 import { GlobalStyles } from './global';
 import { theme } from './theme';
+import { KlaverJassen } from 'GameLogic/Game';
+import KlaverJasBoard from 'KlaverJasBoard';
+import KlaverJasClientFactory from 'KlaverJasClientFactory';
 
 const ErrorContext = React.createContext();
 function ErrorProvider(props) {
@@ -27,7 +31,15 @@ function AppProviders({ children }) {
       <GlobalStyles />
       <ErrorProvider>
         <AuthProvider>
-          <LobbyProvider>{children}</LobbyProvider>
+          <LobbyProvider
+            gameServer={config.gameServer}
+            lobbyServer={config.lobbyServer}
+            gameComponents={[{ game: KlaverJassen, board: KlaverJasBoard }]}
+            debug={false}
+            clientFactory={KlaverJasClientFactory}
+          >
+            {children}
+          </LobbyProvider>
         </AuthProvider>
       </ErrorProvider>
     </ThemeProvider>

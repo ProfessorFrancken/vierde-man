@@ -8,12 +8,9 @@
 
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Client } from 'boardgame.io/react';
 import { LobbyConnection } from './connection';
-
 import Lobbies from './Lobbies';
 import Login from 'lobby/login-form';
-
 import {
   BrowserRouter as Router,
   Route,
@@ -51,17 +48,15 @@ const PlayGame = ({
   );
 };
 
-const Lobby = ({
-  debug = false,
-  clientFactory = Client,
-  refreshInterval = 2000,
-  gameComponents,
-  gameServer,
-  lobbyServer,
-}) => {
+const Lobby = ({ refreshInterval = 200000 }) => {
   const { error } = useError();
   const { username: playerName } = useAuth();
   const {
+    clientFactory,
+    debug,
+    gameComponents,
+    lobbyServer,
+    gameServer,
     playerRooms = [],
     refresh,
     joinRoom,

@@ -8,7 +8,14 @@ const LobbyContext = React.createContext();
 
 const localStoragePlayerRoomsKey = '__vierde_man_player_rooms__';
 
-function LobbyProvider(props) {
+function LobbyProvider({
+  gameServer,
+  lobbyServer,
+  debug,
+  clientFactory,
+  gameComponents,
+  ...props
+}) {
   const { logout: authLogout, username } = useAuth();
   const playerName = username;
   const { setError } = useError();
@@ -100,6 +107,11 @@ function LobbyProvider(props) {
   return (
     <LobbyContext.Provider
       value={{
+        clientFactory,
+        debug,
+        gameComponents,
+        lobbyServer,
+        gameServer,
         playerRooms,
         logout,
         refresh: catchErrors(refresh),

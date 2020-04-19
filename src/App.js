@@ -1,10 +1,8 @@
 import React from 'react';
-import { KlaverJassen } from 'GameLogic/Game';
 import styled from 'styled-components';
 import AprilFirst from 'App/AprilFirst';
 import Lobby from 'lobby/react';
 import { Local } from 'boardgame.io/multiplayer';
-import KlaverJasBoard from 'KlaverJasBoard';
 import KlaverJasClientFactory from 'KlaverJasClientFactory';
 import config from 'config';
 import AppProviders from 'Context';
@@ -146,13 +144,7 @@ const App = () => (
         />
         <Route exact path="/lobby">
           <AppContainer>
-            <Lobby
-              gameServer={config.gameServer}
-              lobbyServer={config.lobbyServer}
-              gameComponents={[{ game: KlaverJassen, board: KlaverJasBoard }]}
-              debug={false}
-              clientFactory={KlaverJasClientFactory}
-            />
+            <Lobby />
           </AppContainer>
         </Route>
         <Route>
