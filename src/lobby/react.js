@@ -22,15 +22,14 @@ import { useAuth } from 'auth/context';
 import { useLobby } from 'lobby/context';
 import { useInterval } from 'hooks';
 
-const PlayGame = ({
-  gameComponents,
-  debug,
-  clientFactory,
-  playerRooms = [],
-  runningGame,
-  server,
-}) => {
+const PlayGame = () => {
+  const { playerRooms = [], runningGame } = useLobby();
+
   const { gameId } = useParams();
+
+  if (!runningGame) {
+    return <Redirect to="/lobby" />;
+  }
 
   // NOTE: if no room is found, the user is a spectator
   const room = playerRooms.find((room) => room.gameId === gameId) || {
@@ -47,16 +46,12 @@ const PlayGame = ({
   );
 };
 
-const Lobby = ({ refreshInterval = 2000 }) => {
+const LobbiesContainer = ({ refreshInterval = 2000 }) => {
   const { error } = useError();
   const { username: playerName } = useAuth();
   const {
-    clientFactory,
-    debug,
     gameComponents,
     lobbyServer,
-    gameServer,
-    playerRooms = [],
     refresh,
     joinRoom,
     leaveRoom,
@@ -77,46 +72,47 @@ const Lobby = ({ refreshInterval = 2000 }) => {
   }, refreshInterval);
 
   return (
+    <div>
+      {playerName === undefined && <Redirect to={`/login`} />}
+      {runningGame ? (
+        <Redirect to={`games/${runningGame.gameId}`} />
+      ) : (
+        <div id="lobby-view" className="p-2 p-md-5">
+          {playerName !== undefined && (
+            <Lobbies
+              playerName={playerName}
+              gameComponents={gameComponents}
+              errorMsg={error}
+              exitLobby={exitLobby}
+              createRoom={createRoom}
+              joinRoom={joinRoom}
+              leaveRoom={leaveRoom}
+              startGame={startGame}
+              rooms={rooms}
+            />
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+LobbiesContainer.propTypes = {
+  refreshInterval: PropTypes.number,
+};
+
+const Lobby = ({ refreshInterval = 2000 }) => {
+  return (
     <Router>
       <Switch>
         <Route exact path="/login">
           <Login />
         </Route>
         <Route path="/games/:gameId">
-          {runningGame ? (
-            <PlayGame
-              gameComponents={gameComponents}
-              clientFactory={clientFactory}
-              debug={debug}
-              server={gameServer}
-              runningGame={runningGame}
-              playerRooms={playerRooms}
-            />
-          ) : (
-            <Redirect to="/lobby" />
-          )}
+          <PlayGame />
         </Route>
         <Route exact path="/lobby">
-          {playerName === undefined && <Redirect to={`/login`} />}
-          {runningGame ? (
-            <Redirect to={`games/${runningGame.gameId}`} />
-          ) : (
-            <div id="lobby-view" className="p-2 p-md-5">
-              {playerName !== undefined && (
-                <Lobbies
-                  playerName={playerName}
-                  gameComponents={gameComponents}
-                  errorMsg={error}
-                  exitLobby={exitLobby}
-                  createRoom={createRoom}
-                  joinRoom={joinRoom}
-                  leaveRoom={leaveRoom}
-                  startGame={startGame}
-                  rooms={rooms}
-                />
-              )}
-            </div>
-          )}
+          <LobbiesContainer refreshInterval={refreshInterval} />
         </Route>
         <Route>
           <Redirect to="/lobby" />
