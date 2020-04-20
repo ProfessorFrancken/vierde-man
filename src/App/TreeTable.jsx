@@ -5,11 +5,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { determineBid } from 'GameLogic/Phases/PlaceBids';
 import { Bid } from 'App/ShowResultOfHand';
 
-const TeamPoints = ({ wet, pit, points }) => {
-  if (pit && points !== 0) {
-    return <strong>Pit</strong>;
+const TeamPoints = ({ round, points }) => {
+  if (round.pit && points !== 0) {
+    const honor = round.playedTricks.reduce(
+      (total, { honor }) => total + honor,
+      0
+    );
+    return (
+      <span>
+        <strong>Pit</strong> {honor && <span>(+{honor})</span>}
+      </span>
+    );
   }
-  if (wet && points === 0) {
+  if (round.wet && points === 0) {
     return <em>Wet</em>;
   }
   return <span>{points}</span>;
@@ -46,10 +54,10 @@ const TreeTable = ({ rounds }) => {
                 {[0, 2].includes(highestBidBy) && <Bid bid={{ bid, trump }} />}
               </td>
               <td className="text-left">
-                <TeamPoints pit={pit} wet={wet} points={wij} />
+                <TeamPoints round={round} points={wij} />
               </td>
               <td className="text-right">
-                <TeamPoints pit={pit} wet={wet} points={zij} />
+                <TeamPoints round={round} points={zij} />
               </td>
               <td className="text-left">
                 {[1, 3].includes(highestBidBy) && <Bid bid={{ bid, trump }} />}

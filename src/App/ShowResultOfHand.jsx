@@ -10,8 +10,21 @@ const Prominent = ({ children }) => (
 
 const Wet = ({ round, points, children }) =>
   round.wet && points === 0 ? <span>Wet</span> : children;
-const Pit = ({ round, points, children }) =>
-  round.pit && points !== 0 ? <strong>Pit</strong> : children;
+const Pit = ({ round, points, children }) => {
+  if (round.pit && points !== 0) {
+    const honor = round.playedTricks.reduce(
+      (total, { honor }) => total + honor,
+      0
+    );
+    return (
+      <span>
+        <strong>Pit</strong> {honor && <span>(+{honor})</span>}
+      </span>
+    );
+  }
+
+  return children;
+};
 const Points = ({ round, points }) => (
   <Wet round={round} points={points}>
     <Pit round={round} points={points}>
