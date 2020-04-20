@@ -2,10 +2,18 @@ import React from 'react';
 import _ from 'lodash';
 import { faTree } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { determineBid } from 'GameLogic/Phases/PlaceBids';
+import { Bid } from 'App/ShowResultOfHand';
 
-const TeamPoints = ({ wet, points }) => (
-  <td className="text-right">{wet && points === 0 ? <em>Wet</em> : points}</td>
-);
+const TeamPoints = ({ wet, pit, points }) => {
+  if (pit && points !== 0) {
+    return <strong>Pit</strong>;
+  }
+  if (wet && points === 0) {
+    return <em>Wet</em>;
+  }
+  return <span>{points}</span>;
+};
 
 const TreeTable = ({ rounds }) => {
   return (
@@ -16,19 +24,36 @@ const TreeTable = ({ rounds }) => {
             <FontAwesomeIcon icon={faTree} className="text-dark mr-2" />
             Round
           </th>
-          <th className="text-right">Wij </th>
-          <th className="text-right">Zij</th>
+          <th colSpan="2" className="text-center">
+            Wij{' '}
+          </th>
+          <th colSpan="2" className="text-center">
+            Zij
+          </th>
         </tr>
       </thead>
       <tbody>
         {rounds.map((round, idx) => {
-          const { wij, zij, wet } = round;
+          const { wij, zij, bids, wet, pit } = round;
+
+          // TODO: replace with round.bid ?
+          const { highestBidBy, bid, trump } = determineBid({ bids });
 
           return (
             <tr key={idx}>
               <td className="text-muted">{idx + 1}</td>
-              <TeamPoints wet={wet} points={wij} />
-              <TeamPoints wet={wet} points={zij} />
+              <td className="text-right">
+                {[0, 2].includes(highestBidBy) && <Bid bid={{ bid, trump }} />}
+              </td>
+              <td className="text-left">
+                <TeamPoints pit={pit} wet={wet} points={wij} />
+              </td>
+              <td className="text-right">
+                <TeamPoints pit={pit} wet={wet} points={zij} />
+              </td>
+              <td className="text-left">
+                {[1, 3].includes(highestBidBy) && <Bid bid={{ bid, trump }} />}
+              </td>
             </tr>
           );
         })}
@@ -36,12 +61,12 @@ const TreeTable = ({ rounds }) => {
       <tfoot>
         <tr>
           <th>Total</th>
-          <td className="text-right font-weight-bold">
+          <td colSpan="2" className="text-center font-weight-bold">
             {_(rounds)
               .map(({ wij }) => wij)
               .sum()}
           </td>
-          <td className="text-right font-weight-bold">
+          <td colSpan="2" className="text-center font-weight-bold">
             {_(rounds)
               .map(({ zij }) => zij)
               .sum()}
