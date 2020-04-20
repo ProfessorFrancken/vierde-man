@@ -97,24 +97,33 @@ const PlayedCards = ({ lastTrick }) => {
 };
 const Menu = ({ rounds, playedTricks, wij, zij, open, setOpen, playerId }) => {
   return (
-    <StyledMenu open={open} className="bg-white border-right shadow">
-      <div
-        className="text-white border-bottom p-3 d-flex justify-content-between align-items-center"
-        style={{ backgroundColor: '#173249' }}
-      >
-        <FontAwesomeIcon icon={faTimes} onClick={() => setOpen(false)} />
-        <h4 className="h6 mb-0 text-white">Vierde man?</h4>
-      </div>
+    <StyledMenu open={open} className="bg-white  shadow">
       <div className="d-flex justify-content-between align-items-center p-3 bg-white border-bottom text-center text-muted">
-        <small className="d-flex flex-column">
-          <strong>Wij</strong>
-          <Prominent>{wij} </Prominent>
-        </small>
-        <div>Round {rounds.length + 1} / 16</div>
-        <small className="d-flex flex-column">
-          <strong>Zij</strong>
-          <Prominent>{zij} </Prominent>
-        </small>
+        <div className="d-flex flex-column text-left">
+          <h6>Wij</h6>
+          <small>
+            <PlayerName playerId={0} />
+          </small>
+          <small className="mb-2">
+            <PlayerName playerId={2} />
+          </small>
+          <Prominent>{wij}</Prominent>
+        </div>
+        <div className="text-monospace text-center">
+          Round
+          <br />
+          {rounds.length + 1} / 16
+        </div>
+        <div className="d-flex flex-column text-right">
+          <h6>Zij</h6>
+          <small>
+            <PlayerName playerId={1} />
+          </small>
+          <small className="mb-2">
+            <PlayerName playerId={3} />
+          </small>
+          <Prominent>{zij}</Prominent>
+        </div>
       </div>
       {playedTricks.length > 0 && (
         <div className="p-3 border-bottom">
@@ -149,26 +158,12 @@ const Menu = ({ rounds, playedTricks, wij, zij, open, setOpen, playerId }) => {
           <h4 className="h6 mb-0 text-muted">Github</h4>
         </div>
       </a>
-
       <button
-        className="btn bg-light border-top p-3 justify-self-end d-flex justify-content-start align-items-center"
-        onClick={() => alert('Sorry, this has not yet been implemented')}
+        onClick={() => setOpen(false)}
+        className="btn btn-text rounded-0 text-white bg-primary p-3 d-flex justify-content-between align-items-center"
       >
-        <FontAwesomeIcon icon={faUser} fixedWidth className="text-dark" />
-        <img
-          alt=""
-          src=""
-          width="50px"
-          height="50px"
-          style={{ objectFit: 'cover' }}
-          className="bg-white rounded-circle border border-white d-none"
-        />
-        <div className="px-3 d-flex flex-column">
-          <h4 className="h6 mb-1">
-            <PlayerName playerId={playerId} />
-          </h4>
-          <small className="text-muted">View profile</small>
-        </div>
+        <h4 className="h6 mb-0 text-white">Close menu</h4>
+        <FontAwesomeIcon icon={faTimes} />
       </button>
     </StyledMenu>
   );

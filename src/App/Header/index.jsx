@@ -12,7 +12,6 @@ const Prominent = ({ children }) => (
 const Bar = styled.div`
   background-color: ${({ theme }) => theme.secondary};
   color: ${({ theme }) => theme.secondaryWhite};
-  border-bottom: thin solid ${({ theme }) => theme.primary};
 `;
 const Burger = ({ open, setOpen }) => {
   return (
