@@ -84,6 +84,7 @@ const Player = ({
               currentBids={game.bids}
               currentPlayer={currentPlayer}
               active={playerId === currentPlayer}
+              rounds={game.rounds}
             />
           )}
 

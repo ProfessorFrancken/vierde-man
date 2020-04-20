@@ -7,10 +7,18 @@ import PlayerName from 'Components/PlayerName';
 
 const { SPADES, HEARTS, CLUBS, DIAMONDS } = SUITES;
 
-const PreviousBids = ({ bids }) => {
+const PreviousBids = ({ bids, rounds }) => {
   return (
     <div>
-      <h4 className="h6 text-muted">Previous bids</h4>
+      <div className="d-flex justify-content-between">
+        <h4 className="h6 text-muted">Previous bids</h4>
+        <small
+          className="text-monospace text-muted"
+          title="Rounds played this game"
+        >
+          {rounds.length + 1} / 16
+        </small>
+      </div>
       <div
         className="text-muted my-2"
         style={{
@@ -122,7 +130,14 @@ export const Bid = ({ bid, inverted = false }) => {
   );
 };
 
-const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer, active }) => {
+const PlaceBid = ({
+  placeBid,
+  pass,
+  currentBids,
+  currentPlayer,
+  active,
+  rounds,
+}) => {
   const [trump, setTrump] = useState(CLUBS);
   const [bid, setBid] = useState(80);
 
@@ -149,7 +164,7 @@ const PlaceBid = ({ placeBid, pass, currentBids, currentPlayer, active }) => {
   return (
     <Modal.Dialog>
       <Modal.Body className="bg-light">
-        <PreviousBids bids={currentBids} />
+        <PreviousBids bids={currentBids} rounds={rounds} />
       </Modal.Body>
       {allowedBids.length > 0 && (
         <Modal.Body className="border-top">
