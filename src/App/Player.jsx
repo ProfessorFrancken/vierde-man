@@ -71,18 +71,6 @@ const Player = ({
 
   return (
     <PlayerContainer id={id} className="game">
-      <InformationBar
-        playerId={playerId}
-        game={game}
-        currentPlayer={currentPlayer}
-        phase={phase}
-        rounds={game.rounds}
-        playedTricks={game.playedTricks}
-        wij={game.wij}
-        zij={game.zij}
-        bid={game.bid}
-      />
-
       <KlaverJasTable
         className="klaverjas-table overflow-hidden"
         playerId={playerId}
@@ -158,6 +146,18 @@ const Player = ({
           );
         })}
       </KlaverJasTable>
+
+      <InformationBar
+        playerId={playerId}
+        game={game}
+        currentPlayer={currentPlayer}
+        phase={phase}
+        rounds={game.rounds}
+        playedTricks={game.playedTricks}
+        wij={game.wij}
+        zij={game.zij}
+        bid={game.bid}
+      />
     </PlayerContainer>
   );
 };
