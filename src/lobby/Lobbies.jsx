@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Modal from 'Components/Modal';
 import LobbyRoomInstance from './room-instance';
 import LobbyCreateRoomForm from './create-room-form';
-import { subWeeks, fromUnixTime } from 'date-fns';
+import { subDays, fromUnixTime } from 'date-fns';
 
 const unfinishedRoom = ({ rounds }) => rounds !== 16;
 const showOldRoomsFilter = (showOldRooms) => ({ createdAt }) => {
@@ -13,9 +13,9 @@ const showOldRoomsFilter = (showOldRooms) => ({ createdAt }) => {
     return false;
   }
 
-  const aWeekAgo = subWeeks(Date.now(), 1);
+  const twoDaysAgo = subDays(Date.now(), 2);
 
-  return aWeekAgo < fromUnixTime(createdAt / 1000);
+  return twoDaysAgo < fromUnixTime(createdAt / 1000);
 };
 
 const Lobbies = ({
