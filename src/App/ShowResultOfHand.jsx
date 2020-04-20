@@ -8,6 +8,18 @@ const Prominent = ({ children }) => (
   <span>{children === 33 ? "'Vo" : children}</span>
 );
 
+const Wet = ({ round, points, children }) =>
+  round.wet && points === 0 ? <span>Wet</span> : children;
+const Pit = ({ round, points, children }) =>
+  round.pit && points !== 0 ? <strong>Pit</strong> : children;
+const Points = ({ round, points }) => (
+  <Wet round={round} points={points}>
+    <Pit round={round} points={points}>
+      <Prominent>{points}</Prominent>
+    </Pit>
+  </Wet>
+);
+
 export const Bid = ({ bid }) => {
   if (bid.bid === null) {
     return <span>Pass</span>;
@@ -87,10 +99,10 @@ const ResultTable = ({ round, bid, wij, zij }) => {
         <tr>
           <th className="text-right">This round</th>
           <td className="text-left">
-            <Prominent>{round.wij}</Prominent>
+            <Points round={round} points={round.wij} />
           </td>
           <td className="text-left">
-            <Prominent>{round.zij}</Prominent>
+            <Points round={round} points={round.zij} />
           </td>
         </tr>
         <tr>
