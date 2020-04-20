@@ -61,7 +61,9 @@ class LobbyConnection {
     }
   }
 
-  async leave(room, gameID, credentials, playerName) {
+  async leave(room, { credentials, playerName }) {
+    const gameID = room.gameID;
+    console.log('Leave', { room, gameID, credentials, playerName });
     try {
       const playerRemovedFromGame = room.players
         .filter(({ name }) => name === playerName)

@@ -84,12 +84,10 @@ function LobbyProvider({
 
   const leaveRoom = async (gameName, gameId) => {
     const room = playerRooms.find((room) => room.gameId === gameId);
-    const playerNames = await connection.leave(
-      findRoom(rooms, gameId),
-      gameId,
-      room.playerCredentials,
-      playerName
-    );
+    const playerNames = await connection.leave(findRoom(rooms, gameId), {
+      credentials: room.playerCredentials,
+      playerName,
+    });
 
     const removeRoomIfEmpty = (room) =>
       room.gameID !== gameId ||
@@ -124,12 +122,10 @@ function LobbyProvider({
   const exitLobby = async () => {
     await Promise.all(
       playerRooms.map((room) =>
-        connection.leave(
-          findRoom(rooms, room.gameId),
-          room.gameId,
-          room.playerCredentials,
-          playerName
-        )
+        connection.leave(findRoom(rooms, room.gameId), {
+          credentials: room.playerCredentials,
+          playerName,
+        })
       )
     );
     setError('');
