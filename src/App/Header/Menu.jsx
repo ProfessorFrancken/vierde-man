@@ -6,6 +6,7 @@ import { faUsers, faTimes, faCogs } from '@fortawesome/free-solid-svg-icons';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import Card from 'Components/Card';
 import TreeTable from 'App/TreeTable';
+import { Link } from 'react-router-dom';
 import _ from 'lodash';
 
 const Prominent = ({ children }) => (
@@ -133,15 +134,15 @@ const Menu = ({ rounds, playedTricks, wij, zij, open, setOpen, playerId }) => {
         </div>
       )}
       <TreeTable rounds={rounds} />
-      <a
-        href="/lobby"
+      <Link
+        to="/lobby"
         className="bg-light border-top p-3 justify-self-end d-flex justify-content-start align-items-center mt-auto"
       >
         <FontAwesomeIcon icon={faUsers} fixedWidth className="text-dark" />
         <div className="px-3 d-flex flex-column">
           <h4 className="h6 mb-0 text-muted">Back to lobby</h4>
         </div>
-      </a>
+      </Link>
       <button
         className="btn bg-light border-top p-3 justify-self-end d-flex justify-content-start align-items-center"
         onClick={() => alert('Sorry, this has not yet been implemented')}
