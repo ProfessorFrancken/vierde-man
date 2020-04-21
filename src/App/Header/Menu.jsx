@@ -98,6 +98,13 @@ const PlayedCards = ({ lastTrick }) => {
 const Menu = ({ rounds, playedTricks, wij, zij, open, setOpen, playerId }) => {
   return (
     <StyledMenu open={open} className="bg-white  shadow">
+      <button
+        onClick={() => setOpen(false)}
+        className="btn btn-text rounded-0 text-white bg-primary p-3 d-flex justify-content-between align-items-center"
+      >
+        <h4 className="h6 mb-0 text-white">Close menu</h4>
+        <FontAwesomeIcon icon={faTimes} />
+      </button>
       <div className="d-flex justify-content-between align-items-center p-3 bg-white border-bottom text-center text-muted">
         <div className="d-flex flex-column text-left">
           <h6>Wij</h6>
@@ -158,13 +165,6 @@ const Menu = ({ rounds, playedTricks, wij, zij, open, setOpen, playerId }) => {
           <h4 className="h6 mb-0 text-muted">Github</h4>
         </div>
       </a>
-      <button
-        onClick={() => setOpen(false)}
-        className="btn btn-text rounded-0 text-white bg-primary p-3 d-flex justify-content-between align-items-center"
-      >
-        <h4 className="h6 mb-0 text-white">Close menu</h4>
-        <FontAwesomeIcon icon={faTimes} />
-      </button>
     </StyledMenu>
   );
 };
