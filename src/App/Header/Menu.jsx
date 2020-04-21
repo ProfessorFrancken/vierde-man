@@ -2,12 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import PlayerName from 'Components/PlayerName';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faUser,
-  faUsers,
-  faTimes,
-  faCogs,
-} from '@fortawesome/free-solid-svg-icons';
+import { faUsers, faTimes, faCogs } from '@fortawesome/free-solid-svg-icons';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import Card from 'Components/Card';
 import TreeTable from 'App/TreeTable';
