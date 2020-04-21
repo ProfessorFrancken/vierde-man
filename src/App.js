@@ -140,7 +140,7 @@ const App = () => (
           <Route exact path="/login">
             <Login />
           </Route>
-          <Route path="/games/:gameId">
+          <Route path="/games/:gameName/:gameId">
             <PlayGame />
           </Route>
           <Route exact path="/lobby">

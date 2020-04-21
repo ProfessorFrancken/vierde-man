@@ -39,7 +39,6 @@ const LobbiesContainer = ({ refreshInterval = 2000 }) => {
     createRoom,
     exitLobby,
     rooms,
-    startGame,
     runningGame,
   } = useLobby();
 
@@ -63,7 +62,6 @@ const LobbiesContainer = ({ refreshInterval = 2000 }) => {
         createRoom={createRoom}
         joinRoom={joinRoom}
         leaveRoom={leaveRoom}
-        startGame={startGame}
         rooms={rooms}
       />
     </div>

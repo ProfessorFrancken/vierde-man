@@ -153,32 +153,6 @@ function LobbyProvider({
       multiplayer,
     });
   };
-  const startGame = (gameName, { gameID }) => {
-    const gameCode = gameComponents.find(
-      ({ game: { name } }) => name === gameName
-    );
-    if (!gameCode) {
-      setError('game ' + gameName + ' not supported');
-      return;
-    }
-
-    const multiplayer = gameServer
-      ? SocketIO({ server: gameServer })
-      : SocketIO();
-
-    const app = clientFactory({
-      game: gameCode.game,
-      board: gameCode.board,
-      debug: debug,
-      multiplayer,
-    });
-
-    const game = {
-      app: app,
-      gameId: gameID,
-    };
-    setRunningGame(game);
-  };
 
   const refresh = catchErrors(async () => {
     const roomsPerGame = await connection.refresh(gameComponents);
@@ -205,7 +179,6 @@ function LobbyProvider({
         createRoom: catchErrors(createRoom),
         exitLobby: catchErrors(exitLobby),
         rooms,
-        startGame,
         playerRooms,
         runningGame,
         gameClientFactory,

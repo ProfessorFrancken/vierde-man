@@ -148,6 +148,5 @@ LobbyRoom.propTypes = {
   playerName: PropTypes.string.isRequired,
   onClickJoin: PropTypes.func.isRequired,
   onClickLeave: PropTypes.func.isRequired,
-  onClickPlay: PropTypes.func.isRequired,
 };
 export default LobbyRoom;

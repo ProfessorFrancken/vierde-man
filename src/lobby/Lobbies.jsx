@@ -26,7 +26,6 @@ const Lobbies = ({
   createRoom,
   joinRoom,
   leaveRoom,
-  startGame,
   rooms,
 }) => {
   const [showOldRooms, setShowOldRooms] = useState(false);
@@ -102,7 +101,6 @@ const Lobbies = ({
                     playerName={playerName}
                     onClickJoin={joinRoom}
                     onClickLeave={leaveRoom}
-                    onClickPlay={startGame}
                   />
                 ))}
             </tbody>
