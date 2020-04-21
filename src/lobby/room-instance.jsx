@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faRocket, faEye } from '@fortawesome/free-solid-svg-icons';
 import { fromUnixTime, formatDistanceToNow } from 'date-fns';
+import { Link } from 'react-router-dom';
 
 const CurrentPlayerName = ({ room }) => {
   const playerId = parseInt(room.currentPlayer, 10);
@@ -97,35 +98,24 @@ const LobbyRoom = (props) => {
         <div className="d-flex flex-column justify-content-center">
           {playerSeat && !freeSeat && (
             <div className="my-1">
-              <button
-                onClick={() =>
-                  props.onClickPlay(room.gameName, {
-                    gameID: room.gameID,
-                    playerID: '' + playerSeat.id,
-                    numPlayers: 4,
-                  })
-                }
+              <Link
+                to={`/games/${room.gameName}/${room.gameID}`}
                 className="btn btn-text bg-primary text-white"
               >
                 <FontAwesomeIcon icon={faRocket} className="mr-2" />
                 Play
-              </button>
+              </Link>
             </div>
           )}
           {!playerSeat && !freeSeat && (
             <div className="my-1">
-              <button
-                onClick={() =>
-                  props.onClickPlay(room.gameName, {
-                    gameID: room.gameID,
-                    numPlayers: room.players.length,
-                  })
-                }
+              <Link
+                to={`/games/${room.gameName}/${room.gameID}`}
                 className="btn btn-text bg-light text-dark"
               >
                 <FontAwesomeIcon icon={faEye} className="mr-2" />
                 Spectate
-              </button>
+              </Link>
             </div>
           )}
 

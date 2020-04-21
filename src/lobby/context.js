@@ -5,6 +5,7 @@ import { useError } from 'Context';
 import { SocketIO } from 'boardgame.io/multiplayer';
 import LobbyConnection from './connection';
 import { useInterval } from 'hooks';
+import { Redirect } from 'react-router-dom';
 import _ from 'lodash';
 
 const LobbyContext = React.createContext();
@@ -132,6 +133,26 @@ function LobbyProvider({
     logout();
   };
 
+  const gameClientFactory = (gameName, gameId) => {
+    const gameCode = gameComponents.find(
+      ({ game: { name } }) => name === gameName
+    );
+    if (!gameCode) {
+      setError('game ' + gameName + ' not supported');
+      return <Redirect to="/login" />;
+    }
+
+    const multiplayer = gameServer
+      ? SocketIO({ server: gameServer })
+      : SocketIO();
+
+    return clientFactory({
+      game: gameCode.game,
+      board: gameCode.board,
+      debug: debug,
+      multiplayer,
+    });
+  };
   const startGame = (gameName, { gameID }) => {
     const gameCode = gameComponents.find(
       ({ game: { name } }) => name === gameName
@@ -187,6 +208,7 @@ function LobbyProvider({
         startGame,
         playerRooms,
         runningGame,
+        gameClientFactory,
       }}
       {...props}
     />

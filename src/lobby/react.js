@@ -8,12 +8,8 @@ import { useAuth } from 'auth/context';
 import { useLobby } from 'lobby/context';
 
 const PlayGame = () => {
-  const { playerRooms = [], runningGame } = useLobby();
-  const { gameId } = useParams();
-
-  if (!runningGame) {
-    return <Redirect to="/lobby" />;
-  }
+  const { playerRooms = [], gameClientFactory } = useLobby();
+  const { gameName, gameId } = useParams();
 
   // NOTE: if no room is found, the user is a spectator
   const room = playerRooms.find((room) => room.gameId === gameId) || {
@@ -21,8 +17,10 @@ const PlayGame = () => {
     playerCredentials: undefined,
   };
 
+  const App = gameClientFactory(gameName, gameId);
+
   return (
-    <runningGame.app
+    <App
       gameID={gameId}
       playerID={room.playerId}
       credentials={room.playerCredentials}
