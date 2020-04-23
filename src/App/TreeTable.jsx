@@ -48,7 +48,7 @@ const TreeTable = ({ rounds }) => {
       </thead>
       <tbody>
         {rounds.map((round, idx) => {
-          const { wij, zij, bids, wet, pit } = round;
+          const { wij, zij, bids } = round;
 
           // TODO: replace with round.bid ?
           const { highestBidBy, bid, trump } = determineBid({ bids });
