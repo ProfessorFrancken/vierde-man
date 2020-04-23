@@ -16,9 +16,15 @@ const Pit = ({ round, points, children }) => {
       (total, { honor }) => total + honor,
       0
     );
+
+    if (honor === 0) {
+      return <strong>Pit</strong>;
+    }
+
     return (
       <span>
-        <strong>Pit</strong> {honor && honor > 0 && <span>(+{honor})</span>}
+        <strong>Pit</strong>
+        <span> (+{honor})</span>
       </span>
     );
   }
