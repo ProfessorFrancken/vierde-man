@@ -39,17 +39,12 @@ const LobbiesContainer = ({ refreshInterval = 2000 }) => {
     createRoom,
     exitLobby,
     rooms,
-    runningGame,
   } = useLobby();
 
   useRefreshLobby(refreshInterval);
 
   if (playerName === undefined) {
     return <Redirect to="/login" />;
-  }
-
-  if (runningGame) {
-    return <Redirect to={`games/${runningGame.gameId}`} />;
   }
 
   return (

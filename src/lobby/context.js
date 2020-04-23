@@ -37,7 +37,6 @@ function LobbyProvider({
   );
 
   const [rooms, setRooms] = useState([]);
-  const [runningGame, setRunningGame] = useState(undefined);
 
   const connection = new LobbyConnection(lobbyServer);
 
@@ -180,7 +179,6 @@ function LobbyProvider({
         exitLobby: catchErrors(exitLobby),
         rooms,
         playerRooms,
-        runningGame,
         gameClientFactory,
       }}
       {...props}
