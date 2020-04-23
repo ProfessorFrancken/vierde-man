@@ -10,8 +10,9 @@ const db = new FlatFile({
 });
 const dbWithCaching = new StorageCache(db, { cacheSize: 200 });
 
+const OldKlarverJassen = { ...KlaverJassen, name: 'klarver-jassen' };
 const server = Server({
-  games: [KlaverJassen],
+  games: [KlaverJassen, OldKlarverJassen],
   db: dbWithCaching,
 });
 

@@ -99,7 +99,7 @@ const LobbyRoom = (props) => {
           {playerSeat && !freeSeat && (
             <div className="my-1">
               <Link
-                to={`/games/${room.gameName}/${room.gameID}`}
+                to={`/games/klaver-jassen/${room.gameID}`}
                 className="btn btn-text bg-primary text-white"
               >
                 <FontAwesomeIcon icon={faRocket} className="mr-2" />
@@ -110,7 +110,7 @@ const LobbyRoom = (props) => {
           {!playerSeat && !freeSeat && (
             <div className="my-1">
               <Link
-                to={`/games/${room.gameName}/${room.gameID}`}
+                to={`/games/klaver-jassen/${room.gameID}`}
                 className="btn btn-text bg-light text-dark"
               >
                 <FontAwesomeIcon icon={faEye} className="mr-2" />
