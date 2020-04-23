@@ -19,7 +19,7 @@ const SixTeenRoundsHaveBeenPlayed = (G, ctx) => {
     : false;
 };
 export const KlaverJassen = {
-  name: 'klarver-jassen',
+  name: 'klaver-jassen',
   numPlayers: 4,
   minPlayers: 4,
   maxPlayers: 4,
