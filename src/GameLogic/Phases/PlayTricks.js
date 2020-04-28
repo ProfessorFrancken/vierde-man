@@ -2,7 +2,7 @@ import { INVALID_MOVE } from 'boardgame.io/core';
 import { handContains, WinnerOfTrick, rankOfTrumpCard } from '../Card';
 import _ from 'lodash';
 
-const isDefined = x => x !== undefined;
+const isDefined = (x) => x !== undefined;
 
 export const PlayerToStartCurrentTrick = (
   { dealer, playedTricks },
@@ -26,8 +26,8 @@ export const startNewTrick = (G, ctx) => {
       0: undefined,
       1: undefined,
       2: undefined,
-      3: undefined
-    }
+      3: undefined,
+    },
   };
 };
 
@@ -61,7 +61,7 @@ export const playerIsAllowedToPlayCard = (
   // Someone else started this trick, deciding the suit that must be followed
   const { suit: suitOfFirstCard } = cardByStartingPlayer;
 
-  const sameSuitAs = expectedSuit => ({ suit }) => suit === expectedSuit;
+  const sameSuitAs = (expectedSuit) => ({ suit }) => suit === expectedSuit;
   const trumpIsAsked = cardByStartingPlayer.suit === trump;
   const canFollowSuit = _.some(handOfPlayer, sameSuitAs(suitOfFirstCard));
   const canTrump = _.some(handOfPlayer, sameSuitAs(trump));
@@ -78,7 +78,7 @@ export const playerIsAllowedToPlayCard = (
       .reject(({ suit, face }) => suit === card.suit && face === card.face)
       .filter(sameSuitAs(trump))
       .map(rankOfTrumpCard)
-      .some(value => value > highestPlayedTrumpCard);
+      .some((value) => value > highestPlayedTrumpCard);
 
   const trumpValueOfCard = rankOfTrumpCard(card);
   const playerTriedToUnderTrump =
@@ -156,7 +156,7 @@ export const PlayCard = (G, { currentPlayer }, card) => {
 
   try {
     const {
-      currentTrick: { playedCards = [], startingPlayer }
+      currentTrick: { playedCards = [], startingPlayer },
     } = G;
     const cardByStartingPlayer = playedCards[startingPlayer];
     if (cardByStartingPlayer === undefined && startingPlayer !== player) {
@@ -164,7 +164,7 @@ export const PlayCard = (G, { currentPlayer }, card) => {
         'Someone else than the starting player tried to play the first card',
         {
           startingPlayer,
-          player
+          player,
         }
       );
     }
@@ -213,7 +213,8 @@ export const PlayTricks = {
     moveLimit: 1,
     order: {
       first: ({ currentTrick: { startingPlayer } }, ctx) => startingPlayer,
-      next: (G, { playOrderPos, numPlayers }) => (playOrderPos + 1) % numPlayers
-    }
-  }
+      next: (G, { playOrderPos, numPlayers }) =>
+        (playOrderPos + 1) % numPlayers,
+    },
+  },
 };

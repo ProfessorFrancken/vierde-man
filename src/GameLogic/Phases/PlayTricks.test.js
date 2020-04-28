@@ -2,7 +2,7 @@ import { INVALID_MOVE } from 'boardgame.io/core';
 import { SUITES, Card } from 'GameLogic/Card';
 import {
   PlayCard,
-  PlayerToStartCurrentTrick
+  PlayerToStartCurrentTrick,
 } from 'GameLogic/Phases/PlayTricks';
 import _ from 'lodash';
 const { CLUBS, SPADES, HEARTS, DIAMONDS } = SUITES;
@@ -27,7 +27,7 @@ describe('playing a hand', () => {
         { dealer: 0, expectedPlayer: 1 },
         { dealer: 1, expectedPlayer: 2 },
         { dealer: 2, expectedPlayer: 3 },
-        { dealer: 3, expectedPlayer: 0 }
+        { dealer: 3, expectedPlayer: 0 },
       ].forEach(({ dealer, expectedPlayer }) => {
         it(`player ${expectedPlayer} starts if player ${dealer} is the dealer`, () => {
           const playerToStart = PlayerToStartCurrentTrick(
@@ -52,7 +52,7 @@ describe('playing a hand', () => {
         const playerToStart = PlayerToStartCurrentTrick(
           {
             dealer: 0,
-            playedTricks: [{ winner: 1 }, { winner: 3 }, { winner: 2 }]
+            playedTricks: [{ winner: 1 }, { winner: 3 }, { winner: 2 }],
           },
           { numPlayers: 4 }
         );
@@ -70,12 +70,12 @@ describe('playing a hand', () => {
         '0': [Card()],
         '1': [],
         '2': [],
-        '3': []
+        '3': [],
       },
       bid: {
         highestBidBy: 0,
         bid: 100,
-        trump: SPADES
+        trump: SPADES,
       },
       trump: SPADES,
       playedTricsk: [],
@@ -87,9 +87,9 @@ describe('playing a hand', () => {
           0: undefined,
           1: undefined,
           2: undefined,
-          3: undefined
-        }
-      }
+          3: undefined,
+        },
+      },
     };
 
     const currentPlayer = 0;
@@ -97,7 +97,7 @@ describe('playing a hand', () => {
       // Arrange
       const G = {
         ...gameState,
-        hands: { [currentPlayer]: [Card(SPADES, '10')] }
+        hands: { [currentPlayer]: [Card(SPADES, '10')] },
       };
 
       // Act
@@ -120,9 +120,9 @@ describe('playing a hand', () => {
             0: undefined,
             1: undefined,
             2: undefined,
-            3: { ...Card(SPADES, '9'), playedBy: 3 }
-          }
-        }
+            3: { ...Card(SPADES, '9'), playedBy: 3 },
+          },
+        },
       };
 
       // Act
@@ -144,9 +144,9 @@ describe('playing a hand', () => {
             0: undefined,
             1: undefined,
             2: undefined,
-            3: undefined
-          }
-        }
+            3: undefined,
+          },
+        },
       };
 
       // Act
@@ -161,7 +161,7 @@ describe('playing a hand', () => {
       // Arrange
       const G = {
         ...gameState,
-        hands: { [currentPlayer]: [Card(SPADES, '10')] }
+        hands: { [currentPlayer]: [Card(SPADES, '10')] },
       };
 
       // Act
@@ -183,9 +183,9 @@ describe('playing a hand', () => {
             0: undefined,
             1: undefined,
             2: undefined,
-            3: { ...Card(SPADES, '9'), playedBy: 3 }
-          }
-        }
+            3: { ...Card(SPADES, '9'), playedBy: 3 },
+          },
+        },
       };
 
       // Act
@@ -208,9 +208,9 @@ describe('playing a hand', () => {
             0: undefined,
             1: undefined,
             2: undefined,
-            3: { ...Card(SPADES, '9'), playedBy: 3 }
-          }
-        }
+            3: { ...Card(SPADES, '9'), playedBy: 3 },
+          },
+        },
       };
 
       // Act
@@ -231,9 +231,9 @@ describe('playing a hand', () => {
             0: undefined,
             1: undefined,
             2: undefined,
-            3: { ...Card(SPADES, '9'), playedBy: 3 }
-          }
-        }
+            3: { ...Card(SPADES, '9'), playedBy: 3 },
+          },
+        },
       };
 
       // Act
@@ -255,9 +255,9 @@ describe('playing a hand', () => {
             0: undefined,
             1: undefined,
             2: undefined,
-            3: { ...Card(SPADES, '9'), playedBy: 3 }
-          }
-        }
+            3: { ...Card(SPADES, '9'), playedBy: 3 },
+          },
+        },
       };
 
       // Act
@@ -279,9 +279,9 @@ describe('playing a hand', () => {
             0: undefined,
             1: undefined,
             2: undefined,
-            3: { ...Card(SPADES, '9'), playedBy: 3 }
-          }
-        }
+            3: { ...Card(SPADES, '9'), playedBy: 3 },
+          },
+        },
       };
 
       // Act
@@ -304,9 +304,9 @@ describe('playing a hand', () => {
               0: undefined,
               1: undefined,
               2: undefined,
-              3: { ...Card(SPADES, '9'), playedBy: 3 }
-            }
-          }
+              3: { ...Card(SPADES, '9'), playedBy: 3 },
+            },
+          },
         };
 
         // Act
@@ -328,9 +328,9 @@ describe('playing a hand', () => {
               0: undefined,
               1: undefined,
               2: undefined,
-              3: { ...Card(SPADES, '9'), playedBy: 3 }
-            }
-          }
+              3: { ...Card(SPADES, '9'), playedBy: 3 },
+            },
+          },
         };
 
         // Act
@@ -352,9 +352,9 @@ describe('playing a hand', () => {
               0: undefined,
               1: undefined,
               2: undefined,
-              3: { ...Card(SPADES, '9'), playedBy: 3 }
-            }
-          }
+              3: { ...Card(SPADES, '9'), playedBy: 3 },
+            },
+          },
         };
 
         // Act
@@ -426,9 +426,9 @@ describe('playing a hand', () => {
               0: undefined,
               1: undefined,
               2: { ...Card(HEARTS, '3'), playedBy: 2 },
-              3: { ...Card(SPADES, '9'), playedBy: 3 }
-            }
-          }
+              3: { ...Card(SPADES, '9'), playedBy: 3 },
+            },
+          },
         };
 
         // Act
@@ -450,9 +450,9 @@ describe('playing a hand', () => {
               0: undefined,
               1: undefined,
               2: { ...Card(HEARTS, '3'), playedBy: 2 },
-              3: { ...Card(SPADES, '9'), playedBy: 3 }
-            }
-          }
+              3: { ...Card(SPADES, '9'), playedBy: 3 },
+            },
+          },
         };
 
         // Act
@@ -474,9 +474,9 @@ describe('playing a hand', () => {
               0: undefined,
               1: undefined,
               2: { ...Card(HEARTS, '3'), playedBy: 2 },
-              3: { ...Card(SPADES, '9'), playedBy: 3 }
-            }
-          }
+              3: { ...Card(SPADES, '9'), playedBy: 3 },
+            },
+          },
         };
 
         // Act
@@ -494,8 +494,8 @@ describe('playing a hand', () => {
             [currentPlayer]: [
               Card(DIAMONDS, '7'),
               Card(SPADES, '8'),
-              Card(SPADES, '7')
-            ]
+              Card(SPADES, '7'),
+            ],
           },
           bid: { trump: SPADES },
           currentTrick: {
@@ -504,9 +504,9 @@ describe('playing a hand', () => {
               0: undefined,
               1: undefined,
               2: { ...Card(HEARTS, '7'), playedBy: 2 },
-              3: { ...Card(SPADES, '9'), playedBy: 3 }
-            }
-          }
+              3: { ...Card(SPADES, '9'), playedBy: 3 },
+            },
+          },
         };
 
         // Act
@@ -526,8 +526,8 @@ describe('playing a hand', () => {
             [currentPlayer]: [
               Card(DIAMONDS, '7'),
               Card(HEARTS, '8'),
-              Card(SPADES, '7')
-            ]
+              Card(SPADES, '7'),
+            ],
           },
           bid: { trump: SPADES },
           currentTrick: {
@@ -536,9 +536,9 @@ describe('playing a hand', () => {
               0: undefined,
               1: { ...Card(HEARTS, '7'), playedBy: 1 },
               2: { ...Card(HEARTS, '9'), playedBy: 2 },
-              3: { ...Card(SPADES, '9'), playedBy: 3 }
-            }
-          }
+              3: { ...Card(SPADES, '9'), playedBy: 3 },
+            },
+          },
         };
 
         // Act
@@ -556,8 +556,8 @@ describe('playing a hand', () => {
             [currentPlayer]: [
               Card(DIAMONDS, '7'),
               Card(HEARTS, '8'),
-              Card(SPADES, '7')
-            ]
+              Card(SPADES, '7'),
+            ],
           },
           bid: { trump: SPADES },
           currentTrick: {
@@ -566,9 +566,9 @@ describe('playing a hand', () => {
               0: undefined,
               1: { ...Card(HEARTS, '7'), playedBy: 1 },
               2: { ...Card(HEARTS, '9'), playedBy: 2 },
-              3: { ...Card(SPADES, '9'), playedBy: 3 }
-            }
-          }
+              3: { ...Card(SPADES, '9'), playedBy: 3 },
+            },
+          },
         };
 
         // Act
@@ -586,8 +586,8 @@ describe('playing a hand', () => {
             [currentPlayer]: [
               Card(DIAMONDS, '7'),
               Card(SPADES, '8'),
-              Card(SPADES, '7')
-            ]
+              Card(SPADES, '7'),
+            ],
           },
           bid: { trump: SPADES },
           currentTrick: {
@@ -596,9 +596,9 @@ describe('playing a hand', () => {
               0: undefined,
               1: { ...Card(HEARTS, '7'), playedBy: 1 },
               2: { ...Card(HEARTS, '9'), playedBy: 2 },
-              3: { ...Card(DIAMONDS, '9'), playedBy: 3 }
-            }
-          }
+              3: { ...Card(DIAMONDS, '9'), playedBy: 3 },
+            },
+          },
         };
 
         // Act
@@ -617,8 +617,8 @@ describe('playing a hand', () => {
               Card(DIAMONDS, 'A'),
               Card(DIAMONDS, '7'),
               Card(SPADES, '8'),
-              Card(SPADES, 'J')
-            ]
+              Card(SPADES, 'J'),
+            ],
           },
           bid: { trump: SPADES },
           currentTrick: {
@@ -627,9 +627,9 @@ describe('playing a hand', () => {
               0: undefined,
               1: { ...Card(HEARTS, '7'), playedBy: 1 },
               2: { ...Card(SPADES, '9'), playedBy: 2 },
-              3: { ...Card(DIAMONDS, '9'), playedBy: 3 }
-            }
-          }
+              3: { ...Card(DIAMONDS, '9'), playedBy: 3 },
+            },
+          },
         };
 
         // Act
@@ -651,8 +651,8 @@ describe('playing a hand', () => {
             Card(SPADES, '8'),
             Card(DIAMONDS, '10'),
             Card(SPADES, 'A'),
-            Card(CLUBS, '7')
-          ]
+            Card(CLUBS, '7'),
+          ],
         },
         bid: { trump: CLUBS },
         currentTrick: {
@@ -661,9 +661,9 @@ describe('playing a hand', () => {
             0: undefined,
             1: undefined,
             2: { ...Card(HEARTS, '7'), playedBy: 2 },
-            3: { ...Card(CLUBS, '8'), playedBy: 3 }
-          }
-        }
+            3: { ...Card(CLUBS, '8'), playedBy: 3 },
+          },
+        },
       };
 
       // Act
@@ -681,8 +681,8 @@ describe('playing a hand', () => {
             Card(SPADES, '8'),
             Card(DIAMONDS, '10'),
             Card(SPADES, 'A'),
-            Card(CLUBS, '7')
-          ]
+            Card(CLUBS, '7'),
+          ],
         },
         bid: { trump: CLUBS },
         currentTrick: {
@@ -691,9 +691,9 @@ describe('playing a hand', () => {
             0: undefined,
             1: undefined,
             2: { ...Card(HEARTS, '7'), playedBy: 2 },
-            3: { ...Card(CLUBS, '8'), playedBy: 3 }
-          }
-        }
+            3: { ...Card(CLUBS, '8'), playedBy: 3 },
+          },
+        },
       };
 
       // Act
@@ -735,7 +735,7 @@ describe('playing a hand', () => {
           { suit: 'C', face: 'Q' },
           { suit: 'S', face: 'K' },
           { suit: 'D', face: '8' },
-          { suit: 'D', face: '9' }
+          { suit: 'D', face: '9' },
         ],
         rounds: [],
         playedTricks: [
@@ -747,8 +747,8 @@ describe('playing a hand', () => {
               { suit: 'D', face: 'K', playedBy: 0 },
               { suit: 'D', face: 'Q', playedBy: 1 },
               { suit: 'D', face: 'A', playedBy: 2 },
-              { suit: 'D', face: '9', playedBy: 3 }
-            ]
+              { suit: 'D', face: '9', playedBy: 3 },
+            ],
           },
           {
             winner: 1,
@@ -758,8 +758,8 @@ describe('playing a hand', () => {
               { suit: 'D', face: 'J', playedBy: 0 },
               { suit: 'C', face: '7', playedBy: 1 },
               { suit: 'D', face: '10', playedBy: 2 },
-              { suit: 'D', face: '8', playedBy: 3 }
-            ]
+              { suit: 'D', face: '8', playedBy: 3 },
+            ],
           },
           {
             winner: 0,
@@ -769,22 +769,22 @@ describe('playing a hand', () => {
               { suit: 'C', face: '8', playedBy: 0 },
               { suit: 'S', face: '7', playedBy: 1 },
               { suit: 'S', face: '8', playedBy: 2 },
-              { suit: 'S', face: 'K', playedBy: 3 }
-            ]
-          }
+              { suit: 'S', face: 'K', playedBy: 3 },
+            ],
+          },
         ],
         bid: { highestBidBy: 0, bid: 80, trump: 'C' },
         bids: [
           { suit: 'C', bid: 80, bidBy: 0 },
           { bid: null, suit: null, bidBy: 1 },
           { bid: null, suit: null, bidBy: 2 },
-          { bid: null, suit: null, bidBy: 3 }
+          { bid: null, suit: null, bidBy: 3 },
         ],
         currentTrick: {
           startingPlayer: 0,
           playedCards: {
-            '0': { suit: 'D', face: '7', playedBy: 0 }
-          }
+            '0': { suit: 'D', face: '7', playedBy: 0 },
+          },
         },
         dealer: 3,
         wij: 0,
@@ -794,33 +794,33 @@ describe('playing a hand', () => {
             { suit: 'H', face: 'A' },
             { suit: 'H', face: '7' },
             { suit: 'C', face: 'A' },
-            { suit: 'H', face: 'K' }
+            { suit: 'H', face: 'K' },
           ],
           '1': [
             { suit: 'C', face: 'K' },
             { suit: 'H', face: '9' },
             { suit: 'C', face: 'J' },
             { suit: 'H', face: 'Q' },
-            { suit: 'S', face: '10' }
+            { suit: 'S', face: '10' },
           ],
           '2': [
             { suit: 'C', face: '10' },
             { suit: 'H', face: '8' },
             { suit: 'S', face: 'Q' },
             { suit: 'H', face: 'J' },
-            { suit: 'C', face: '9' }
+            { suit: 'C', face: '9' },
           ],
           '3': [
             { suit: 'S', face: '9' },
             { suit: 'S', face: 'J' },
             { suit: 'H', face: '10' },
             { suit: 'S', face: 'A' },
-            { suit: 'C', face: 'Q' }
-          ]
-        }
+            { suit: 'C', face: 'Q' },
+          ],
+        },
       };
       const G = {
-        ...G_reg
+        ...G_reg,
 
         // hands: {
         //   '1': [
@@ -958,7 +958,7 @@ describe('playing a hand', () => {
           { suit: 'H', face: 'Q' },
           { suit: 'H', face: 'K' },
           { suit: 'C', face: 'J' },
-          { suit: 'H', face: 'J' }
+          { suit: 'H', face: 'J' },
         ],
         rounds: [],
         playedTricks: [
@@ -970,24 +970,24 @@ describe('playing a hand', () => {
               { suit: 'S', face: 'A', playedBy: 0 },
               { suit: 'S', face: 'K', playedBy: 1 },
               { suit: 'S', face: 'Q', playedBy: 2 },
-              { suit: 'S', face: '10', playedBy: 3 }
-            ]
-          }
+              { suit: 'S', face: '10', playedBy: 3 },
+            ],
+          },
         ],
         bid: { highestBidBy: 0, bid: 80, trump: 'C' },
         bids: [
           { suit: 'C', bid: 80, bidBy: 0 },
           { bid: null, suit: null, bidBy: 1 },
           { bid: null, suit: null, bidBy: 2 },
-          { bid: null, suit: null, bidBy: 3 }
+          { bid: null, suit: null, bidBy: 3 },
         ],
         currentTrick: {
           startingPlayer: 0,
           playedCards: {
             '0': { suit: 'S', face: '9', playedBy: 0 },
             '1': { suit: 'S', face: '8', playedBy: 1 },
-            '2': { suit: 'S', face: '7', playedBy: 2 }
-          }
+            '2': { suit: 'S', face: '7', playedBy: 2 },
+          },
         },
         dealer: 3,
         wij: 0,
@@ -999,7 +999,7 @@ describe('playing a hand', () => {
             { suit: 'H', face: '7' },
             { suit: 'H', face: 'A' },
             { suit: 'H', face: '10' },
-            { suit: 'C', face: '7' }
+            { suit: 'C', face: '7' },
           ],
           '1': [
             { suit: 'H', face: '9' },
@@ -1007,7 +1007,7 @@ describe('playing a hand', () => {
             { suit: 'D', face: '10' },
             { suit: 'D', face: 'Q' },
             { suit: 'D', face: 'J' },
-            { suit: 'D', face: 'A' }
+            { suit: 'D', face: 'A' },
           ],
           '2': [
             { suit: 'D', face: '9' },
@@ -1015,7 +1015,7 @@ describe('playing a hand', () => {
             { suit: 'D', face: 'K' },
             { suit: 'D', face: '7' },
             { suit: 'C', face: '9' },
-            { suit: 'C', face: 'Q' }
+            { suit: 'C', face: 'Q' },
           ],
           '3': [
             { suit: 'C', face: 'A' },
@@ -1024,9 +1024,9 @@ describe('playing a hand', () => {
             { suit: 'H', face: 'Q' },
             { suit: 'H', face: 'K' },
             { suit: 'C', face: 'J' },
-            { suit: 'H', face: 'J' }
-          ]
-        }
+            { suit: 'H', face: 'J' },
+          ],
+        },
       };
 
       const G = { ...G_reg };
