@@ -16,7 +16,7 @@ const Bar = styled.div`
 const Burger = ({ open, setOpen }) => {
   return (
     <div
-      className="text-dark border-right p-2 px-3 h-100 d-flex align-items-center bg-light"
+      className="text-dark border-right p-2 px-3 h-100 bg-light"
       onClick={() => setOpen(!open)}
     >
       <FontAwesomeIcon icon={open ? faTimes : faBars} fixedWidth />
@@ -36,26 +36,26 @@ const Header = (props) => {
   const playedTricks = props.playedTricks;
 
   return (
-    <Bar className="d-flex justify-content-between align-items-center w-100">
-      <div ref={node} className="h-100">
+    <div ref={node} className="w-100">
+      <Menu
+        open={open}
+        setOpen={setOpen}
+        rounds={rounds}
+        playedTricks={playedTricks}
+        wij={wij}
+        zij={zij}
+        playerId={playerId}
+      />
+      <Bar className="d-flex justify-content-between align-items-center w-100">
         <Burger open={open} setOpen={setOpen} />
-        <Menu
-          open={open}
-          setOpen={setOpen}
-          rounds={rounds}
-          playedTricks={playedTricks}
-          wij={wij}
-          zij={zij}
-          playerId={playerId}
-        />
-      </div>
-      <div className="mr-auto p-2">
-        Wij: <Prominent>{wij}</Prominent>
-      </div>
-      <div className="ml-auto 2 p-2 mr-2">
-        Zij: <Prominent>{zij}</Prominent>
-      </div>
-    </Bar>
+        <div className="mr-auto p-2">
+          Wij: <Prominent>{wij}</Prominent>
+        </div>
+        <div className="ml-auto 2 p-2 mr-2">
+          Zij: <Prominent>{zij}</Prominent>
+        </div>
+      </Bar>
+    </div>
   );
 };
 
