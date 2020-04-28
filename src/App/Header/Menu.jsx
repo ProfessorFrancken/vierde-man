@@ -66,26 +66,29 @@ const PlayedCards = ({ lastTrick }) => {
   return (
     <div>
       <h4 className="h5">Last trick</h4>
-      <h6>
-        Won by{' '}
-        <strong>
-          <PlayerName playerId={winner} />
-        </strong>
-      </h6>
       <ul className="list-unstyled d-flex justify-content-between mb-0 flex-wrap">
         {_.map(playedCards, (card, idx) => (
-          <CardWrapper
-            className="mx-2 my-2"
-            winner={winner === card.playedBy}
-            key={card.playedBy}
-          >
-            <Card
-              card={card}
-              onClick={() => {}}
-              disabled={card.playedBy !== winner}
-              onlyShowCorners
-            />
-          </CardWrapper>
+          <div className="d-flex flex-column justify-content-between align-items-center">
+            <span
+              className={`text-muted ${
+                winner === card.playedBy ? 'font-weight-bold' : ''
+              }`}
+            >
+              <PlayerName playerId={card.playedBy} />
+            </span>
+            <CardWrapper
+              className="my-2"
+              winner={winner === card.playedBy}
+              key={card.playedBy}
+            >
+              <Card
+                card={card}
+                onClick={() => {}}
+                disabled={card.playedBy !== winner}
+                onlyShowCorners
+              />
+            </CardWrapper>
+          </div>
         ))}
       </ul>
     </div>
