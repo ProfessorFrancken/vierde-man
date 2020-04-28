@@ -16,7 +16,17 @@ const Prominent = ({ children }) => (
 );
 
 const CardWrapper = styled.div`
-  --cardScale: 1.5;
+  --cardScale: 1.3;
+
+  @media (min-width: 255px) {
+    min-width: 50% !important;
+    --cardScale: 1.4;
+  }
+
+  @media (min-width: 385px) {
+    min-width: 25% !important;
+    --cardScale: 1.3;
+  }
 
   li {
     box-shadow: none !important;
@@ -64,31 +74,31 @@ const PlayedCards = ({ lastTrick }) => {
   );
 
   return (
-    <div>
-      <h4 className="h5">Last trick</h4>
-      <ul className="list-unstyled d-flex justify-content-between mb-0 flex-wrap">
+    <div className="border-bottom">
+      <h4 className="h6 font-weight-bold bg-light border-bottom mb-0 p-3">
+        Last trick
+      </h4>
+      <ul className="list-unstyled d-flex justify-content-between mb-0 flex-wrap p-3">
         {_.map(playedCards, (card, idx) => (
-          <div className="d-flex flex-column justify-content-between align-items-center">
+          <CardWrapper
+            className="mb-2 d-flex flex-column justify-content-between align-items-center mx-auto"
+            winner={winner === card.playedBy}
+            key={card.playedBy}
+          >
             <span
-              className={`text-muted ${
+              className={`mb-2 text-muted ${
                 winner === card.playedBy ? 'font-weight-bold' : ''
               }`}
             >
               <PlayerName playerId={card.playedBy} />
             </span>
-            <CardWrapper
-              className="my-2"
-              winner={winner === card.playedBy}
-              key={card.playedBy}
-            >
-              <Card
-                card={card}
-                onClick={() => {}}
-                disabled={card.playedBy !== winner}
-                onlyShowCorners
-              />
-            </CardWrapper>
-          </div>
+            <Card
+              card={card}
+              onClick={() => {}}
+              disabled={card.playedBy !== winner}
+              onlyShowCorners
+            />
+          </CardWrapper>
         ))}
       </ul>
     </div>
@@ -132,9 +142,7 @@ const Menu = ({ rounds, playedTricks, wij, zij, open, setOpen, playerId }) => {
         </div>
       </div>
       {playedTricks.length > 0 && (
-        <div className="p-3 border-bottom">
-          <PlayedCards lastTrick={playedTricks[playedTricks.length - 1]} />
-        </div>
+        <PlayedCards lastTrick={playedTricks[playedTricks.length - 1]} />
       )}
       <TreeTable rounds={rounds} />
       <Link
