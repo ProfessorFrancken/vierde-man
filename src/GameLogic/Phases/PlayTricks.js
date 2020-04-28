@@ -81,7 +81,8 @@ export const playerIsAllowedToPlayCard = (
       .some(value => value > highestPlayedTrumpCard);
 
   const trumpValueOfCard = rankOfTrumpCard(card);
-  const playerTriedToUnderTrump = trumpValueOfCard < highestPlayedTrumpCard;
+  const playerTriedToUnderTrump =
+    card.suit === trump && trumpValueOfCard < highestPlayedTrumpCard;
 
   // TODO: refactor to separate methods
   if (trumpIsAsked) {
@@ -116,6 +117,13 @@ export const playerIsAllowedToPlayCard = (
   }
 
   if (playerCanOvertrump && playerTriedToUnderTrump) {
+    return false;
+  }
+
+  if (
+    playerTriedToUnderTrump &&
+    handOfPlayer.some(({ suit }) => suit !== trump)
+  ) {
     return false;
   }
 

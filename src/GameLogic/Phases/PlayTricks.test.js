@@ -364,6 +364,54 @@ describe('playing a hand', () => {
         expect(result).toEqual(undefined);
         expect(G.hands[currentPlayer].length).toEqual(1);
       });
+
+      it("a player can't undertrump if it has another option", () => {
+        const G = {
+          ...gameState,
+          hands: { 1: [Card(DIAMONDS, 'J'), Card(SPADES, '7')] },
+          bid: { trump: SPADES },
+          currentTrick: {
+            startingPlayer: 3,
+            playedCards: {
+              0: { ...Card(SPADES, '9'), playedBy: 0 },
+              1: undefined,
+              2: undefined,
+              3: { ...Card(HEARTS, '9'), playedBy: 3 },
+            },
+          },
+        };
+
+        // Act
+        const result = PlayCard(G, { currentPlayer: 1 }, Card(SPADES, '7'));
+
+        // Assert no card should have been played
+        expect(result).toEqual(INVALID_MOVE);
+        expect(G.hands[1].length).toEqual(2);
+      });
+
+      it('a player can undertrump if it has another no other choice', () => {
+        const G = {
+          ...gameState,
+          hands: { 1: [Card(SPADES, '8'), Card(SPADES, '7')] },
+          bid: { trump: SPADES },
+          currentTrick: {
+            startingPlayer: 3,
+            playedCards: {
+              0: { ...Card(SPADES, '9'), playedBy: 0 },
+              1: undefined,
+              2: undefined,
+              3: { ...Card(HEARTS, '9'), playedBy: 3 },
+            },
+          },
+        };
+
+        // Act
+        const result = PlayCard(G, { currentPlayer: 1 }, Card(SPADES, '7'));
+
+        // Assert no card should have been played
+        expect(result).toEqual(undefined);
+        expect(G.hands[1].length).toEqual(1);
+      });
     });
 
     describe('when an opponent has trumped', () => {
