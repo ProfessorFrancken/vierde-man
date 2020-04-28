@@ -128,7 +128,8 @@ const Menu = ({ rounds, playedTricks, wij, zij, open, setOpen, playerId }) => {
         <div className="text-monospace text-center">
           Round
           <br />
-          {rounds.length + 1} / 16
+          {/* HACK: we don't want to show 17 / 16 rounds when a game has finished */}
+          {Math.min(rounds.length + 1, 16)} / 16
         </div>
         <div className="d-flex flex-column text-right">
           <h6>Zij</h6>
