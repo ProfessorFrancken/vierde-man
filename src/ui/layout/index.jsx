@@ -9,7 +9,7 @@ const StyledHeader = styled.div`
   .header__logo {
     color: white;
     padding: 1em;
-    background-color: $primary-color;
+    background-color: ${({ theme }) => theme.primary};
     width: 100%;
 
     svg {
@@ -45,9 +45,6 @@ const StyledHeader = styled.div`
   }
 
   @media (min-width: 768px) {
-    .header {
-    }
-
     .header__title-link {
       width: initial;
     }
@@ -159,7 +156,7 @@ const Header = () => {
   return (
     <StyledHeader className="francken-header d-flex justify-content-between">
       <div
-        className="header__logo h-100 flex-grow-1 flex-md-grow-0 skew-md--top-right bg-primary d-flex flex-md-column justify-content-end justify-content-md-end"
+        className="header__logo h-100 flex-grow-1 flex-md-grow-0 skew-md--top-right d-flex flex-md-column justify-content-end justify-content-md-end"
         style={{ boxShadow: '0px 0px 3px rgba(0, 0, 0, 0.8)' }}
       >
         <a
@@ -177,10 +174,10 @@ const Header = () => {
 
 const NavLi = styled.li`
   background-color: ${({ theme, active }) =>
-    active ? theme.primaryLight : theme.primary};
+    active ? theme.primary : theme.primaryDark};
 `;
 const NavigationStyle = styled.nav`
-  background-color: ${({ theme }) => theme.primary};
+  background-color: ${({ theme }) => theme.primaryDark};
 `;
 const Navigation = () => {
   return (
