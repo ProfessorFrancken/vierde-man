@@ -12,6 +12,7 @@ import {
   Switch,
   Redirect,
 } from 'react-router-dom';
+import Layout from 'ui/layout';
 
 const LocalMultiPlayerGrid = styled.div`
   display: flex;
@@ -144,7 +145,9 @@ const App = () => (
             <PlayGame />
           </Route>
           <Route exact path="/lobby">
-            <LobbiesContainer />
+            <Layout>
+              <LobbiesContainer />
+            </Layout>
           </Route>
           <Route>
             <Redirect to="/lobby" />
