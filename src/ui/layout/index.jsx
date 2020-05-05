@@ -1,16 +1,51 @@
 import React from 'react';
 import styled from 'styled-components';
 import { ReactComponent as Francken } from 'assets/LOGO_KAAL.svg';
+import { faGithub, faDiscord } from '@fortawesome/free-brands-svg-icons';
+import {
+  faUser,
+  faSignOutAlt,
+  faUsers,
+  faChartBar,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const StyledHeader = styled.div`
   --skew-degrees: 30deg;
   --negative-skew-degrees: -30deg;
 
+  --skew-degrees: 30deg;
+  --negative-skew-degrees: -30deg;
+  background-color: ${({ theme }) => theme.primary};
+  position: relative;
+
+  height: 9em;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: ${({ theme }) => theme.primary};
+    transform: skewX(var(--negative-skew-degrees));
+    border-radius: 0px 0px 10px 0px;
+    transform-origin: bottom right;
+  }
+
+  a {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
   .header__logo {
     color: white;
-    padding: 1em;
     background-color: ${({ theme }) => theme.primary};
     width: 100%;
+    z-index: 2;
 
     svg {
       z-index: 10;
@@ -19,155 +54,40 @@ const StyledHeader = styled.div`
     }
   }
 
-  .header__title {
-    font-size: 1em;
-    line-height: 1.1;
-    font-weight: 500;
-    font-family: $headings-font-family;
-
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .header__title-link {
-    width: 100%;
-    color: white;
-
-    // Make both the logo and "T.F.V 'Professor Francken'" show in the mobile menu
-    z-index: 202;
-    position: relative;
-
-    &:hover,
-    &:focus {
-      color: white;
-      text-decoration: none;
-    }
-  }
-
   @media (min-width: 768px) {
-    .header__title-link {
-      width: initial;
-    }
-
-    .navigation__hamburger-menu,
-    .navigation-list {
-      display: none;
-    }
-
     .header__logo {
-      padding: 2em 1em;
-      padding-right: 5em;
-      text-align: right;
       border-radius: 0px 0px 10px 0px;
+      width: 200px;
 
       svg {
         max-height: 60px;
       }
     }
+  }
 
-    .header__title {
-      font-size: 1.75rem;
-      margin: 0 0 0 1em;
+  @media (min-width: 992px) {
+    .header__logo {
+      width: 300px;
     }
   }
 
   @media (min-width: 1200px) {
     .header__logo {
-      padding: 2em 1em;
-      padding-right: 5em;
-
       svg {
         max-height: 80px;
       }
-    }
-  }
-
-  .header__logo {
-    z-index: 2;
-  }
-  .navigation-container__wrapper {
-    z-index: 1;
-  }
-  .navigation__menu-item {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-  }
-  @media (min-width: 768px) {
-    .header__logo {
-      width: 200px;
-      padding-right: 3em;
-    }
-
-    .navigation-container__wrapper {
-      margin-left: -200px;
-    }
-  }
-  @media (min-width: 992px) {
-    .navigation__menu-item {
-      padding-top: 2rem;
-      padding-bottom: 2rem;
-    }
-    .header__logo {
-      width: 300px;
-      padding-right: 5em;
-    }
-
-    .navigation-container__wrapper {
-      margin-left: -300px;
-    }
-  }
-
-  .skew--top-right {
-    transform: skewX(var(--negative-skew-degrees));
-    border-radius: 0px 0px 10px 0px;
-    transform-origin: top right;
-  }
-
-  .skew--top-right > * {
-    transform: skewX(var(--skew-degrees));
-  }
-
-  // Currently not used as we only skew the footer for medium devices
-  .skew--bottom-right {
-    transform: skewX(var(--skew-degrees));
-    border-radius: 0px 10px 0px 0px;
-    transform-origin: bottom right;
-  }
-
-  .skew--bottom-right > * {
-    transform: skewX(var(--negative-skew-degrees));
-  }
-
-  // Used for the footer
-  @media (min-width: 992px) {
-    .skew-md--top-right {
-      transform: skewX(var(--negative-skew-degrees));
-      border-radius: 0px 0px 10px 0px;
-      transform-origin: top right;
-    }
-
-    .skew-md--top-right > * {
-      transform: skewX(var(--skew-degrees));
     }
   }
 `;
 
 const Header = () => {
   return (
-    <StyledHeader className="francken-header d-flex justify-content-between">
-      <div
-        className="header__logo h-100 flex-grow-1 flex-md-grow-0 skew-md--top-right d-flex flex-md-column justify-content-end justify-content-md-end"
-        style={{ boxShadow: '0px 0px 3px rgba(0, 0, 0, 0.8)' }}
-      >
-        <a
-          className="header__title-link justify-content-begin justify-content-md-end align-items-center d-inline-flex p-md-4"
-          href="/"
-        >
-          <Francken height="100px" width="100px" />
-          <span className="d-md-none header__title">Vierde man?</span>
+    <StyledHeader className="francken-header">
+      <div className="header__logo">
+        <a className="header__title-link d-inline-flex flex-column" href="/">
+          <Francken height="130px" width="130px" />
         </a>
       </div>
-      <div className="header flex-grow-1"></div>
     </StyledHeader>
   );
 };
@@ -176,30 +96,178 @@ const NavLi = styled.li`
   background-color: ${({ theme, active }) =>
     active ? theme.primary : theme.primaryDark};
 `;
+const Separator = styled.li`
+  margin: auto;
+`;
 const NavigationStyle = styled.nav`
   background-color: ${({ theme }) => theme.primaryDark};
 `;
 const Navigation = () => {
   return (
     <NavigationStyle className="francken-navigation text-white font-weight-bold">
-      <ul className="list-unstyled text-center">
-        <NavLi className="my-3 p-4">
-          <div className="d-flex justify-content-center align-items-center">
-            <img
-              alt=""
-              src="https://randomuser.me/api/portraits/women/91.jpg"
-              className="rounded-circle mr-3"
-              height="50px"
+      <ul className="list-unstyled text-left d-flex flex-column h-100 mb-0 pt-4 pb-2 text-muted">
+        <NavLi active className="p-4 text-white">
+          <FontAwesomeIcon
+            icon={faUsers}
+            className="text-muted mr-3"
+            fixedWidth
+          />
+          Lobby
+        </NavLi>
+        <NavLi className="p-4">
+          <FontAwesomeIcon
+            icon={faChartBar}
+            className="text-muted mr-3"
+            fixedWidth
+          />
+          Statistics
+        </NavLi>
+        <Separator />
+        <NavLi className="p-4 text-left">
+          <a
+            href="https://github.com/ProfessorFrancken/vierde-man"
+            className="text-muted"
+          >
+            <FontAwesomeIcon
+              icon={faGithub}
+              className="text-muted mr-3"
+              fixedWidth
+            />
+            Github
+          </a>
+        </NavLi>
+        <NavLi className="p-4">
+          <div className="d-flex justify-content-start align-items-center">
+            <FontAwesomeIcon
+              icon={faUser}
+              className="text-muted mr-3"
+              fixedWidth
             />
             Profile
           </div>
         </NavLi>
-        <NavLi active className="my-3 p-4">
-          Lobby
+        <NavLi className="p-4 text-left">
+          <a href="/logout" className="text-muted">
+            <FontAwesomeIcon
+              icon={faSignOutAlt}
+              className="text-muted mr-3"
+              fixedWidth
+            />
+            Logout
+          </a>
         </NavLi>
-        <NavLi className="my-3 p-4">Statistics</NavLi>
       </ul>
     </NavigationStyle>
+  );
+};
+
+const StyledAside = styled.aside`
+  grid-area: side;
+`;
+const Aside = () => {
+  return (
+    <StyledAside className="m-4 ml-5 p-4 bg-light">
+      <div className="alert alert-primary flex-grow-1 mb-4">
+        <FontAwesomeIcon icon={faDiscord} className="mr-2" fixedWidth />
+        Join the{' '}
+        <a
+          href="https://discord.gg/gHb2jUq"
+          className="font-weight-bold"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Francken Discord
+        </a>{' '}
+        to chat while playing .
+      </div>
+
+      <h3>Klaverjas rules</h3>
+      <table className="table my-4 border-bottom ">
+        <thead>
+          <tr>
+            <th className="text-right">Trump</th>
+            <th>Points</th>
+            <th className="text-right">Non-trump</th>
+            <th>Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td className="text-right">Jack</td>
+            <td>20</td>
+            <td className="text-right">Ace</td>
+            <td>11</td>
+          </tr>
+          <tr>
+            <td className="text-right">9</td>
+            <td>14</td>
+            <td className="text-right">10</td>
+            <td>10</td>
+          </tr>
+          <tr>
+            <td className="text-right">Ace</td>
+            <td>11</td>
+            <td className="text-right">King</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td className="text-right">10</td>
+            <td>10</td>
+            <td className="text-right">Queen</td>
+            <td>3</td>
+          </tr>
+          <tr>
+            <td className="text-right">King</td>
+            <td>4</td>
+            <td className="text-right">Jack</td>
+            <td>2</td>
+          </tr>
+          <tr>
+            <td className="text-right">Queen</td>
+            <td>3</td>
+            <td className="text-right">9</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td className="text-right">8</td>
+            <td>0</td>
+            <td className="text-right">8</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td className="text-right">7</td>
+            <td>0</td>
+            <td className="text-right">7</td>
+            <td>0</td>
+          </tr>
+        </tbody>
+      </table>
+      <h5>Honor</h5>
+      <p className="text-muted">
+        Feugiat sed lectus vestibulum mattis ullamcorper velit sed ullamcorper
+        morbi? Risus pretium quam vulputate dignissim suspendisse in est ante in
+        nibh mauris, cursus mattis molestie a, iaculis at erat pellentesque.
+      </p>
+      <h5>Bidding</h5>
+      <p className="text-muted">
+        Quisque sagittis, purus sit amet volutpat consequat, mauris nunc congue.
+        Euismod elementum nisi, quis eleifend quam adipiscing vitae proin
+        sagittis, nisl rhoncus mattis rhoncus, urna neque viverra justo, nec
+        ultrices.
+      </p>
+      <h5>Seinen</h5>
+      <p className="text-muted">
+        Amet facilisis magna etiam tempor, orci eu lobortis elementum, nibh.
+        Elementum tempus egestas sed sed risus pretium quam vulputate dignissim
+        suspendisse in est ante in nibh mauris, cursus mattis molestie.
+      </p>
+      <h5>Concepts</h5>
+      <p className="text-muted">
+        Nulla facilisi cras fermentum, odio eu feugiat pretium, nibh ipsum
+        consequat nisl, vel pretium lectus quam id leo in vitae turpis massa.
+        Nisi, vitae suscipit tellus mauris a diam maecenas.
+      </p>
+    </StyledAside>
   );
 };
 
@@ -215,18 +283,22 @@ const LayoutStyle = styled.div`
     'nav content side'
     'footer footer footer';
 
-  grid-template-columns: 250px 1fr 200px;
+  grid-template-columns: 18em 1fr minmax(35em, 200px);
   grid-template-rows: auto 1fr auto;
-  grid-gap: 0;
+  grid-column-gap: 0em;
 
-  height: 100vh;
+  min-height: 100vh;
+  min-width: 100%;
 
   .francken-header {
     grid-area: header;
+    margin-right: 5em;
   }
 
   .francken-navigation {
     grid-area: nav;
+    margin-right: 5em;
+    position: sticky;
   }
 
   .francken-content {
@@ -239,7 +311,8 @@ const Layout = ({ children }) => {
     <LayoutStyle className="francken-layout">
       <Header className="francken-header" />
       <Navigation className="francken-navigation" />
-      <main className="francken-content">{children}</main>
+      <main className="francken-content my-4">{children}</main>
+      <Aside />
     </LayoutStyle>
   );
 };
