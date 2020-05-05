@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import Modal from 'Components/Modal';
 import LobbyRoomInstance from './room-instance';
 import LobbyCreateRoomForm from './create-room-form';
-import { subDays, fromUnixTime } from 'date-fns';
+import { subDays, fromUnixTime, formatDistanceToNow } from 'date-fns';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
 const unfinishedRoom = ({ rounds }) => rounds !== 16;
 const showOldRoomsFilter = (showOldRooms) => ({ createdAt }) => {
@@ -32,87 +34,74 @@ const Lobbies = ({
   const onChange = () => setShowOldRooms(!showOldRooms);
 
   return (
-    <div className="container">
-      <Modal.Dialog>
-        <Modal.Header>
-          <div className="d-flex justify-content-between">
-            <Modal.Title>{playerName}, hoi</Modal.Title>
-            <button
-              className="btn btn-text text-muted bg-light"
-              onClick={exitLobby}
-            >
-              Change username
-            </button>
-          </div>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="alert alert-primary">
-            Want to chat while playing a boompje? Join the{' '}
-            <a
-              href="https://discord.gg/gHb2jUq"
-              className="font-weight-bold"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              unofficial Francken Discord
-            </a>
-            .
-          </div>
-          <div className="d-flex justify-content-between align-items-center">
-            <div>
-              <p className="mb-0">Join a room, or open a new room.</p>
-              <div className="form-group form-check mt-2 text-muted">
-                <label htmlFor="showOldRooms">
-                  <input
-                    className="form-check-input"
-                    onChange={onChange}
-                    checked={showOldRooms}
-                    type="checkbox"
-                    id="showOldRooms"
-                  />
-                  Show outdated rooms
-                </label>
-              </div>
-            </div>
+    <>
+      <div className="container-fluid">
+        <h1 className="d-flex justify-content-between">
+          Vierdeman?
+          <div>
             <LobbyCreateRoomForm
               games={gameComponents}
               createGame={createRoom}
             />
+
+            <button
+              className="ml-3 btn btn-text text-muted bg-light"
+              onClick={exitLobby}
+            >
+              <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
+              Change username
+            </button>
           </div>
-        </Modal.Body>
-        <Modal.Table className="border-bottom table-responsive ">
-          <table className="table mb-0">
-            <thead>
-              <tr>
-                <th className="text-center">Wij</th>
-                <th className="text-center bg-light">Zij</th>
-                <th className="text-center">Status</th>
-                <th className="text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rooms
-                .filter(showOldRoomsFilter(showOldRooms))
-                .filter(unfinishedRoom)
-                .map((room) => (
-                  <LobbyRoomInstance
-                    key={'instance-' + room.gameID}
-                    room={room}
-                    playerName={playerName}
-                    onClickJoin={joinRoom}
-                    onClickLeave={leaveRoom}
-                  />
-                ))}
-            </tbody>
-          </table>
-        </Modal.Table>
-        {errorMsg && (
-          <Modal.Body>
-            <div className="alert alert-danger">{errorMsg}</div>
-          </Modal.Body>
-        )}
-      </Modal.Dialog>
-    </div>
+        </h1>
+        <hr />
+
+        <div className="border bg-white">
+          <div className="d-flex justify-content-between border-bottom">
+            <button className="btn btn-block mt-0 bg-white p-3">
+              Active games
+            </button>
+            <button className="btn btn-block mt-0 bg-light p-3">
+              Your games
+              <span class="badge badge-pill badge-primary ml-2">4</span>
+            </button>
+            <button className="btn btn-block mt-0 bg-light p-3">
+              Previous games
+            </button>
+          </div>
+          <div>
+            <table className="table mb-0">
+              <thead>
+                <tr>
+                  <th colSpan="2" className="text-center">
+                    Wij
+                  </th>
+                  <th colSpan="2" className="text-center bg-light">
+                    Zij
+                  </th>
+                  <th className="text-center">Rounds</th>
+                  <th className="text-center">Created</th>
+                  <th className="text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rooms
+                  .filter(showOldRoomsFilter(true))
+                  .filter(unfinishedRoom)
+                  .map((room) => (
+                    <LobbyRoomInstance
+                      key={'instance-' + room.gameID}
+                      room={room}
+                      playerName={playerName}
+                      onClickJoin={joinRoom}
+                      onClickLeave={leaveRoom}
+                    />
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 

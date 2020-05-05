@@ -48,7 +48,7 @@ const LobbiesContainer = ({ refreshInterval = 2000 }) => {
   }
 
   return (
-    <div id="lobby-view" className="p-2 p-md-5">
+    <div id="lobby-view" className="">
       <Lobbies
         playerName={playerName}
         gameComponents={gameComponents}
