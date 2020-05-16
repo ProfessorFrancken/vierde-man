@@ -163,6 +163,7 @@ const Navigation = () => {
 
 const StyledAside = styled.aside`
   grid-area: side;
+  overflow: auto;
 `;
 const Aside = () => {
   return (
@@ -251,20 +252,13 @@ const Aside = () => {
       <h5>Bidding</h5>
       <p className="text-muted">
         Quisque sagittis, purus sit amet volutpat consequat, mauris nunc congue.
-        Euismod elementum nisi, quis eleifend quam adipiscing vitae proin
-        sagittis, nisl rhoncus mattis rhoncus, urna neque viverra justo, nec
-        ultrices.
       </p>
       <h5>Seinen</h5>
       <p className="text-muted">
         Amet facilisis magna etiam tempor, orci eu lobortis elementum, nibh.
-        Elementum tempus egestas sed sed risus pretium quam vulputate dignissim
-        suspendisse in est ante in nibh mauris, cursus mattis molestie.
       </p>
       <h5>Concepts</h5>
       <p className="text-muted">
-        Nulla facilisi cras fermentum, odio eu feugiat pretium, nibh ipsum
-        consequat nisl, vel pretium lectus quam id leo in vitae turpis massa.
         Nisi, vitae suscipit tellus mauris a diam maecenas.
       </p>
     </StyledAside>
@@ -288,6 +282,7 @@ const LayoutStyle = styled.div`
   grid-column-gap: 0em;
 
   min-height: 100vh;
+  max-height: 100vh;
   min-width: 100%;
 
   .francken-header {
@@ -303,6 +298,7 @@ const LayoutStyle = styled.div`
 
   .francken-content {
     grid-area: content;
+    overflow: auto;
   }
 `;
 
