@@ -139,9 +139,7 @@ const App = () => (
             }}
           />
           <Route exact path="/login">
-            <Layout>
-              <Login />
-            </Layout>
+            <Login />
           </Route>
           <Route path="/games/:gameName/:gameId">
             <PlayGame />

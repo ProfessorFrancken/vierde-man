@@ -14,6 +14,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const franckenAccountIsEnabled = false;
 
+const Container = styled.div`
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+`;
+
 const FranckenLogo = styled.div`
   fill: ${({ theme }) => theme.primary} !important;
   * {
@@ -95,7 +101,7 @@ const AccountLoginForm = ({ onSubmit, nameErrorMsg }) => {
           onChange={onChangePassphrase}
           onKeyPress={onKeyPress}
           className="form-control"
-          placeholder="We don't do any validation on your passphrase, so this can be a long sentence"
+          placeholder="Your super secret passphrase"
         />
         <small class="form-text text-muted">
           We currently don't have an option to reset your passphrase. If you've
@@ -148,83 +154,78 @@ const Login = () => {
   };
 
   return (
-    <div className="container-fluid">
-      <h1 className="d-flex justify-content-between">Login</h1>
-      <hr />
-
-      <div className="container mt-5">
-        <div style={{ maxWidth: '30em' }} className="mx-auto">
-          <Modal.Dialog>
-            <Modal.Footer>
-              <Modal.Actions>
-                <Modal.Action
-                  primary={signInAsGuest === true}
-                  onClick={() => setSignInAsGuest(true)}
-                >
-                  <FontAwesomeIcon
-                    icon={faUserSecret}
-                    className="text-muted mr-3"
-                    fixedWidth
-                  />
-                  Guest account
-                </Modal.Action>
-                <Modal.Action
-                  primary={signInAsGuest === false}
-                  onClick={() => setSignInAsGuest(false)}
-                >
-                  <FontAwesomeIcon
-                    icon={faUser}
-                    className="text-muted mr-3"
-                    fixedWidth
-                  />
-                  Login
-                </Modal.Action>
-                {franckenAccountIsEnabled && (
-                  <Modal.Action onClick={onClickEnter}>
-                    <div className="d-flex justify-content-center align-items-center">
-                      <FranckenLogo>
-                        <Francken
-                          height="40px"
-                          style={{ fill: 'blue !important' }}
-                        />
-                      </FranckenLogo>
-                      <span className="ml-3">Francken Account</span>
-                    </div>
-                  </Modal.Action>
-                )}
-              </Modal.Actions>
-            </Modal.Footer>
-            <Modal.Body>
-              {signInAsGuest ? (
-                <GuestLoginForm
-                  displayName={displayName}
-                  onChangeDisplayName={onChangeDisplayName}
-                  onSubmit={onSubmit}
+    <Container className="container-fluid">
+      <div style={{ maxWidth: '30em' }} className="mx-auto">
+        <Modal.Dialog>
+          <Modal.Footer>
+            <Modal.Actions>
+              <Modal.Action
+                primary={signInAsGuest === true}
+                onClick={() => setSignInAsGuest(true)}
+              >
+                <FontAwesomeIcon
+                  icon={faUserSecret}
+                  className="text-muted mr-3"
+                  fixedWidth
                 />
-              ) : (
-                <AccountLoginForm
-                  displayName={displayName}
-                  onChangeDisplayName={onChangeDisplayName}
-                  onSubmit={onSubmit}
+                Guest account
+              </Modal.Action>
+              <Modal.Action
+                primary={signInAsGuest === false}
+                onClick={() => setSignInAsGuest(false)}
+              >
+                <FontAwesomeIcon
+                  icon={faUser}
+                  className="text-muted mr-3"
+                  fixedWidth
                 />
-              )}
-            </Modal.Body>
-            <Modal.Footer>
-              <Modal.Actions>
+                Login
+              </Modal.Action>
+              {franckenAccountIsEnabled && (
                 <Modal.Action onClick={onClickEnter}>
-                  <FontAwesomeIcon
-                    icon={faSignInAlt}
-                    className="text-muted mr-3"
-                    fixedWidth
-                  />
-                  Login
+                  <div className="d-flex justify-content-center align-items-center">
+                    <FranckenLogo>
+                      <Francken
+                        height="40px"
+                        style={{ fill: 'blue !important' }}
+                      />
+                    </FranckenLogo>
+                    <span className="ml-3">Francken Account</span>
+                  </div>
                 </Modal.Action>
-              </Modal.Actions>
-            </Modal.Footer>
-          </Modal.Dialog>
-        </div>
+              )}
+            </Modal.Actions>
+          </Modal.Footer>
+          <Modal.Body>
+            {signInAsGuest ? (
+              <GuestLoginForm
+                displayName={displayName}
+                onChangeDisplayName={onChangeDisplayName}
+                onSubmit={onSubmit}
+              />
+            ) : (
+              <AccountLoginForm
+                displayName={displayName}
+                onChangeDisplayName={onChangeDisplayName}
+                onSubmit={onSubmit}
+              />
+            )}
+          </Modal.Body>
+          <Modal.Footer>
+            <Modal.Actions>
+              <Modal.Action onClick={onClickEnter}>
+                <FontAwesomeIcon
+                  icon={faSignInAlt}
+                  className="text-muted mr-3"
+                  fixedWidth
+                />
+                Login
+              </Modal.Action>
+            </Modal.Actions>
+          </Modal.Footer>
+        </Modal.Dialog>
       </div>
-    </div>
+    </Container>
   );
 };
 
