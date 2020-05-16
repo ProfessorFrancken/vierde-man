@@ -5,6 +5,7 @@ import LobbyCreateRoomForm from './create-room-form';
 import { subDays, fromUnixTime, formatDistanceToNow } from 'date-fns';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { LobbyMenu } from './LobbyMenu';
 
 const unfinishedRoom = ({ rounds }) => rounds !== 16;
 const showOldRoomsFilter = (showOldRooms) => ({ createdAt }) => {
@@ -56,18 +57,7 @@ const Lobbies = ({
         <hr />
 
         <div className="border bg-white">
-          <div className="d-flex justify-content-between border-bottom">
-            <button className="btn btn-block mt-0 bg-white p-3">
-              Active games
-            </button>
-            <button className="btn btn-block mt-0 bg-light p-3">
-              Your games
-              <span class="badge badge-pill badge-primary ml-2">4</span>
-            </button>
-            <button className="btn btn-block mt-0 bg-light p-3">
-              Previous games
-            </button>
-          </div>
+          <LobbyMenu />
           <div>
             <table className="table mb-0">
               <thead>
