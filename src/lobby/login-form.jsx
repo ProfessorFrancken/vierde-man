@@ -103,8 +103,8 @@ const AccountLoginForm = ({ onSubmit, nameErrorMsg }) => {
         </small>
       </div>
       <small class="form-text text-muted">
-        Don't have an account? Go to{' '}
-        <Link to="/register">the registration page</Link>.
+        Don't have an account?{' '}
+        <Link to="/login">Login with a guest account</Link>.
       </small>
     </>
   );
