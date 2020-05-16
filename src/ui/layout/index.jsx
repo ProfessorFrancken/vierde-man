@@ -9,6 +9,25 @@ import {
   faChartBar,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useLobby } from 'lobby/context';
+
+const LogoutButton = () => {
+  const { exitLobby } = useLobby();
+
+  return (
+    <button
+      onClick={exitLobby}
+      className="p-4 btn btn-text text-muted text-left"
+    >
+      <FontAwesomeIcon
+        icon={faSignOutAlt}
+        className="text-muted mr-3"
+        fixedWidth
+      />
+      Logout
+    </button>
+  );
+};
 
 const StyledHeader = styled.div`
   --skew-degrees: 30deg;
@@ -146,16 +165,7 @@ const Navigation = () => {
             Profile
           </div>
         </NavLi>
-        <NavLi className="p-4 text-left">
-          <a href="/logout" className="text-muted">
-            <FontAwesomeIcon
-              icon={faSignOutAlt}
-              className="text-muted mr-3"
-              fixedWidth
-            />
-            Logout
-          </a>
-        </NavLi>
+        <LogoutButton />
       </ul>
     </NavigationStyle>
   );

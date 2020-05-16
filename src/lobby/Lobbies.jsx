@@ -98,7 +98,6 @@ const Lobbies = ({
   playerName,
   gameComponents,
   errorMsg,
-  exitLobby,
   createRoom,
   joinRoom,
   leaveRoom,
@@ -132,14 +131,6 @@ const Lobbies = ({
               games={gameComponents}
               createGame={createRoom}
             />
-
-            <button
-              className="ml-3 btn btn-text text-muted bg-light"
-              onClick={exitLobby}
-            >
-              <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
-              Change username
-            </button>
           </div>
         </h1>
         <hr />
