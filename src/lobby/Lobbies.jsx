@@ -133,9 +133,8 @@ const Lobbies = ({
             />
           </div>
         </h1>
-        <hr />
 
-        <div className="border bg-white">
+        <div className="border bg-white mt-4">
           <div>
             <table className="table mb-0">
               <thead>
