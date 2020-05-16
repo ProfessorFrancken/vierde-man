@@ -89,7 +89,7 @@ ${activePlayerId === player.id ? 'text-primary' : 'text-muted'}
           {room.turn <= 1 && playerSeat && (
             <div className="my-1">
               <button
-                className={`ml-1 btn btn-text bg-primary ${
+                className={`mx-1 btn btn-text bg-primary ${
                   playerSeat ? 'text-white' : ''
                 }`}
                 onClick={() => props.onClickLeave(room.gameName, room.gameID)}
@@ -105,7 +105,7 @@ ${activePlayerId === player.id ? 'text-primary' : 'text-muted'}
             <div className="my-1">
               <Link
                 to={`/games/klaver-jassen/${room.gameID}`}
-                className="btn btn-text bg-primary text-white"
+                className="btn btn-text bg-primary text-white mx-1"
               >
                 <FontAwesomeIcon icon={faPlay} className="mr-2" />
                 Play
@@ -116,7 +116,7 @@ ${activePlayerId === player.id ? 'text-primary' : 'text-muted'}
             <div className="my-1">
               <Link
                 to={`/games/klaver-jassen/${room.gameID}`}
-                className="btn btn-text bg-light text-dark"
+                className="btn btn-text bg-light text-dark mx-1"
               >
                 <FontAwesomeIcon icon={faEye} className="mr-2" />
                 Spectate
