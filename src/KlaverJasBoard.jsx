@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import Player from 'App/Player';
 import { GameProvider } from 'game/context';
+import francken from 'assets/francken.png';
+import tableBackground from 'assets/table-background.jpg';
 
 const SinglePlayer = styled.div`
   display: grid;
@@ -9,9 +11,13 @@ const SinglePlayer = styled.div`
   grid-template-rows: 1fr;
   grid-template-columns: 1fr;
   grid-template-areas: 'player-0 player-1 player-2 player-3';
+
+  background: no-repeat center center url('${francken}'),
+    url('${tableBackground}');
+  background-blend-mode: overlay;
 `;
 
-const KlaverJasBoard = props => {
+const KlaverJasBoard = (props) => {
   const urlParams = new URLSearchParams(window.location.search);
   const { G, moves, ctx } = props;
   const { phase } = ctx;
