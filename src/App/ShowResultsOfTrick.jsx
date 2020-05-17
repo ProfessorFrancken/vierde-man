@@ -4,6 +4,13 @@ import { WinnerOfTrick, PointsOfTrick } from 'GameLogic/Card';
 import Modal from 'Components/Modal';
 import PlayerName from 'Components/PlayerName';
 import { useSpring, animated } from 'react-spring';
+import { WaitingForPlayers } from 'Components/WaitingForPlayers';
+import styled from 'styled-components';
+
+const SmallText = styled.div`
+  font-size: 0.8em;
+  margin-top: 1em;
+`;
 
 const Prominent = ({ children }) => (
   <span>{children === 33 ? "'Vo" : children}</span>
@@ -69,6 +76,13 @@ const ShowResultsOfTrick = ({
               </li>
             )}
           </ul>
+          {playersThatWantToContinue.includes(playerId) && (
+            <SmallText>
+              <WaitingForPlayers
+                playersThatWantToContinue={playersThatWantToContinue}
+              />
+            </SmallText>
+          )}
         </Modal.Header>
         <div
           className="progress"

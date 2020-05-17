@@ -3,6 +3,7 @@ import { SuitStringToComponent } from 'Components/Suits';
 import _ from 'lodash';
 import Modal from 'Components/Modal';
 import { useSpring, animated } from 'react-spring';
+import { WaitingForPlayers } from 'Components/WaitingForPlayers';
 
 const Prominent = ({ children }) => (
   <span>{children === 33 ? "'Vo" : children}</span>
@@ -181,7 +182,9 @@ const ShowResultsOfHand = ({
       <Modal.Footer className="border-0">
         {playersThatWantToPlayNextHand.includes(playerId) ? (
           <Modal.Body className="p-3 text-center">
-            Waiting for other players
+            <WaitingForPlayers
+              playersThatWantToContinue={playersThatWantToPlayNextHand}
+            />
           </Modal.Body>
         ) : (
           <Modal.Actions>
