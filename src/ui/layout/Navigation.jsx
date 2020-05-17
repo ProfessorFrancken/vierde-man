@@ -68,16 +68,15 @@ export const Navigation = () => {
       className="francken-navigation text-white font-weight-bold h-md-100 position-relative"
       active={active}
     >
-      <div className="d-flex d-md-none justify-content-end align-items-center bg-dark-primary">
-        <div
-          className="text-center py-2 px-3 d-flex justify-content-end align-items-center"
-          onClick={() => setActive(!active)}
-        >
+      <div
+        className="d-flex d-md-none justify-content-end align-items-center bg-dark-primary"
+        onClick={() => setActive(!active)}
+      >
+        <div className="text-center py-2 d-flex justify-content-end align-items-center">
           <div className="d-none d-sm-block">Vierdeman?</div>
-
-          <div className="ml-3 py-1 px-2 bg-primary">
-            <FontAwesomeIcon icon={faBars} className="text-white" fixedWidth />
-          </div>
+        </div>
+        <div className="ml-3 py-2 px-3 bg-primary">
+          <FontAwesomeIcon icon={faBars} className="text-white" fixedWidth />
         </div>
       </div>
       <ul className="navigation-items list-unstyled text-left d-one d-md-flex flex-column mb-0 pt-5 pt-md-4 pb-2 text-muted bg-dark-primary">
