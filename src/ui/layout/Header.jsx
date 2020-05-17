@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ReactComponent as Francken } from 'assets/LOGO_KAAL.svg';
 
 const StyledHeader = styled.div`
   --skew-degrees: 30deg;
@@ -78,7 +77,7 @@ export const Header = () => {
     <StyledHeader className="francken-header">
       <div className="header__logo text-white bg-primary">
         <a className="d-inline-flex flex-column" href="/">
-          <Francken height="100px" />
+          <h1 className="text-white mb-0">♣</h1>
         </a>
       </div>
     </StyledHeader>
