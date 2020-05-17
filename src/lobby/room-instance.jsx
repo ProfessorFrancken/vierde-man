@@ -80,7 +80,7 @@ ${activePlayerId === player.id ? 'text-primary' : 'text-muted'}
       </td>
       <td className="text-right align-middle h-100">
         <div className="d-flex justify-content-end">
-          {room.turn <= 1 && playerSeat && (
+          {playerSeat && (
             <div className="my-1">
               <button
                 className={`mx-1 btn btn-text bg-primary ${
