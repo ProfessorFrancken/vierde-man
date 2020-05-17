@@ -207,11 +207,21 @@ export const Aside = () => {
   return (
     <StyledAside className="my-4 container-fluid">
       <div className="bg-light shadow-sm border rounded">
-        <div className="p-4">
+        <div className="p-4 pb-0">
           <NewsAlert />
           <FranckenDiscordAlert />
 
-          <h3 className="h5 font-weight-bold">Points table</h3>
+          <h3 className="h5 font-weight-bold">Tips</h3>
+          <p>
+            <strong>Want to switch to another device?</strong> Leave your
+            current game to join on your other device.
+          </p>
+          <p>
+            <strong>Is the game not updating?</strong> Your internet connection
+            may have switched, refreshing the webpage often helps.
+          </p>
+
+          <h3 className="h5 font-weight-bold mb-0">Points table</h3>
         </div>
 
         <PointsPerCardTable />
