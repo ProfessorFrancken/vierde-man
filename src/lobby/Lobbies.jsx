@@ -15,6 +15,7 @@ const joinableRoom = (playerName) => ({ rounds, players, ...rest }) => {
   if (rounds === 16) {
     return false;
   }
+
   return _.some(
     players,
     (player) => !player.name || player.name === playerName
@@ -113,28 +114,23 @@ const Lobbies = ({
   return (
     <>
       <div className="container-fluid">
-        <h1 className="d-flex justify-content-between">
-          Vierdeman?
-          <div>
-            <button
-              className="mx-3 btn btn-text text-muted bg-light"
-              onClick={toggleShowOldRooms}
-            >
-              <FontAwesomeIcon
-                icon={showOldRooms ? faEyeSlash : faEye}
-                className="mr-2"
-              />
-              {showOldRooms ? 'Hide old rooms' : 'Show old rooms'}
-            </button>
-
-            <LobbyCreateRoomForm
-              games={gameComponents}
-              createGame={createRoom}
+        <h1>Vierdeman?</h1>
+        <div className="d-flex align-items-center my-2 mt-3">
+          <button
+            className="mr-3 btn btn-text bg-light"
+            onClick={toggleShowOldRooms}
+          >
+            <FontAwesomeIcon
+              icon={showOldRooms ? faEyeSlash : faEye}
+              className="mr-2 text-muted"
             />
-          </div>
-        </h1>
+            {showOldRooms ? 'Hide old rooms' : 'Show old rooms'}
+          </button>
 
-        <div className="border bg-white mt-4">
+          <LobbyCreateRoomForm games={gameComponents} createGame={createRoom} />
+        </div>
+
+        <div className="border bg-white mt-3">
           <div>
             <table className="table mb-0">
               <thead>

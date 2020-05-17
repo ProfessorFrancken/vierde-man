@@ -14,7 +14,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 class LobbyCreateRoomForm extends React.Component {
   static propTypes = {
     games: PropTypes.array.isRequired,
-    createGame: PropTypes.func.isRequired
+    createGame: PropTypes.func.isRequired,
   };
 
   render() {
@@ -29,7 +29,7 @@ class LobbyCreateRoomForm extends React.Component {
         onClick={createGame}
         className="btn btn-text bg-light text-primary"
       >
-        <FontAwesomeIcon icon={faPlus} className="mr-2" />
+        <FontAwesomeIcon icon={faPlus} className="mr-2 text-muted" />
         Open a new room
       </button>
     );
