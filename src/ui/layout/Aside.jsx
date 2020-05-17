@@ -1,13 +1,32 @@
 import React from 'react';
 import styled from 'styled-components';
-import { faDiscord } from '@fortawesome/free-brands-svg-icons';
+import { faDiscord, faGithub } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faNewspaper } from '@fortawesome/free-solid-svg-icons';
 
 const StyledAside = styled.aside`
   grid-area: side;
   overflow: auto;
 `;
 
+const NewsAlert = () => {
+  return (
+    <div className="alert alert-primary flex-grow-1 mb-4">
+      <FontAwesomeIcon icon={faNewspaper} className="mr-2" fixedWidth />
+      The interface got an update! Don't like it? Go and complain on
+      <a
+        href="https://github.com/ProfessorFrancken/vierde-man/issues"
+        className="font-weight-bold"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <FontAwesomeIcon icon={faGithub} className="mx-1 ml-2" />
+        Github
+      </a>
+      .
+    </div>
+  );
+};
 const FranckenDiscordAlert = () => {
   return (
     <div className="alert alert-primary flex-grow-1 mb-4">
@@ -189,6 +208,7 @@ export const Aside = () => {
     <StyledAside className="my-4 container-fluid">
       <div className="bg-light shadow-sm border rounded">
         <div className="p-4">
+          <NewsAlert />
           <FranckenDiscordAlert />
 
           <h3 className="h5 font-weight-bold">Points table</h3>
