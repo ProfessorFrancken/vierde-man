@@ -37,8 +37,6 @@ const Separator = styled.li`
   margin: auto;
 `;
 const NavigationStyle = styled.nav`
-  z-index: 2;
-
   .bg-dark-primary {
     background-color: ${({ theme }) => theme.primaryDark};
   }
