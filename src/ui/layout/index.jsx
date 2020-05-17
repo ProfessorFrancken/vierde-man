@@ -48,7 +48,7 @@ const LayoutStyle = styled.div`
 
   // Medium devices (tablets, 768px and up)
   @media (min-width: 768px) {
-    --navigation-margin-right: 5em;
+    --navigation-margin-right: 3em;
 
     grid-template-rows: auto;
     display: grid;
