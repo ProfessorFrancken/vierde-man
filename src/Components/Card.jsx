@@ -34,6 +34,7 @@ const CardLi = styled.li.attrs((props) => ({
 
   font-family: var(--card-font-family);
   font-weight: var(--card-font-weight) !important;
+  user-select: none;
 
   ${(props) =>
     !props.disabled &&
@@ -47,6 +48,7 @@ const CardLi = styled.li.attrs((props) => ({
 
   &:before,
   &:after {
+    user-select: none;
     font-family: var(--card-font-family);
     font-weight: var(--card-font-weight);
     content: '${(props) => props.face}  ${(props) => suitIcon[props.suit]}';
