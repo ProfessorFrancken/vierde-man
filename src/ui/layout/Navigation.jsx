@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import {
@@ -10,6 +10,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useLobby } from 'lobby/context';
+import { useOnClickOutside } from 'hooks';
 
 const LogoutButton = () => {
   const { exitLobby } = useLobby();
@@ -58,9 +59,12 @@ const NavigationStyle = styled.nav`
 
 export const Navigation = () => {
   const [active, setActive] = useState(false);
+  const node = useRef();
+  useOnClickOutside(node, () => setActive(false));
 
   return (
     <NavigationStyle
+      ref={node}
       className="francken-navigation text-white font-weight-bold h-md-100 position-relative"
       active={active}
     >
