@@ -93,29 +93,33 @@ const PointsPerCardTable = () => {
 
 export const Aside = () => {
   return (
-    <StyledAside className="my-4 ml-xl-5 p-4 bg-light">
-      <FranckenDiscordAlert />
+    <StyledAside className="my-4 container-fluid">
+      <div className="p-4 bg-light">
+        <FranckenDiscordAlert />
 
-      <h3>Klaverjas rules</h3>
-      <PointsPerCardTable />
-      <h5>Honor</h5>
-      <p className="text-muted">
-        Feugiat sed lectus vestibulum mattis ullamcorper velit sed ullamcorper
-        morbi? Risus pretium quam vulputate dignissim suspendisse in est ante in
-        nibh mauris, cursus mattis molestie a, iaculis at erat pellentesque.
-      </p>
-      <h5>Bidding</h5>
-      <p className="text-muted">
-        Quisque sagittis, purus sit amet volutpat consequat, mauris nunc congue.
-      </p>
-      <h5>Seinen</h5>
-      <p className="text-muted">
-        Amet facilisis magna etiam tempor, orci eu lobortis elementum, nibh.
-      </p>
-      <h5>Concepts</h5>
-      <p className="text-muted">
-        Nisi, vitae suscipit tellus mauris a diam maecenas.
-      </p>
+        <h3>Klaverjas rules</h3>
+        <PointsPerCardTable />
+        <h5>Honor</h5>
+        <p className="text-muted">
+          Feugiat sed lectus vestibulum mattis ullamcorper velit sed ullamcorper
+          morbi? Risus pretium quam vulputate dignissim suspendisse in est ante
+          in nibh mauris, cursus mattis molestie a, iaculis at erat
+          pellentesque.
+        </p>
+        <h5>Bidding</h5>
+        <p className="text-muted">
+          Quisque sagittis, purus sit amet volutpat consequat, mauris nunc
+          congue.
+        </p>
+        <h5>Seinen</h5>
+        <p className="text-muted">
+          Amet facilisis magna etiam tempor, orci eu lobortis elementum, nibh.
+        </p>
+        <h5>Concepts</h5>
+        <p className="text-muted">
+          Nisi, vitae suscipit tellus mauris a diam maecenas.
+        </p>
+      </div>
     </StyledAside>
   );
 };
