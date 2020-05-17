@@ -85,7 +85,7 @@ export const Navigation = () => {
           />
           Lobby
         </NavLi>
-        <NavLi className="p-4">
+        <NavLi className="p-4 d-none">
           <FontAwesomeIcon
             icon={faChartBar}
             className="text-muted mr-3"
@@ -107,7 +107,7 @@ export const Navigation = () => {
             Github
           </a>
         </NavLi>
-        <NavLi className="p-4">
+        <NavLi className="p-4 d-none">
           <div className="d-flex justify-content-start align-items-center">
             <FontAwesomeIcon
               icon={faUser}
