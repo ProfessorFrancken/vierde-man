@@ -73,7 +73,7 @@ const LayoutStyle = styled.div`
   // Extra large devices (large desktops, 1200px and up)
   @media (min-width: 1200px) {
     max-height: 100vh;
-    grid-template-columns: 18em 1fr minmax(35em, 200px);
+    grid-template-columns: 18em minmax(700px, 1fr) minmax(auto, 30em);
     grid-template-rows: auto 1fr auto;
     grid-template-areas:
       'header content side'
