@@ -98,8 +98,8 @@ export const Header = () => {
   return (
     <StyledHeader className="francken-header">
       <div className="header__logo">
-        <a className="header__title-link d-inline-flex flex-column" href="/">
-          <Francken height="130px" width="130px" />
+        <a className="d-inline-flex flex-column" href="/">
+          <Francken height="100px" />
         </a>
       </div>
     </StyledHeader>
