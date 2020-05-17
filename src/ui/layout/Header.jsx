@@ -11,7 +11,8 @@ const StyledHeader = styled.div`
   position: relative;
 
   height: 6em;
-  z-index: 3;
+  z-index: 1;
+
   &:before {
     content: '';
     position: absolute;
@@ -23,7 +24,6 @@ const StyledHeader = styled.div`
     transform: skewX(var(--negative-skew-degrees));
     border-radius: 0px 0px 10px 0px;
     transform-origin: bottom right;
-    z-index: 2;
 
     margin-left: -4em;
     width: 4em;
@@ -35,17 +35,14 @@ const StyledHeader = styled.div`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 3;
   }
 
   .header__logo {
     color: white;
     background-color: var(--bg-color);
     width: 100%;
-    z-index: 2;
 
     svg {
-      z-index: 10;
       max-width: 100%;
       max-height: 50px;
     }
