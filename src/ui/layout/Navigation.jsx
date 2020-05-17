@@ -38,19 +38,17 @@ const Separator = styled.li`
 `;
 const NavigationStyle = styled.nav`
   z-index: 2;
-  div,
-  ul {
+
+  .bg-dark-primary {
     background-color: ${({ theme }) => theme.primaryDark};
   }
 
-  ul {
-    width: 100%;
-    margin-top: ${({ active }) => (active ? '0' : '-150%')};
+  .navigation-items {
     transition: margin-top 400ms ease-in-out;
+    margin-top: ${({ active }) => (active ? '0' : '-150%')};
 
     @media (min-width: 576px) {
       margin-top: ${({ active }) => (active ? '0' : '-100%')};
-      transition: margin-top 600ms ease-in-out;
     }
 
     @media (min-width: 768px) {
@@ -68,7 +66,7 @@ export const Navigation = () => {
       className="francken-navigation text-white font-weight-bold h-md-100 position-relative"
       active={active}
     >
-      <div className="d-flex d-md-none justify-content-end align-items-center">
+      <div className="d-flex d-md-none justify-content-end align-items-center bg-dark-primary">
         <div
           className="text-center py-2 px-3 d-flex justify-content-end align-items-center"
           onClick={() => setActive(!active)}
@@ -80,7 +78,7 @@ export const Navigation = () => {
           </div>
         </div>
       </div>
-      <ul className="list-unstyled text-left d-one d-md-flex flex-column mb-0 pt-5 pt-md-4 pb-2 text-muted">
+      <ul className="navigation-items list-unstyled text-left d-one d-md-flex flex-column mb-0 pt-5 pt-md-4 pb-2 text-muted bg-dark-primary">
         <NavLi active className="p-4 text-white">
           <FontAwesomeIcon
             icon={faUsers}
