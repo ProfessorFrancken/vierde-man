@@ -13,10 +13,6 @@ const StyledHeader = styled.div`
 
   height: 6em;
   z-index: 3;
-
-  @media (min-width: 576px) {
-    height: 7em;
-  }
   &:before {
     content: '';
     position: absolute;
@@ -34,22 +30,6 @@ const StyledHeader = styled.div`
     margin-left: -4em;
     width: 4em;
     margin-left: 5.5em;
-
-    @media (min-width: 576px) {
-      width: 6em;
-      margin-left: 5em;
-    }
-
-    @media (min-width: 768px) {
-      width: unset;
-      margin-left: 0em;
-    }
-
-    @media (min-width: 1200px) {
-      margin-right: 0;
-      margin-left: 0;
-      width: unset;
-    }
   }
 
   a {
@@ -73,6 +53,10 @@ const StyledHeader = styled.div`
     }
   }
 
+  @media (min-width: 576px) {
+    height: 7em;
+  }
+
   @media (min-width: 768px) {
     .header__logo {
       border-radius: 0px 0px 10px 0px;
@@ -90,6 +74,27 @@ const StyledHeader = styled.div`
       svg {
         max-height: 70px;
       }
+    }
+  }
+  @media (min-width: 576px) {
+    &:before {
+      width: 6em;
+      margin-left: 5em;
+    }
+  }
+
+  @media (min-width: 768px) {
+    &:before {
+      width: unset;
+      margin-left: 0em;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    &:before {
+      margin-right: 0;
+      margin-left: 0;
+      width: unset;
     }
   }
 `;
