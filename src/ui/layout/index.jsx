@@ -70,8 +70,10 @@ const LayoutStyle = styled.div`
   @media (min-width: 992px) {
   }
 
-  // Extra large devices (large desktops, 1200px and up)
-  @media (min-width: 1200px) {
+  // Extra large devices (large desktops, 1300px and up)
+  // Note: this has specifically been set to 1300px instead of 1200px to improve
+  // responsiveness of the aside menu
+  @media (min-width: 1300px) {
     max-height: 100vh;
     grid-template-columns: 18em minmax(700px, 1fr) minmax(auto, 30em);
     grid-template-rows: auto 1fr auto;
