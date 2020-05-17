@@ -70,7 +70,7 @@ export const Navigation = () => {
     >
       <div className="d-flex d-md-none justify-content-end align-items-center">
         <div
-          className="text-center py-3 py-sm-4 px-3 d-flex justify-content-end align-items-center"
+          className="text-center py-2 px-3 d-flex justify-content-end align-items-center"
           onClick={() => setActive(!active)}
         >
           <div className="d-none d-sm-block">Vierdeman?</div>
