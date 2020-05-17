@@ -97,38 +97,38 @@ const KlaverJasRules = () => {
       <h3 className="mb-3">Klaverjas rules</h3>
 
       <h4 className="h6 font-weight-bold mb-1">Which card to play?</h4>
-      <p>If trump is asked:</p>
-      <ol>
+      <p className="mb-0 mt-2">If trump is asked:</p>
+      <ol className="pl-3">
         <li>Follow suit and play a higher trump (overtroeven)</li>
         <li>No higher trump? Play a lower trump (ondertroeven)</li>
         <li>No trump? Play another suit.</li>
       </ol>
-      <p>If non-trump is asked:</p>
-      <ol>
+      <p className="mb-0 mt-2">If non-trump is asked:</p>
+      <ol className="pl-3">
         <li>Follow suit.</li>
         <li>Can't follow suit? Play a trump.</li>
         <li>An opponent already played a trump? Play a higher trump.</li>
         <li>No higher trump? Play another suit.</li>
       </ol>
       <h4 className="h6 font-weight-bold mb-1">Honor</h4>
-      <p>
+      <p className="mb-1 mt-2">
         If your opponents are going to win the trick (or if you're not sure
         whose it's going to be), avoid playing the following combinations:
       </p>
-      <ul>
+      <ul className="pl-3 mb-1">
         <li>Straight of three or four cards.</li>
         <li>King and Queen of trump.</li>
       </ul>
-      <p>
+      <p className="mt-1">
         Do play these combinations when it's going to be your (or your
         partner's) trick!
       </p>
       <h4 className="h6 font-weight-bold mb-1">Bidding</h4>
-      <p>
+      <p className="mb-1 mt-2">
         Not sure what to bid or confused about your partner's bid? These
         guidelines could be useful.
       </p>
-      <ul>
+      <ul className="pl-3">
         <li>
           80: a Jack plus another card of the same suit / a 9 plus another two
           or three cards of the same suit.
@@ -139,12 +139,12 @@ const KlaverJasRules = () => {
         </li>
       </ul>
       <h4 className="h6 font-weight-bold mb-1">Seinen</h4>
-      <p>
+      <p className="mb-1 mt-2">
         When you can't follow suit and think your partner will win the trick
         (and you don't have to trump), you could play a card that gives them
         extra information.
       </p>
-      <ul>
+      <ul className="pl-3">
         <li>7, 8 or 9 will tell that you have the Ace of that suit.</li>
         <li>
           Jack, Queen, King or 10 will tell that you don't have the Ace of that
@@ -153,7 +153,7 @@ const KlaverJasRules = () => {
         <li>Ace will tell that you also have the 10 of that suit.</li>
       </ul>
       <h4 className="h6 font-weight-bold mb-1">Concepts</h4>
-      <ul>
+      <ul className="pl-3">
         <li>
           <em>Wet:</em> you did not make the amount of points of your bid.
         </li>
@@ -180,6 +180,11 @@ const KlaverJasRules = () => {
 };
 
 export const Aside = () => {
+  // TODO: use this for displaying
+  // Chat
+  // People online
+  // News
+  // Rules
   return (
     <StyledAside className="my-4 container-fluid">
       <div className="bg-light shadow-sm border rounded">
