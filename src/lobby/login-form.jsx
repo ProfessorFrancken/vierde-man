@@ -15,9 +15,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const franckenAccountIsEnabled = false;
 
 const Container = styled.div`
-  min-height: 60vh;
   display: flex;
-  align-items: center;
+  align-items: start;
+  margin-top: 10vh;
 `;
 
 const FranckenLogo = styled.div`
@@ -27,16 +27,15 @@ const FranckenLogo = styled.div`
   }
 `;
 
-const GuestLoginForm = ({ displayName, onChangeDisplayName, onSubmit }) => {
-  const onKeyPress = (event) => {
-    if (event.key === 'Enter') {
-      onSubmit();
-    }
-  };
-
+const GuestLoginForm = ({
+  displayName,
+  nameErrorMsg,
+  onChangeDisplayName,
+  onKeyPress,
+}) => {
   return (
     <div className="form-group">
-      <label for="displayName">Display name</label>
+      <label htmlFor="displayName">Display name</label>
       <input
         id="displayName"
         type="text"
@@ -46,8 +45,11 @@ const GuestLoginForm = ({ displayName, onChangeDisplayName, onSubmit }) => {
         className="form-control"
         placeholder="Jan Francken"
       />
+      {nameErrorMsg && (
+        <small className="form-text text-danger">{nameErrorMsg}</small>
+      )}
 
-      <small class="form-text text-muted">
+      <small className="form-text text-muted">
         A guest account can be converted to an account by claiming its display
         name. Claiming a display name will allow you to keep all data &
         statistics from previously played games.
@@ -56,15 +58,9 @@ const GuestLoginForm = ({ displayName, onChangeDisplayName, onSubmit }) => {
   );
 };
 
-const AccountLoginForm = ({ onSubmit, nameErrorMsg }) => {
+const AccountLoginForm = ({ onKeyPress, nameErrorMsg }) => {
   const [email, setEmail] = useState('');
   const [passphrase, setPassphrase] = useState('');
-
-  const onKeyPress = (event) => {
-    if (event.key === 'Enter') {
-      onSubmit();
-    }
-  };
 
   const onChangeEmail = (event) => {
     const name = event.target.value;
@@ -79,7 +75,7 @@ const AccountLoginForm = ({ onSubmit, nameErrorMsg }) => {
   return (
     <>
       <div className="form-group">
-        <label for="email">Email</label>
+        <label htmlFor="email">Email</label>
         <input
           id="email"
           type="text"
@@ -93,7 +89,7 @@ const AccountLoginForm = ({ onSubmit, nameErrorMsg }) => {
         {nameErrorMsg && <div className="invalid-feedback">{nameErrorMsg}</div>}
       </div>
       <div className="form-group">
-        <label for="passphrase">Passphrase</label>
+        <label htmlFor="passphrase">Passphrase</label>
         <input
           id="passphrase"
           type="password"
@@ -103,12 +99,12 @@ const AccountLoginForm = ({ onSubmit, nameErrorMsg }) => {
           className="form-control"
           placeholder="Your super secret passphrase"
         />
-        <small class="form-text text-muted">
+        <small className="form-text text-muted">
           We currently don't have an option to reset your passphrase. If you've
           forgotton your passphrase send a message to Mark to have it be reset.
         </small>
       </div>
-      <small class="form-text text-muted">
+      <small className="form-text text-muted">
         Don't have an account?{' '}
         <Link to="/login">Login with a guest account</Link>.
       </small>
@@ -125,14 +121,6 @@ const Login = () => {
   if (username !== undefined) {
     return <Redirect to="/lobby" />;
   }
-
-  const onLogin = ({ displayName, email, password }) => {
-    if (displayName !== undefined) {
-    }
-
-    if (email !== undefined && password !== undefined) {
-    }
-  };
 
   const onClickEnter = () => {
     if (displayName === '') {
@@ -156,6 +144,11 @@ const Login = () => {
   return (
     <Container className="container-fluid">
       <div style={{ maxWidth: '30em' }} className="mx-auto">
+        <h1 className="display-2 text-primary text-center">♣</h1>
+        <h1 className="display-4 font-weight-light text-primary mb-3 text-center mt-2 mb-5">
+          Vierdeman?
+        </h1>
+
         <Modal.Dialog>
           <Modal.Footer>
             <Modal.Actions>
@@ -200,14 +193,15 @@ const Login = () => {
             {signInAsGuest ? (
               <GuestLoginForm
                 displayName={displayName}
+                nameErrorMsg={nameErrorMsg}
                 onChangeDisplayName={onChangeDisplayName}
-                onSubmit={onSubmit}
+                onKeyPress={onSubmit}
               />
             ) : (
               <AccountLoginForm
                 displayName={displayName}
                 onChangeDisplayName={onChangeDisplayName}
-                onSubmit={onSubmit}
+                onKeyPress={onSubmit}
               />
             )}
           </Modal.Body>
