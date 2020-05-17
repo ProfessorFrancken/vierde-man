@@ -53,12 +53,17 @@ const StyledHeader = styled.div`
   }
 `;
 
+const Title = styled.h1`
+  font-family: var(--card-font-family);
+  font-weight: var(--card-font-weight);
+`;
+
 export const Header = () => {
   return (
     <StyledHeader className="francken-header">
       <div className="header__logo text-white bg-primary">
         <a className="d-inline-flex flex-column text-center" href="/">
-          <h1 className="text-white mb-0">♣</h1>
+          <Title className="text-white mb-0">♣</Title>
         </a>
       </div>
     </StyledHeader>

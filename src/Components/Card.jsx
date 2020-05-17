@@ -32,6 +32,9 @@ const CardLi = styled.li.attrs((props) => ({
   height: calc(var(--cardScale) * 88px);
   color: ${(props) => suitColor[props.suit]} !important;
 
+  font-family: var(--card-font-family);
+  font-weight: var(--card-font-weight) !important;
+
   ${(props) =>
     !props.disabled &&
     !props.flippedToBack &&
@@ -44,6 +47,8 @@ const CardLi = styled.li.attrs((props) => ({
 
   &:before,
   &:after {
+    font-family: var(--card-font-family);
+    font-weight: var(--card-font-weight);
     content: '${(props) => props.face}  ${(props) => suitIcon[props.suit]}';
     position: absolute;
     width: 12px;

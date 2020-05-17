@@ -2,9 +2,9 @@ import React from 'react';
 import sans from 'assets/Sans2.png';
 import styled from 'styled-components';
 
-const SuitIcon = props => {
+const SuitIcon = (props) => {
   const imgStyle = {
-    width: props.width ? props.width : '20px'
+    width: props.width ? props.width : '20px',
   };
 
   return <img src={props.src} style={imgStyle} alt={props.alt} />;
@@ -12,9 +12,13 @@ const SuitIcon = props => {
 
 const RedSuit = styled.span`
   color: var(--red-suit-color);
+  font-family: var(--card-font-family);
+  font-weight: var(--card-font-weight);
 `;
 const BlackSuit = styled.span`
   color: var(--black-suit-color);
+  font-family: var(--card-font-family);
+  font-weight: var(--card-font-weight);
 `;
 
 export const Spades = () => <BlackSuit>♠</BlackSuit>;
@@ -53,9 +57,14 @@ export const SuitStringToComponent = ({ suit }) => {
   }
 };
 
-export const Bid = props => (
-  <span>
+const StyledBid = styled.span`
+  font-family: var(--card-font-family);
+  font-weight: var(--card-font-weight);
+`;
+
+export const Bid = (props) => (
+  <StyledBid>
     <strong className="mr-2">{props.bid}</strong>
     <SuitStringToComponent suit={props.suit} />
-  </span>
+  </StyledBid>
 );

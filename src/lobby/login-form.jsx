@@ -112,6 +112,11 @@ const AccountLoginForm = ({ onKeyPress, nameErrorMsg }) => {
   );
 };
 
+const Title = styled.h1`
+  font-family: var(--card-font-family);
+  font-weight: var(--card-font-weight);
+`;
+
 const Login = () => {
   const { username, login } = useAuth();
   const [signInAsGuest, setSignInAsGuest] = useState(true);
@@ -144,7 +149,7 @@ const Login = () => {
   return (
     <Container className="container-fluid">
       <div style={{ maxWidth: '30em' }} className="mx-auto">
-        <h1 className="display-2 text-primary text-center">♣</h1>
+        <Title className="display-2 text-primary text-center">♣</Title>
         <h1 className="display-4 font-weight-light text-primary mb-3 text-center mt-2 mb-5">
           Vierdeman?
         </h1>
