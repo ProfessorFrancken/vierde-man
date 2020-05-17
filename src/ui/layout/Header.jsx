@@ -24,9 +24,8 @@ const StyledHeader = styled.div`
     border-radius: 0px 0px 10px 0px;
     transform-origin: bottom right;
 
-    margin-left: -4em;
     width: 4em;
-    margin-left: 5.5em;
+    margin-left: 1.5em;
   }
 
   a {
@@ -34,6 +33,7 @@ const StyledHeader = styled.div`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    width: 70%;
   }
 
   .header__logo {
@@ -41,33 +41,14 @@ const StyledHeader = styled.div`
 
     svg {
       max-width: 100%;
-      max-height: 50px;
-    }
-  }
-
-  @media (min-width: 576px) {
-    height: 7em;
-
-    &:before {
-      width: 5em;
-      margin-left: 5em;
+      max-height: 60px;
     }
   }
 
   @media (min-width: 768px) {
-    .header__logo svg {
-      max-height: 60px;
-    }
-
     &:before {
       width: unset;
       margin-left: 0em;
-    }
-  }
-
-  @media (min-width: 992px) {
-    .header__logo svg {
-      max-height: 70px;
     }
   }
 `;
@@ -76,8 +57,8 @@ export const Header = () => {
   return (
     <StyledHeader className="francken-header">
       <div className="header__logo text-white bg-primary">
-        <a className="d-inline-flex flex-column" href="/">
           <h1 className="text-white mb-0">♣</h1>
+        <a className="d-inline-flex flex-column text-center" href="/">
         </a>
       </div>
     </StyledHeader>

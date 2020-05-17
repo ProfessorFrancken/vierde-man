@@ -16,7 +16,7 @@ const LayoutStyle = styled.div`
 
   display: grid;
   grid-column-gap: 0em;
-  grid-template-columns: minmax(4em, 9em) auto;
+  grid-template-columns: 5em auto;
   grid-template-areas:
     'header nav'
     'content content'
