@@ -7,22 +7,29 @@ const StyledAside = styled.aside`
   grid-area: side;
   overflow: auto;
 `;
+
+const FranckenDiscordAlert = () => {
+  return (
+    <div className="alert alert-primary flex-grow-1 mb-4">
+      <FontAwesomeIcon icon={faDiscord} className="mr-2" fixedWidth />
+      Join the{' '}
+      <a
+        href="https://discord.gg/gHb2jUq"
+        className="font-weight-bold"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Francken Discord
+      </a>{' '}
+      to chat while playing .
+    </div>
+  );
+};
+
 export const Aside = () => {
   return (
     <StyledAside className="my-4 ml-xl-5 p-4 bg-light">
-      <div className="alert alert-primary flex-grow-1 mb-4">
-        <FontAwesomeIcon icon={faDiscord} className="mr-2" fixedWidth />
-        Join the{' '}
-        <a
-          href="https://discord.gg/gHb2jUq"
-          className="font-weight-bold"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Francken Discord
-        </a>{' '}
-        to chat while playing .
-      </div>
+      <FranckenDiscordAlert />
 
       <h3>Klaverjas rules</h3>
       <table className="table my-4 border-bottom ">
