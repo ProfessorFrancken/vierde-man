@@ -97,29 +97,29 @@ const KlaverJasRules = () => {
       <h3 className="mb-3">Klaverjas rules</h3>
 
       <h4 className="h6 font-weight-bold mb-1">Which card to play?</h4>
-      <p>
-        If trump is asked:
-        <ol>
-          <li>Follow suit and play a higher trump (overtroeven)</li>
-          <li>No higher trump? Play a lower trump (ondertroeven)</li>
-          <li>No trump? Play another suit.</li>
-        </ol>
-        If non-trump is asked:
-        <ol>
-          <li>Follow suit.</li>
-          <li>Can't follow suit? Play a trump.</li>
-          <li>An opponent already played a trump? Play a higher trump.</li>
-          <li>No higher trump? Play another suit.</li>
-        </ol>
-      </p>
+      <p>If trump is asked:</p>
+      <ol>
+        <li>Follow suit and play a higher trump (overtroeven)</li>
+        <li>No higher trump? Play a lower trump (ondertroeven)</li>
+        <li>No trump? Play another suit.</li>
+      </ol>
+      <p>If non-trump is asked:</p>
+      <ol>
+        <li>Follow suit.</li>
+        <li>Can't follow suit? Play a trump.</li>
+        <li>An opponent already played a trump? Play a higher trump.</li>
+        <li>No higher trump? Play another suit.</li>
+      </ol>
       <h4 className="h6 font-weight-bold mb-1">Honor</h4>
       <p>
         If your opponents are going to win the trick (or if you're not sure
         whose it's going to be), avoid playing the following combinations:
-        <ul>
-          <li>Straight of three or four cards.</li>
-          <li>King and Queen of trump.</li>
-        </ul>
+      </p>
+      <ul>
+        <li>Straight of three or four cards.</li>
+        <li>King and Queen of trump.</li>
+      </ul>
+      <p>
         Do play these combinations when it's going to be your (or your
         partner's) trick!
       </p>
@@ -127,31 +127,31 @@ const KlaverJasRules = () => {
       <p>
         Not sure what to bid or confused about your partner's bid? These
         guidelines could be useful.
-        <ul>
-          <li>
-            80: a Jack plus another card of the same suit / a 9 plus another two
-            or three cards of the same suit.
-          </li>
-          <li>
-            90: a Jack plus two other cards of that same suit / a Jack and 9 of
-            the same suit.
-          </li>
-        </ul>
       </p>
+      <ul>
+        <li>
+          80: a Jack plus another card of the same suit / a 9 plus another two
+          or three cards of the same suit.
+        </li>
+        <li>
+          90: a Jack plus two other cards of that same suit / a Jack and 9 of
+          the same suit.
+        </li>
+      </ul>
       <h4 className="h6 font-weight-bold mb-1">Seinen</h4>
       <p>
         When you can't follow suit and think your partner will win the trick
         (and you don't have to trump), you could play a card that gives them
         extra information.
-        <ul>
-          <li>7, 8 or 9 will tell that you have the Ace of that suit.</li>
-          <li>
-            Jack, Queen, King or 10 will tell that you don't have the Ace of
-            that suit.
-          </li>
-          <li>Ace will tell that you also have the 10 of that suit.</li>
-        </ul>
       </p>
+      <ul>
+        <li>7, 8 or 9 will tell that you have the Ace of that suit.</li>
+        <li>
+          Jack, Queen, King or 10 will tell that you don't have the Ace of that
+          suit.
+        </li>
+        <li>Ace will tell that you also have the 10 of that suit.</li>
+      </ul>
       <h4 className="h6 font-weight-bold mb-1">Concepts</h4>
       <ul>
         <li>
