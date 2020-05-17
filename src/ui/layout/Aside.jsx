@@ -26,72 +26,78 @@ const FranckenDiscordAlert = () => {
   );
 };
 
+const PointsPerCardTable = () => {
+  return (
+    <table className="table my-4 border-bottom ">
+      <thead>
+        <tr>
+          <th className="text-right">Trump</th>
+          <th>Points</th>
+          <th className="text-right">Non-trump</th>
+          <th>Points</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td className="text-right">Jack</td>
+          <td>20</td>
+          <td className="text-right">Ace</td>
+          <td>11</td>
+        </tr>
+        <tr>
+          <td className="text-right">9</td>
+          <td>14</td>
+          <td className="text-right">10</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <td className="text-right">Ace</td>
+          <td>11</td>
+          <td className="text-right">King</td>
+          <td>4</td>
+        </tr>
+        <tr>
+          <td className="text-right">10</td>
+          <td>10</td>
+          <td className="text-right">Queen</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td className="text-right">King</td>
+          <td>4</td>
+          <td className="text-right">Jack</td>
+          <td>2</td>
+        </tr>
+        <tr>
+          <td className="text-right">Queen</td>
+          <td>3</td>
+          <td className="text-right">9</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td className="text-right">8</td>
+          <td>0</td>
+          <td className="text-right">8</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td className="text-right">7</td>
+          <td>0</td>
+          <td className="text-right">7</td>
+          <td>0</td>
+        </tr>
+      </tbody>
+    </table>
+  );
+};
+
 export const Aside = () => {
   return (
     <StyledAside className="my-4 ml-xl-5 p-4 bg-light">
       <FranckenDiscordAlert />
 
       <h3>Klaverjas rules</h3>
-      <table className="table my-4 border-bottom ">
-        <thead>
-          <tr>
-            <th className="text-right">Trump</th>
-            <th>Points</th>
-            <th className="text-right">Non-trump</th>
-            <th>Points</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td className="text-right">Jack</td>
-            <td>20</td>
-            <td className="text-right">Ace</td>
-            <td>11</td>
-          </tr>
-          <tr>
-            <td className="text-right">9</td>
-            <td>14</td>
-            <td className="text-right">10</td>
-            <td>10</td>
-          </tr>
-          <tr>
-            <td className="text-right">Ace</td>
-            <td>11</td>
-            <td className="text-right">King</td>
-            <td>4</td>
-          </tr>
-          <tr>
-            <td className="text-right">10</td>
-            <td>10</td>
-            <td className="text-right">Queen</td>
-            <td>3</td>
-          </tr>
-          <tr>
-            <td className="text-right">King</td>
-            <td>4</td>
-            <td className="text-right">Jack</td>
-            <td>2</td>
-          </tr>
-          <tr>
-            <td className="text-right">Queen</td>
-            <td>3</td>
-            <td className="text-right">9</td>
-            <td>0</td>
-          </tr>
-          <tr>
-            <td className="text-right">8</td>
-            <td>0</td>
-            <td className="text-right">8</td>
-            <td>0</td>
-          </tr>
-          <tr>
-            <td className="text-right">7</td>
-            <td>0</td>
-            <td className="text-right">7</td>
-            <td>0</td>
-          </tr>
-        </tbody>
-      </table>
+      <PointsPerCardTable />
       <h5>Honor</h5>
       <p className="text-muted">
         Feugiat sed lectus vestibulum mattis ullamcorper velit sed ullamcorper
