@@ -7,35 +7,34 @@ import { Aside } from './Aside';
 const LayoutStyle = styled.div`
   // Set the border width of the border above the navigation
   --top-stroke-width: 0.75em;
+  --navigation-margin-right: 0em;
+
   border-top: var(--top-stroke-width) solid ${({ theme }) => theme.primary};
-
-  // grid-template-areas:
-  //   'header content side'
-  //   'nav content side'
-  //   'footer footer footer';
-
-  // grid-template-columns: 18em 1fr minmax(35em, 200px);
-  // grid-template-rows: auto 1fr auto;
-  grid-column-gap: 0em;
 
   min-height: 100vh;
   min-width: 100%;
 
+  display: grid;
+  grid-column-gap: 0em;
+  grid-template-columns: minmax(4em, 9em) auto;
+  grid-template-areas:
+    'header nav'
+    'content content'
+    'side side'
+    'footer footer';
+
   .francken-header {
     grid-area: header;
-    @media (min-width: 768px) {
-      margin-right: 5em;
-    }
+
+    margin-right: var(--navigation-margin-right);
   }
 
   .francken-navigation {
     position: sticky;
     grid-row: 1;
     grid-column: 1/3;
-    @media (min-width: 768px) {
-      grid-area: nav;
-      margin-right: 5em;
-    }
+
+    margin-right: var(--navigation-margin-right);
   }
 
   .francken-content {
@@ -43,20 +42,14 @@ const LayoutStyle = styled.div`
     overflow: auto;
   }
 
-  display: grid;
-  grid-template-areas:
-    'header nav'
-    'content content'
-    'side side'
-    'footer footer';
-
-  grid-template-columns: minmax(4em, 9em) auto;
   // Small devices (landscape phones, 576px and up)
   @media (min-width: 576px) {
   }
 
   // Medium devices (tablets, 768px and up)
   @media (min-width: 768px) {
+    --navigation-margin-right: 5em;
+
     grid-template-rows: auto;
     display: grid;
     grid-template-areas:
@@ -67,6 +60,10 @@ const LayoutStyle = styled.div`
 
     grid-template-columns: 18em 1fr;
     grid-template-rows: auto 1fr auto auto;
+
+    .francken-navigation {
+      grid-area: nav;
+    }
   }
 
   // Large devices (desktops, 992px and up)
