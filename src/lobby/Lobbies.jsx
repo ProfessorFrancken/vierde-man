@@ -69,9 +69,10 @@ const JoinableRooms = ({
   return (
     <tbody>
       {joinableRooms.length === 0 ? (
-        <tr className="bg-light text-muted">
+        <tr className="bg-white text-muted">
           <td colSpan="7" className="p-3">
-            Open a new room to start a game
+            Open a new room to start a game, or spectate in one of the games
+            below.
           </td>
         </tr>
       ) : (
