@@ -5,10 +5,9 @@ import { ReactComponent as Francken } from 'assets/LOGO_KAAL.svg';
 const StyledHeader = styled.div`
   --skew-degrees: 30deg;
   --negative-skew-degrees: -30deg;
+  --bg-color: ${({ theme }) => theme.primary};
 
-  --skew-degrees: 30deg;
-  --negative-skew-degrees: -30deg;
-  background-color: ${({ theme }) => theme.primary};
+  background-color: var(--bg-color);
   position: relative;
 
   height: 6em;
@@ -20,13 +19,12 @@ const StyledHeader = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: ${({ theme }) => theme.primary};
+    background-color: var(--bg-color);
     transform: skewX(var(--negative-skew-degrees));
     border-radius: 0px 0px 10px 0px;
     transform-origin: bottom right;
     z-index: 2;
 
-    //margin-right: -1em;
     margin-left: -4em;
     width: 4em;
     margin-left: 5.5em;
@@ -42,7 +40,7 @@ const StyledHeader = styled.div`
 
   .header__logo {
     color: white;
-    background-color: ${({ theme }) => theme.primary};
+    background-color: var(--bg-color);
     width: 100%;
     z-index: 2;
 
@@ -55,6 +53,11 @@ const StyledHeader = styled.div`
 
   @media (min-width: 576px) {
     height: 7em;
+
+    &:before {
+      width: 6em;
+      margin-left: 5em;
+    }
   }
 
   @media (min-width: 768px) {
@@ -66,6 +69,11 @@ const StyledHeader = styled.div`
         max-height: 60px;
       }
     }
+
+    &:before {
+      width: unset;
+      margin-left: 0em;
+    }
   }
 
   @media (min-width: 992px) {
@@ -74,19 +82,6 @@ const StyledHeader = styled.div`
       svg {
         max-height: 70px;
       }
-    }
-  }
-  @media (min-width: 576px) {
-    &:before {
-      width: 6em;
-      margin-left: 5em;
-    }
-  }
-
-  @media (min-width: 768px) {
-    &:before {
-      width: unset;
-      margin-left: 0em;
     }
   }
 
