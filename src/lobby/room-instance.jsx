@@ -5,12 +5,6 @@ import { faTimes, faPlay, faEye } from '@fortawesome/free-solid-svg-icons';
 import { fromUnixTime, formatDistanceToNow } from 'date-fns';
 import { Link } from 'react-router-dom';
 
-const CurrentPlayerName = ({ room }) => {
-  const playerId = parseInt(room.currentPlayer, 10);
-  const player = room.players.find(({ id }) => id === playerId);
-  return <span>{player.name || `Player ${playerId}`}</span>;
-};
-
 const LobbyRoom = (props) => {
   const room = props.room;
   const freeSeat = room.players.find((player) => !player.name);
@@ -50,8 +44,8 @@ ${activePlayerId === player.id ? 'text-primary' : 'text-muted'}
     <tr className={`${playerSeat && ''} p-2`}>
       {room.players
         .filter(({ id }) => [0, 2].includes(id))
-        .map((player) => (
-          <td width="15%">
+        .map((player, idx) => (
+          <td width="15%" key={`player-${player.id}`}>
             <PlayerTd
               key={`player-${player.id}`}
               room={room}
@@ -64,7 +58,7 @@ ${activePlayerId === player.id ? 'text-primary' : 'text-muted'}
       {room.players
         .filter(({ id }) => [1, 3].includes(id))
         .map((player) => (
-          <td width="15%">
+          <td width="15%" key={`player-${player.id}`}>
             <PlayerTd
               key={`player-${player.id}`}
               room={room}

@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
-import Modal from 'Components/Modal';
 import LobbyRoomInstance from './room-instance';
 import LobbyCreateRoomForm from './create-room-form';
-import { subDays, fromUnixTime, formatDistanceToNow } from 'date-fns';
+import { subDays, fromUnixTime } from 'date-fns';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faSignOutAlt,
-  faEye,
-  faEyeSlash,
-} from '@fortawesome/free-solid-svg-icons';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import _ from 'lodash';
 
 const joinableRoom = (playerName) => ({ rounds, players, ...rest }) => {
@@ -21,7 +16,6 @@ const joinableRoom = (playerName) => ({ rounds, players, ...rest }) => {
     (player) => !player.name || player.name === playerName
   );
 };
-const unfinishedRoom = ({ rounds }) => rounds !== 16;
 const showOldRoomsFilter = (showOldRooms) => ({ createdAt }) => {
   if (showOldRooms) {
     return true;
@@ -55,7 +49,7 @@ const SpectatableRooms = ({
       </tr>
       {spectatableRooms.map((room) => (
         <LobbyRoomInstance
-          key={'instance-' + room.gameID}
+          key={'spectatable-' + room.gameID}
           room={room}
           playerName={playerName}
           onClickJoin={onClickJoin}
@@ -83,7 +77,7 @@ const JoinableRooms = ({
       ) : (
         joinableRooms.map((room) => (
           <LobbyRoomInstance
-            key={'instance-' + room.gameID}
+            key={'joinable-' + room.gameID}
             room={room}
             playerName={playerName}
             onClickJoin={onClickJoin}
