@@ -1,3 +1,93 @@
+# ♣ Vierdeman?
+
+Play klaverjas like we're used to at Francken.
+
+## Contributing
+
+
+This project has been made using [react](https://reactjs.org/),
+[boardgame.io](https://boardgame.io/documentation/) and
+[koa](https://koajs.com/). 
+To get started you will have to install [node and
+npm](https://www.npmjs.com/get-npm) (or use `docker-compose` if you prefer to
+use Docker).
+
+Once you've installed npm use it to install this app's dependencies,
+
+``` sh
+npm install
+```
+
+Next you can start the app with,
+
+``` sh
+npm run start
+```
+
+This will open your browser at http://localhost:3000 and open the app.
+Before being able to play and login however you need to start the server,
+
+``` sh
+npm run server
+```
+
+Once that's all done you should be able to login, open rooms and play games. 
+You can use multiple browsers and / or incognito sessions to play and debug a
+game. 
+
+### Testing
+
+Tests can be run using
+
+``` sh
+npm run test
+```
+
+### Architecture of the app
+
+As mentioned we use react, boardgame.io and koa: 
+
+- react: is the frondend framework used for the user interface
+- boardgame.io: contains the klaverjas logic and communication logic. 
+- koa: the server used internally by boardgame.io and extended upon in `src/server/server.js`
+
+#### React
+
+See `src/`
+
+Note: the folder structure will likely be refactored a bit so that most of react
+code will be in `src/ui/`.
+
+##### React context
+
+TODO
+
+###### localstorage state hook
+
+TODO
+
+##### Klaverjas components
+
+TODO
+
+#### Boardgame.io
+
+See `src/GameLogic/`
+
+#### Koa
+
+See `src/server/`
+
+##### Data storage
+
+TODO
+
+##### Authentication
+
+TODO
+
+# Create React App
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
