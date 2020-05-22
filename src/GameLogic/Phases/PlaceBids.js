@@ -31,8 +31,11 @@ export const DealCards = (G, ctx, deck) => {
 };
 
 const isSans = ({ suit }) => suit === SANS;
+const halfTotal = (bid) => (isSans(bid) ? 70 : 81);
+const relativeBid = (bid) => bid.bid - halfTotal(bid);
 const isAValidBid = (bid) =>
-  bid !== undefined && (bid.bid >= 82 || (isSans(bid) && bid.bid >= 70));
+  bid !== undefined && (bid.bid >= halfTotal(bid));
+
 export const canPlaceBid = (placedBids, bid) => {
   if (bidIsPass(bid)) {
     return true;
@@ -60,19 +63,7 @@ export const canPlaceBid = (placedBids, bid) => {
     return true;
   }
 
-  if (isSans(bid)) {
-    if (isSans(highestBid)) {
-      return bid.bid > highestBid.bid;
-    }
-
-    return bid.bid >= highestBid.bid - 2;
-  }
-
-  if (isSans(highestBid)) {
-    return bid.bid > highestBid.bid + 2;
-  }
-
-  return bid.bid > highestBid.bid;
+  return relativeBid(bid) > relativeBid(highestBid);
 };
 
 const reshuffleIfAllPassed = (G, ctx) => {
