@@ -6,7 +6,7 @@ import {
   InitialDeck,
   SANS,
   SUITES,
-  FACES
+  FACES,
 } from 'GameLogic/Card';
 import _ from 'lodash';
 const { CLUBS } = SUITES;
@@ -14,11 +14,11 @@ const { CLUBS } = SUITES;
 describe('dealing hands', () => {
   it('allows to place a bid', () => {
     const KlaverJasScenario = {
-      ...KlaverJassen
+      ...KlaverJassen,
     };
     const client = Client({
       game: KlaverJasScenario,
-      numPlayers: 4
+      numPlayers: 4,
     });
 
     // Place a winning bid by the third player
@@ -39,7 +39,7 @@ describe('dealing hands', () => {
       { suit: SUITES.CLUBS, bid: 102, bidBy: 3 },
       { suit: null, bid: null, bidBy: 0 },
       { suit: null, bid: null, bidBy: 1 },
-      { suit: null, bid: null, bidBy: 2 }
+      { suit: null, bid: null, bidBy: 2 },
     ]);
 
     expect(ctx.phase).toEqual('PlayTricks');
@@ -47,7 +47,7 @@ describe('dealing hands', () => {
     expect(G.bid).toEqual({
       bid: 102,
       highestBidBy: 3,
-      trump: SUITES.CLUBS
+      trump: SUITES.CLUBS,
     });
 
     expect(G.hands[0].length).toEqual(8);
@@ -58,11 +58,11 @@ describe('dealing hands', () => {
 
   it('Allows a player to bid after they pased', () => {
     const KlaverJasScenario = {
-      ...KlaverJassen
+      ...KlaverJassen,
     };
     const client = Client({
       game: KlaverJasScenario,
-      numPlayers: 4
+      numPlayers: 4,
     });
 
     // Place a winning bid by the third player
@@ -77,17 +77,17 @@ describe('dealing hands', () => {
       { suit: null, bid: null, bidBy: 0 },
       { suit: CLUBS, bid: 82, bidBy: 1 },
       { suit: null, bid: null, bidBy: 2 },
-      { suit: null, bid: null, bidBy: 3 }
+      { suit: null, bid: null, bidBy: 3 },
     ]);
   });
 
   it('Waits for all other players to have passed', () => {
     const KlaverJasScenario = {
-      ...KlaverJassen
+      ...KlaverJassen,
     };
     const client = Client({
       game: KlaverJasScenario,
-      numPlayers: 4
+      numPlayers: 4,
     });
 
     // Place a winning bid by the third player
@@ -102,21 +102,21 @@ describe('dealing hands', () => {
       { suit: null, bid: null, bidBy: 0 },
       { suit: null, bid: null, bidBy: 1 },
       { suit: null, bid: null, bidBy: 2 },
-      { suit: CLUBS, bid: 82, bidBy: 3 }
+      { suit: CLUBS, bid: 82, bidBy: 3 },
     ]);
   });
 
   it('Deals new cards when 4 players have passed', () => {
     const KlaverJasScenario = {
-      ...KlaverJassen
+      ...KlaverJassen,
     };
     const client = Client({
       game: KlaverJasScenario,
-      numPlayers: 4
+      numPlayers: 4,
     });
 
     const {
-      G: { hands: oldHands }
+      G: { hands: oldHands },
     } = client.store.getState();
 
     client.moves.Pass();
@@ -131,7 +131,7 @@ describe('dealing hands', () => {
     expect(G.bids[3]).toEqual({ suit: null, bid: null, bidBy: 3 });
 
     const {
-      G: { hands }
+      G: { hands },
     } = client.store.getState();
 
     expect(oldHands === hands).toEqual(false);
@@ -139,15 +139,15 @@ describe('dealing hands', () => {
 
   it('Deals new cards when 4 players have passed a second time', () => {
     const KlaverJasScenario = {
-      ...KlaverJassen
+      ...KlaverJassen,
     };
     const client = Client({
       game: KlaverJasScenario,
-      numPlayers: 4
+      numPlayers: 4,
     });
 
     const {
-      G: { hands: oldHands }
+      G: { hands: oldHands },
     } = client.store.getState();
 
     client.moves.Pass();
@@ -164,7 +164,7 @@ describe('dealing hands', () => {
     }
 
     const {
-      G: { hands: firstShuffle }
+      G: { hands: firstShuffle },
     } = client.store.getState();
 
     expect(oldHands === firstShuffle).toEqual(false);
@@ -183,7 +183,7 @@ describe('dealing hands', () => {
     }
 
     const {
-      G: { hands }
+      G: { hands },
     } = client.store.getState();
 
     expect(oldHands === hands).toEqual(false);
@@ -193,7 +193,7 @@ describe('dealing hands', () => {
   it('allows to play a hand of Klaverjas', () => {
     const KlaverJasScenario = {
       ...KlaverJassen,
-      setup: ctx => {
+      setup: (ctx) => {
         const deck = InitialDeck();
         const stacks = _.chunk(deck, 8);
 
@@ -203,19 +203,19 @@ describe('dealing hands', () => {
             0: stacks[0],
             1: stacks[1],
             2: stacks[2],
-            3: stacks[3]
+            3: stacks[3],
           },
           bids: [
             { suit: SUITES.SPADES, bid: 102, bidBy: 0 },
             { suit: null, bid: null, bidBy: 1 },
             { suit: null, bid: null, bidBy: 2 },
-            { suit: null, bid: null, bidBy: 3 }
+            { suit: null, bid: null, bidBy: 3 },
           ],
           trump: SUITES.SPADES,
           bid: {
             bid: 102,
             trump: SUITES.SPADES,
-            highestBidBy: 0
+            highestBidBy: 0,
           },
           currentTrick: {
             startingPlayer: 0,
@@ -223,8 +223,8 @@ describe('dealing hands', () => {
               0: undefined,
               1: undefined,
               2: undefined,
-              3: undefined
-            }
+              3: undefined,
+            },
           },
           rounds: [],
           playedTricks: [],
@@ -232,15 +232,15 @@ describe('dealing hands', () => {
           dealer: 3,
           them: 0,
           we: 0,
-          continueTrickAutomatically: {}
+          continueTrickAutomatically: {},
         };
-      }
+      },
     };
 
     const client = Client({
       game: KlaverJasScenario,
       // enhancer: applyMiddleware(logger),
-      numPlayers: 4
+      numPlayers: 4,
     });
 
     {
@@ -257,89 +257,89 @@ describe('dealing hands', () => {
           Card(SUITES.SPADES, '7'),
           Card(SUITES.CLUBS, '7'),
           Card(SUITES.DIAMONDS, '7'),
-          Card(SUITES.HEARTS, '7')
+          Card(SUITES.HEARTS, '7'),
         ],
         points: 0,
         honor: 100,
-        winner: 0
+        winner: 0,
       },
       {
         cards: [
           Card(SUITES.SPADES, '8'),
           Card(SUITES.CLUBS, '8'),
           Card(SUITES.DIAMONDS, '8'),
-          Card(SUITES.HEARTS, '8')
+          Card(SUITES.HEARTS, '8'),
         ],
         points: 0,
         honor: 100,
-        winner: 0
+        winner: 0,
       },
       {
         cards: [
           Card(SUITES.SPADES, '9'),
           Card(SUITES.CLUBS, '9'),
           Card(SUITES.DIAMONDS, '9'),
-          Card(SUITES.HEARTS, '9')
+          Card(SUITES.HEARTS, '9'),
         ],
         points: 14,
         honor: 100,
-        winner: 0
+        winner: 0,
       },
       {
         cards: [
           Card(SUITES.SPADES, '10'),
           Card(SUITES.CLUBS, '10'),
           Card(SUITES.DIAMONDS, '10'),
-          Card(SUITES.HEARTS, '10')
+          Card(SUITES.HEARTS, '10'),
         ],
         points: 40,
         honor: 100,
-        winner: 0
+        winner: 0,
       },
       {
         cards: [
           Card(SUITES.SPADES, 'J'),
           Card(SUITES.CLUBS, 'J'),
           Card(SUITES.DIAMONDS, 'J'),
-          Card(SUITES.HEARTS, 'J')
+          Card(SUITES.HEARTS, 'J'),
         ],
         points: 26,
         honor: 100,
-        winner: 0
+        winner: 0,
       },
       {
         cards: [
           Card(SUITES.SPADES, 'Q'),
           Card(SUITES.CLUBS, 'Q'),
           Card(SUITES.DIAMONDS, 'Q'),
-          Card(SUITES.HEARTS, 'Q')
+          Card(SUITES.HEARTS, 'Q'),
         ],
         points: 12,
         honor: 100,
-        winner: 0
+        winner: 0,
       },
       {
         cards: [
           Card(SUITES.SPADES, 'K'),
           Card(SUITES.CLUBS, 'K'),
           Card(SUITES.DIAMONDS, 'K'),
-          Card(SUITES.HEARTS, 'K')
+          Card(SUITES.HEARTS, 'K'),
         ],
         points: 16,
         honor: 100,
-        winner: 0
+        winner: 0,
       },
       {
         cards: [
           Card(SUITES.SPADES, 'A'),
           Card(SUITES.CLUBS, 'A'),
           Card(SUITES.DIAMONDS, 'A'),
-          Card(SUITES.HEARTS, 'A')
+          Card(SUITES.HEARTS, 'A'),
         ],
         points: 44,
         honor: 100,
-        winner: 0
-      }
+        winner: 0,
+      },
     ];
 
     for (let round = 0; round < 8; round++) {
@@ -373,7 +373,7 @@ describe('dealing hands', () => {
           expect(winner).toEqual(playTheseHands[round].winner);
           expect(points).toEqual(playTheseHands[round].points);
           expect(honor).toEqual(100);
-          [0, 1, 2, 3].forEach(playerId => {
+          [0, 1, 2, 3].forEach((playerId) => {
             const expectedCard = playTheseHands[round].cards[playerId];
             expect(cards[playerId].face).toEqual(expectedCard.face);
             expect(cards[playerId].suit).toEqual(expectedCard.suit);
@@ -392,11 +392,11 @@ describe('dealing hands', () => {
 
   it('plays a game of klaverjas', () => {
     const KlaverJasScenario = {
-      ...KlaverJassen
+      ...KlaverJassen,
     };
     const client = Client({
       game: KlaverJasScenario,
-      numPlayers: 4
+      numPlayers: 4,
     });
 
     let hands;
@@ -431,7 +431,7 @@ describe('dealing hands', () => {
           { suit: 'S', face: 'J' },
           { suit: 'S', face: 'Q' },
           { suit: 'S', face: 'K' },
-          { suit: 'S', face: 'A' }
+          { suit: 'S', face: 'A' },
         ],
         '1': [
           { suit: 'C', face: '7' },
@@ -441,7 +441,7 @@ describe('dealing hands', () => {
           { suit: 'C', face: 'J' },
           { suit: 'C', face: 'Q' },
           { suit: 'C', face: 'K' },
-          { suit: 'C', face: 'A' }
+          { suit: 'C', face: 'A' },
         ],
         '2': [
           { suit: 'D', face: '7' },
@@ -451,7 +451,7 @@ describe('dealing hands', () => {
           { suit: 'D', face: 'J' },
           { suit: 'D', face: 'Q' },
           { suit: 'D', face: 'K' },
-          { suit: 'D', face: 'A' }
+          { suit: 'D', face: 'A' },
         ],
         '3': [
           { suit: 'H', face: '7' },
@@ -461,8 +461,8 @@ describe('dealing hands', () => {
           { suit: 'H', face: 'J' },
           { suit: 'H', face: 'Q' },
           { suit: 'H', face: 'K' },
-          { suit: 'H', face: 'A' }
-        ]
+          { suit: 'H', face: 'A' },
+        ],
       };
       for (let round = 0; round < 8; round++) {
         if (handsPlayed % 4 === 0) {
@@ -519,7 +519,7 @@ describe('dealing hands', () => {
       expect(ctx.gameover).toEqual({
         winner: 'Wij & Zij',
         wij: 8240,
-        zij: 8240
+        zij: 8240,
       });
       // console.log(G, ctx);
     }
