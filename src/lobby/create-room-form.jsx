@@ -6,25 +6,24 @@
  * https://opensource.org/licenses/MIT.
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faCog } from '@fortawesome/free-solid-svg-icons';
 
-class LobbyCreateRoomForm extends React.Component {
-  static propTypes = {
-    games: PropTypes.array.isRequired,
-    createGame: PropTypes.func.isRequired,
+const LobbyCreateRoomForm = (props) => {
+  const [maxRounds, setMaxRounds] = useState(16);
+  const numPlayers = 4;
+  const game = props.games[0].game.name;
+  const createGame = () => {
+    props.createGame(game, {
+      numPlayers,
+      maxRounds,
+    });
   };
 
-  render() {
-    const numPlayers = 4;
-    const game = this.props.games[0].game.name;
-    const createGame = () => {
-      this.props.createGame(game, numPlayers);
-    };
-
-    return (
+  return (
+    <div>
       <button
         onClick={createGame}
         className="btn btn-text bg-light text-primary"
@@ -32,8 +31,16 @@ class LobbyCreateRoomForm extends React.Component {
         <FontAwesomeIcon icon={faPlus} className="mr-2 text-muted" />
         Open a new room
       </button>
-    );
-  }
-}
+      <button className="btn btn-text btn-sm ml-2">
+        <FontAwesomeIcon icon={faCog} className="mr-1 text-muted" />
+        Change game settings
+      </button>
+    </div>
+  );
+};
+LobbyCreateRoomForm.propTypes = {
+  games: PropTypes.array.isRequired,
+  createGame: PropTypes.func.isRequired,
+};
 
 export default LobbyCreateRoomForm;

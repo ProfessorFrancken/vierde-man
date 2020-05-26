@@ -109,12 +109,15 @@ function LobbyProvider({
     setPlayerRooms(playerRooms.filter((room) => room.gameId !== gameId));
   };
 
-  const createRoom = async (gameName, numPlayers) => {
+  const createRoom = async (gameName, { numPlayers, maxRounds }) => {
     const gameComponent = gameComponents.find(
       ({ game: { name } }) => name === gameName
     );
 
-    const room = await connection.create(gameComponent, numPlayers);
+    const room = await connection.create(gameComponent, {
+      numPlayers,
+      maxRounds,
+    });
 
     setRooms([room, ...rooms]);
   };

@@ -90,8 +90,9 @@ class LobbyConnection {
     }
   }
 
-  async create(gameComponent, numPlayers) {
+  async create(gameComponent, { numPlayers, maxRounds }) {
     const gameName = gameComponent.game.name;
+    console.log('connection', numPlayers, maxRounds);
     try {
       if (!gameComponent) {
         throw new Error('game not found');
@@ -110,7 +111,7 @@ class LobbyConnection {
             numPlayers: numPlayers,
             setupData: {
               roomName: 'T.F.V. Ole',
-              maxRounds: 16,
+              maxRounds,
             },
           }),
           headers: { 'Content-Type': 'application/json' },
