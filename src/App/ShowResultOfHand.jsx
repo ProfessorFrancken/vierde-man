@@ -168,7 +168,7 @@ const ShowResultsOfHand = ({
       <Modal.Header>
         <Modal.Title className="mb-0 text-center">Finished hand</Modal.Title>
         <div className="mt-2 text-center text-muted">
-          {game.rounds.length} / 16
+          {game.rounds.length} / {game.maxRounds || 16}
         </div>
       </Modal.Header>
       <Modal.Table className="border-bottom">

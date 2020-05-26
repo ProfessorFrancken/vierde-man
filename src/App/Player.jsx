@@ -6,7 +6,7 @@ import ShowResultsOfTrick from 'App/ShowResultsOfTrick';
 import ShowResultsOfHand from 'App/ShowResultOfHand';
 import PlayedCards from 'App/PlayedCards';
 import GameOver from 'App/GameOver';
-import InformationBar from 'App/Header/index';
+import Header from 'App/Header/index';
 import PlayerNameIndicator from 'Components/PlayerNameIndicator';
 
 const PlayerContainer = styled.div`
@@ -85,6 +85,7 @@ const Player = ({
               currentPlayer={currentPlayer}
               active={playerId === currentPlayer}
               rounds={game.rounds}
+              maxRounds={game.maxRounds || 16}
             />
           )}
 
@@ -148,12 +149,13 @@ const Player = ({
         })}
       </KlaverJasTable>
 
-      <InformationBar
+      <Header
         playerId={playerId}
         game={game}
         currentPlayer={currentPlayer}
         phase={phase}
         rounds={game.rounds}
+        maxRounds={game.maxRounds}
         playedTricks={game.playedTricks}
         wij={game.wij}
         zij={game.zij}

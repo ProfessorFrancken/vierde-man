@@ -104,7 +104,16 @@ const PlayedCards = ({ lastTrick }) => {
     </div>
   );
 };
-const Menu = ({ rounds, playedTricks, wij, zij, open, setOpen, playerId }) => {
+const Menu = ({
+  rounds,
+  maxRounds,
+  playedTricks,
+  wij,
+  zij,
+  open,
+  setOpen,
+  playerId,
+}) => {
   return (
     <StyledMenu open={open} className="bg-white  shadow">
       <button
@@ -129,7 +138,7 @@ const Menu = ({ rounds, playedTricks, wij, zij, open, setOpen, playerId }) => {
           Round
           <br />
           {/* HACK: we don't want to show 17 / 16 rounds when a game has finished */}
-          {Math.min(rounds.length + 1, 16)} / 16
+          {Math.min(rounds.length + 1, maxRounds)} / {maxRounds}
         </div>
         <div className="d-flex flex-column text-right">
           <h6>Zij</h6>

@@ -525,6 +525,147 @@ describe('dealing hands', () => {
     }
   });
 
+  it('plays a small game of klaverjas', () => {
+    const KlaverJasScenario = {
+      ...KlaverJassen,
+
+      setup: (ctx) => {
+        return {
+          ...KlaverJassen.setup(ctx, { maxRounds: 4 }),
+          maxRounds: 4,
+        };
+      },
+    };
+    const client = Client({
+      game: KlaverJasScenario,
+      numPlayers: 4,
+    });
+
+    let hands;
+
+    for (let handsPlayed = 0; handsPlayed < 4; handsPlayed++) {
+      client.moves.PlaceBid({ suit: SANS, bid: 70 });
+      client.moves.Pass();
+      client.moves.Pass();
+      client.moves.Pass();
+
+      {
+        const { G, ctx } = client.store.getState();
+
+        const deck = InitialDeck();
+        const stacks = _.chunk(deck, 8);
+
+        G.hands[0] = stacks[0];
+        G.hands[1] = stacks[1];
+        G.hands[2] = stacks[2];
+        G.hands[3] = stacks[3];
+
+        expect(ctx.phase).toEqual('PlayTricks');
+        hands = G.hands;
+      }
+
+      const these = {
+        '0': [
+          { suit: 'S', face: '7' },
+          { suit: 'S', face: '8' },
+          { suit: 'S', face: '9' },
+          { suit: 'S', face: '10' },
+          { suit: 'S', face: 'J' },
+          { suit: 'S', face: 'Q' },
+          { suit: 'S', face: 'K' },
+          { suit: 'S', face: 'A' },
+        ],
+        '1': [
+          { suit: 'C', face: '7' },
+          { suit: 'C', face: '8' },
+          { suit: 'C', face: '9' },
+          { suit: 'C', face: '10' },
+          { suit: 'C', face: 'J' },
+          { suit: 'C', face: 'Q' },
+          { suit: 'C', face: 'K' },
+          { suit: 'C', face: 'A' },
+        ],
+        '2': [
+          { suit: 'D', face: '7' },
+          { suit: 'D', face: '8' },
+          { suit: 'D', face: '9' },
+          { suit: 'D', face: '10' },
+          { suit: 'D', face: 'J' },
+          { suit: 'D', face: 'Q' },
+          { suit: 'D', face: 'K' },
+          { suit: 'D', face: 'A' },
+        ],
+        '3': [
+          { suit: 'H', face: '7' },
+          { suit: 'H', face: '8' },
+          { suit: 'H', face: '9' },
+          { suit: 'H', face: '10' },
+          { suit: 'H', face: 'J' },
+          { suit: 'H', face: 'Q' },
+          { suit: 'H', face: 'K' },
+          { suit: 'H', face: 'A' },
+        ],
+      };
+      for (let round = 0; round < 8; round++) {
+        if (handsPlayed % 4 === 0) {
+          client.moves.PlayCard(these['0'][round]);
+          client.moves.PlayCard(these['1'][round]);
+          client.moves.PlayCard(these['2'][round]);
+          client.moves.PlayCard(these['3'][round]);
+        }
+        if (handsPlayed % 4 === 1) {
+          client.moves.PlayCard(these['1'][round]);
+          client.moves.PlayCard(these['2'][round]);
+          client.moves.PlayCard(these['3'][round]);
+          client.moves.PlayCard(these['0'][round]);
+        }
+        if (handsPlayed % 4 === 2) {
+          client.moves.PlayCard(these['2'][round]);
+          client.moves.PlayCard(these['3'][round]);
+          client.moves.PlayCard(these['0'][round]);
+          client.moves.PlayCard(these['1'][round]);
+        }
+        if (handsPlayed % 4 === 3) {
+          client.moves.PlayCard(these['3'][round]);
+          client.moves.PlayCard(these['0'][round]);
+          client.moves.PlayCard(these['1'][round]);
+          client.moves.PlayCard(these['2'][round]);
+        }
+
+        client.moves.ContinueToNextTrick();
+        client.moves.ContinueToNextTrick();
+        client.moves.ContinueToNextTrick();
+        client.moves.ContinueToNextTrick();
+
+        {
+          const { G, ctx } = client.store.getState();
+          if (round < 7) {
+            expect(ctx.phase).toEqual('PlayTricks');
+            expect(G.playedTricks.length).toEqual(round + 1);
+          }
+        }
+      }
+
+      {
+        const { G, ctx } = client.store.getState();
+        expect(ctx.phase).toEqual('ShowResultOfHand');
+      }
+      client.moves.PlayNextHand();
+      client.moves.PlayNextHand();
+      client.moves.PlayNextHand();
+      client.moves.PlayNextHand();
+    }
+
+    {
+      const { G, ctx } = client.store.getState();
+      expect(ctx.gameover).toEqual({
+        winner: 'Wij & Zij',
+        wij: 2060,
+        zij: 2060,
+      });
+    }
+  });
+
   xit('deals a hand and continues to the  bidding phase', () => {});
 
   xit('... round robin style the dealer each time', () => {});

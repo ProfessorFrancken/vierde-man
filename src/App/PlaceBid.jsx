@@ -7,7 +7,7 @@ import PlayerName from 'Components/PlayerName';
 
 const { SPADES, HEARTS, CLUBS, DIAMONDS } = SUITES;
 
-const PreviousBids = ({ bids, rounds }) => {
+const PreviousBids = ({ bids, rounds, maxRounds }) => {
   return (
     <div>
       <div className="d-flex justify-content-between">
@@ -16,7 +16,7 @@ const PreviousBids = ({ bids, rounds }) => {
           className="text-monospace text-muted"
           title="Rounds played this game"
         >
-          {rounds.length + 1} / 16
+          {rounds.length + 1} / {maxRounds}
         </small>
       </div>
       <div
@@ -137,6 +137,7 @@ const PlaceBid = ({
   currentPlayer,
   active,
   rounds,
+  maxRounds,
 }) => {
   const [trump, setTrump] = useState(CLUBS);
   const [bid, setBid] = useState(80);
@@ -164,7 +165,11 @@ const PlaceBid = ({
   return (
     <Modal.Dialog>
       <Modal.Body className="bg-light">
-        <PreviousBids bids={currentBids} rounds={rounds} />
+        <PreviousBids
+          bids={currentBids}
+          rounds={rounds}
+          maxRounds={maxRounds}
+        />
       </Modal.Body>
       {allowedBids.length > 0 && (
         <Modal.Body className="border-top">

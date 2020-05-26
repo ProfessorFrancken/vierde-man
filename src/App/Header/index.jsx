@@ -32,6 +32,7 @@ const Header = (props) => {
   const wij = props.wij;
   const zij = props.zij;
   const rounds = props.rounds;
+  const maxRounds = props.maxRounds;
   const playerId = props.playerId;
   const playedTricks = props.playedTricks;
 
@@ -41,6 +42,7 @@ const Header = (props) => {
         open={open}
         setOpen={setOpen}
         rounds={rounds}
+        maxRounds={maxRounds}
         playedTricks={playedTricks}
         wij={wij}
         zij={zij}

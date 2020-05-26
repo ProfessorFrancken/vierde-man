@@ -10,7 +10,9 @@ const SixTeenRoundsHaveBeenPlayed = (G, ctx) => {
     return false;
   }
 
-  return G.rounds.length === 4 * 4
+  const maxRounds = G.maxRounds || 16;
+
+  return G.rounds.length === maxRounds
     ? {
         winner: G.wij === G.zij ? 'Wij & Zij' : G.wij > G.zij ? 'wij' : 'zij',
         wij: G.wij,
@@ -24,9 +26,10 @@ export const KlaverJassen = {
   minPlayers: 4,
   maxPlayers: 4,
 
-  setup: (ctx) => {
+  setup: (ctx, setupData = {}) => {
     return {
       deck: InitialDeck(),
+      maxRounds: setupData.maxRounds || 16,
       createdAt: Date.now(),
       rounds: [],
       playedTricks: [],
