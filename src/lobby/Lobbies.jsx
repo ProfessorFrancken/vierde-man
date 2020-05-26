@@ -42,7 +42,7 @@ const SpectatableRooms = ({
   return (
     <tbody>
       <tr className="bg-light text-muted">
-        <td colspan="7">
+        <td colSpan="7">
           <FontAwesomeIcon icon={faEye} className="mx-2" />
           Spectate games
         </td>
