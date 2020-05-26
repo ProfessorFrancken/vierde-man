@@ -30,12 +30,16 @@ export const KlaverJassen = {
       createdAt: Date.now(),
       rounds: [],
       playedTricks: [],
+
+      // The bid that's currently being played
       bid: {
         bid: undefined,
         highestBidBy: undefined,
         trump: undefined,
       },
+      // Bids placed by players
       bids: [],
+
       currentTrick: {
         startingPlayer: undefined,
         playedCards: {

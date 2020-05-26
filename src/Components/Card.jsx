@@ -19,6 +19,7 @@ const suitColor = {
   [DIAMONDS]: 'var(--red-suit-color)',
   APRIL: '#8f8500',
 };
+
 const CardLi = styled.li.attrs((props) => ({
   cardScale: props.cardScale || 2.0,
 }))`
@@ -51,7 +52,7 @@ const CardLi = styled.li.attrs((props) => ({
     user-select: none;
     font-family: var(--card-font-family);
     font-weight: var(--card-font-weight);
-    content: '${(props) => props.face}  ${(props) => suitIcon[props.suit]}';
+    content: '${(props) => props.face} ${(props) => suitIcon[props.suit]}';
     position: absolute;
     width: 12px;
     text-align: center;
