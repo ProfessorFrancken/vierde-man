@@ -127,6 +127,8 @@ class LobbyConnection {
         rounds: 0,
         turn: 1,
         currentPlayer: 0,
+        roundsPlayed: 0,
+        maxRounds,
         createdAt: Date.now(),
         phase: '',
       };

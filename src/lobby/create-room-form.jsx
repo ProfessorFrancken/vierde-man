@@ -13,6 +13,7 @@ import { faPlus, faCog } from '@fortawesome/free-solid-svg-icons';
 
 const LobbyCreateRoomForm = (props) => {
   const [maxRounds, setMaxRounds] = useState(16);
+  const [changeGameSettings, setChangeGameSettings] = useState(false);
   const numPlayers = 4;
   const game = props.games[0].game.name;
   const createGame = () => {
@@ -21,6 +22,8 @@ const LobbyCreateRoomForm = (props) => {
       maxRounds,
     });
   };
+
+  const selectRound = (event) => setMaxRounds(event.target.value);
 
   return (
     <div>
@@ -31,10 +34,32 @@ const LobbyCreateRoomForm = (props) => {
         <FontAwesomeIcon icon={faPlus} className="mr-2 text-muted" />
         Open a new room
       </button>
-      <button className="btn btn-text btn-sm ml-2">
-        <FontAwesomeIcon icon={faCog} className="mr-1 text-muted" />
-        Change game settings
-      </button>
+      {changeGameSettings ? (
+        <div className="mt-2">
+          <div className="form-group">
+            <label htmlFor="max-rounds">Max rounds</label>
+            <select
+              className="form-control"
+              id="max-rounds"
+              value={maxRounds}
+              onChange={selectRound}
+            >
+              <option value={4}>4</option>
+              <option value={8}>8</option>
+              <option value={12}>12</option>
+              <option value={16}>16</option>
+            </select>
+          </div>
+        </div>
+      ) : (
+        <button
+          className="btn btn-text btn-sm ml-2"
+          onClick={() => setChangeGameSettings(true)}
+        >
+          <FontAwesomeIcon icon={faCog} className="mr-1 text-muted" />
+          Change room settings
+        </button>
+      )}
     </div>
   );
 };

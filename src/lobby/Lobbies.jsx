@@ -110,7 +110,9 @@ const Lobbies = ({
     <>
       <div className="container-fluid">
         <h1>Vierdeman?</h1>
-        <div className="d-flex align-items-center my-2 mt-3">
+        <div className="d-flex align-items-start justify-content-between my-2 mt-3">
+          <LobbyCreateRoomForm games={gameComponents} createGame={createRoom} />
+
           <button
             className="mr-3 btn btn-text bg-light"
             onClick={toggleShowOldRooms}
@@ -121,8 +123,6 @@ const Lobbies = ({
             />
             {showOldRooms ? 'Hide old rooms' : 'Show old rooms'}
           </button>
-
-          <LobbyCreateRoomForm games={gameComponents} createGame={createRoom} />
         </div>
 
         <div className="border bg-white mt-3">
