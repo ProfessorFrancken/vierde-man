@@ -69,7 +69,9 @@ ${activePlayerId === player.id ? 'text-primary' : 'text-muted'}
           </td>
         ))}
       <td className="align-middle text-center text-muted">
-        {room.turn > 1 && <span>{room.roundsPlayed} / 16</span>}
+        <span>
+          {room.roundsPlayed} / {room.maxRounds}
+        </span>
       </td>
       <td className="align-middle text-center text-muted">
         {room.createdAt && (

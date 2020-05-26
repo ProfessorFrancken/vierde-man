@@ -34,6 +34,7 @@ router.get('/games/:name', async (ctx) => {
       turn: state.ctx.turn,
       createdAt: G.createdAt,
       roundsPlayed: G.rounds.length,
+      maxRounds: G.maxRounds || 16,
       wij: G.wij,
       zij: G.zij,
       currentPlayer: state.ctx.currentPlayer,
