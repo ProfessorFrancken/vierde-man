@@ -7,7 +7,6 @@ import { addTournamentRoute } from './tournament';
 
 const db = new FlatFile({
   dir: './storage/klaverjas',
-  logging: true,
 });
 const dbWithCaching = new StorageCache(db, { cacheSize: 200 });
 
