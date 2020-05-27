@@ -29,8 +29,7 @@ export const DealCards = (G, ctx, deck) => {
 const isSans = ({ suit }) => suit === SANS;
 const halfTotal = (bid) => (isSans(bid) ? 70 : 81);
 const relativeBid = (bid) => bid.bid - halfTotal(bid);
-const isAValidBid = (bid) =>
-  bid !== undefined && (bid.bid >= halfTotal(bid));
+const isAValidBid = (bid) => bid !== undefined && bid.bid >= halfTotal(bid);
 
 export const canPlaceBid = (placedBids, bid) => {
   if (bidIsPass(bid)) {
