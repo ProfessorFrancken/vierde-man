@@ -3,6 +3,7 @@ import { KlaverJassen } from './../GameLogic/Game';
 import { StorageCache } from 'bgio-storage-cache';
 import Router from 'koa-router';
 import cors from '@koa/cors';
+import { addTournamentRoute } from './tournament';
 
 const db = new FlatFile({
   dir: './storage/klaverjas',
@@ -51,6 +52,8 @@ router.get('/games/:name', async (ctx) => {
     rooms: rooms,
   };
 });
+
+addTournamentRoute(router, dbWithCaching);
 
 // TODO: verify if this is needed for the koa app
 server.app.use(cors()).use(router.routes()).use(router.allowedMethods());
