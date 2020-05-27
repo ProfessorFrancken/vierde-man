@@ -3,7 +3,6 @@ import { PlaceBids } from './Phases/PlaceBids';
 import { PlayTricks } from './Phases/PlayTricks';
 import { ShowResultOfTrick } from './Phases/ShowResultOfTrick';
 import { ShowResultOfHand } from './Phases/ShowResultOfHand';
-import Randomness from './Random';
 
 const SixTeenRoundsHaveBeenPlayed = (G, ctx) => {
   if (G.bid !== undefined) {
@@ -72,7 +71,6 @@ export const KlaverJassen = {
     ShowResultOfTrick,
     ShowResultOfHand,
   },
-  plugins: [Randomness],
 
   // Ends the game if this returns anything.
   // The return value is available in `ctx.gameover`.

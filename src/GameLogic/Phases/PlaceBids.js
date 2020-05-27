@@ -6,11 +6,7 @@ const bidIsPass = ({ bid, suit }) => bid === null && suit === null;
 export const PASS = null;
 
 export const ShuffleDeck = (G, ctx) => {
-  // if (!ctx.random) {
-  //   console.log('[ShuffleDeck]', ctx.random, ctx.randomness);
-  // }
-
-  G.deck = ctx.randomness.Shuffle(G.deck);
+  G.deck = ctx.random.Shuffle(G.deck);
 };
 
 export const allowedBidsOnTrump = (bids, trump) =>
