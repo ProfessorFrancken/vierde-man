@@ -1,4 +1,4 @@
-import { FlatFile, Server } from 'boardgame.io/dist/server';
+import { FlatFile, Server } from 'boardgame.io/server';
 import { KlaverJassen } from './../GameLogic/Game';
 import { StorageCache } from 'bgio-storage-cache';
 import Router from 'koa-router';
