@@ -28,7 +28,7 @@ const PlayGame = () => {
   );
 };
 
-const LobbiesContainer = ({ refreshInterval = 2000 }) => {
+const LobbiesContainer = ({ refreshInterval = 5000 }) => {
   const { error } = useError();
   const { username: playerName } = useAuth();
   const {
