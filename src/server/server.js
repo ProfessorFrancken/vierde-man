@@ -1,13 +1,13 @@
-import { FlatFile, Server } from 'boardgame.io/server';
+import { Server } from 'boardgame.io/server';
 import { KlaverJassen } from './../GameLogic/Game';
 import { StorageCache } from 'bgio-storage-cache';
 import Router from 'koa-router';
 import cors from '@koa/cors';
 import { addTournamentRoute } from './tournament';
+import { FlatFile } from './flatfile';
 
 const db = new FlatFile({
   dir: './storage/klaverjas',
-  logging: true,
 });
 const dbWithCaching = new StorageCache(db, { cacheSize: 200 });
 
