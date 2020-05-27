@@ -111,7 +111,7 @@ class LobbyConnection {
             numPlayers: numPlayers,
             setupData: {
               roomName: 'T.F.V. Ole',
-              maxRounds,
+              maxRounds: parseInt(maxRounds, 10),
             },
           }),
           headers: { 'Content-Type': 'application/json' },

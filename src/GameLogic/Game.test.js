@@ -531,8 +531,7 @@ describe('dealing hands', () => {
 
       setup: (ctx) => {
         return {
-          ...KlaverJassen.setup(ctx, { maxRounds: 4 }),
-          maxRounds: 4,
+          ...KlaverJassen.setup(ctx, { maxRounds: '4' }),
         };
       },
     };

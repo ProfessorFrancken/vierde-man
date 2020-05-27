@@ -28,7 +28,7 @@ export const KlaverJassen = {
   setup: (ctx, setupData = {}) => {
     return {
       deck: InitialDeck(),
-      maxRounds: setupData.maxRounds || 16,
+      maxRounds: parseInt(setupData.maxRounds, 10) || 16,
       createdAt: Date.now(),
       rounds: [],
       playedTricks: [],
