@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 const LobbyRoom = (props) => {
   const room = props.room;
-  const roomActive = room.roundsPlayed != room.maxRounds;
+  const roomActive = room.roundsPlayed !== room.maxRounds;
   const freeSeat = room.players.find((player) => !player.name);
   const playerSeat = room.players.find(
     (player) => player.name === props.playerName
