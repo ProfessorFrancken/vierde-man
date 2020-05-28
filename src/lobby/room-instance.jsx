@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 
 const LobbyRoom = (props) => {
   const room = props.room;
+  const roomActive = room.roundsPlayed != room.maxRounds;
   const freeSeat = room.players.find((player) => !player.name);
   const playerSeat = room.players.find(
     (player) => player.name === props.playerName
@@ -82,7 +83,7 @@ ${activePlayerId === player.id ? 'text-primary' : 'text-muted'}
       </td>
       <td className="text-right align-middle h-100">
         <div className="d-flex justify-content-end">
-          {playerSeat && (
+          {roomActive && playerSeat && (
             <div className="my-1">
               <button
                 className={`mx-1 btn btn-text bg-primary ${
@@ -97,7 +98,7 @@ ${activePlayerId === player.id ? 'text-primary' : 'text-muted'}
             </div>
           )}
 
-          {playerSeat && !freeSeat && (
+          {roomActive && playerSeat && !freeSeat && (
             <div className="my-1">
               <Link
                 to={`/games/klaver-jassen/${room.gameID}`}
@@ -108,7 +109,7 @@ ${activePlayerId === player.id ? 'text-primary' : 'text-muted'}
               </Link>
             </div>
           )}
-          {!playerSeat && !freeSeat && (
+          {(!roomActive || (!playerSeat && !freeSeat)) && (
             <div className="my-1">
               <Link
                 to={`/games/klaver-jassen/${room.gameID}`}
