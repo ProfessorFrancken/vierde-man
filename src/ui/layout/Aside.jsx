@@ -27,24 +27,6 @@ const NewsAlert = () => {
     </div>
   );
 };
-const FranckenDiscordAlert = () => {
-  return (
-    <div className="alert alert-primary flex-grow-1 mb-4">
-      <FontAwesomeIcon icon={faDiscord} className="mr-2" fixedWidth />
-      Join the{' '}
-      <a
-        href="https://discord.gg/gHb2jUq"
-        className="font-weight-bold"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Francken Discord
-      </a>{' '}
-      to chat while playing .
-    </div>
-  );
-};
-
 const PointsPerCardTable = () => {
   return (
     <table className="table table-striped my-0">
@@ -209,7 +191,6 @@ export const Aside = () => {
       <div className="bg-light shadow-sm border rounded">
         <div className="p-4 pb-0">
           <NewsAlert />
-          <FranckenDiscordAlert />
 
           <h3 className="h5 font-weight-bold">Tips</h3>
           <p>
