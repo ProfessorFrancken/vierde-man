@@ -109,23 +109,6 @@ const Lobbies = ({
   return (
     <>
       <div className="container-fluid">
-        <div className="alert alert-primary mb-4 bg-light">
-          <FontAwesomeIcon
-            icon={faTrophy}
-            className="mr-2 text-muted"
-            fixedWidth
-          />
-          Join <em>T.F.V. 'Professor Francken'</em>s{' '}
-          <strong>Klaverjas tournament</strong> next Friday 29th of May from
-          19:00 to 22:00!{' '}
-          <a
-            href="https://docs.google.com/forms/d/e/1FAIpQLSdanM-ZTWq1s19el0dQG8z8IL5nBGg73mTR7HkktWluFG8E1A/viewform"
-            className="font-weight-bold"
-          >
-            Sign up here
-          </a>
-          .
-        </div>
         <h1>Vierdeman?</h1>
         <div className="d-flex align-items-start justify-content-between my-2 mt-3">
           <LobbyCreateRoomForm games={gameComponents} createGame={createRoom} />
