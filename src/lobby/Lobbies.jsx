@@ -6,8 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash, faTrophy } from '@fortawesome/free-solid-svg-icons';
 import _ from 'lodash';
 
-const joinableRoom = (playerName) => ({ roundsPlayed, players, ...rest }) => {
-  if (roundsPlayed === 16) {
+const joinableRoom = (playerName) => ({ roundsPlayed, players, maxRounds, ...rest }) => {
+  if (roundsPlayed === maxRounds) {
     return false;
   }
 
